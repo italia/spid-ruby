@@ -2,11 +2,11 @@
 
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "spid/ruby/version"
+require "spid/version"
 
 Gem::Specification.new do |spec|
-  spec.name       = "spid-ruby"
-  spec.version    = Spid::Ruby::VERSION
+  spec.name       = "spid"
+  spec.version    = Spid::VERSION
   spec.authors    = ["David Librera"]
   spec.email      = ["davidlibrera@gmail.com"]
   spec.homepage   = "https://github.com/italia/spid-ruby"

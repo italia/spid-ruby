@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
-require "spid/ruby"
+require "spid"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
