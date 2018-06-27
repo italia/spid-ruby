@@ -3,17 +3,17 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "spid/ruby/version"
 
 Gem::Specification.new do |spec|
-  spec.name                  = "spid-ruby"
-  spec.version               = Spid::Ruby::VERSION
-  spec.authors               = ["David Librera"]
-  spec.email                 = ["davidlibrera@gmail.com"]
-  spec.homepage              = "https://github.com/italia/spid-ruby"
-  spec.summary               = "SPID (https://www.spid.gov.it) integration for ruby"
-  spec.license               = "MIT"
+  spec.name       = "spid-ruby"
+  spec.version    = Spid::Ruby::VERSION
+  spec.authors    = ["David Librera"]
+  spec.email      = ["davidlibrera@gmail.com"]
+  spec.homepage   = "https://github.com/italia/spid-ruby"
+  spec.summary    = "SPID (https://www.spid.gov.it) integration for ruby"
+  spec.license    = "MIT"
 
   spec.required_ruby_version = ">= 2.3.0"
 
-  spec.files                 = `git ls-files -z`.split("\x0").reject do |f|
+  spec.files      = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
   end
 
