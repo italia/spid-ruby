@@ -14,7 +14,7 @@ RSpec.describe Spid::AuthnRequest do
   end
 
   let(:idp_sso_target_url) { "https://identity.provider/sso" }
-  let(:sp_sso_target_url) { "https://service.provider/sso" }
+  let(:sp_sso_target_url) { "#{sp_entity_id}/sso" }
   let(:sp_entity_id) { "https://service.provider" }
 
   it { is_expected.to be_a described_class }
