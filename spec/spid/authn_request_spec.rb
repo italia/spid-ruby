@@ -23,7 +23,7 @@ RSpec.describe Spid::AuthnRequest do
 
     describe "AuthnRequest node" do
       let(:authn_request_node) { document_node.root }
-      let(:authn_request_node_attributes) { authn_request_node.attributes }
+      let(:attributes) { authn_request_node.attributes }
 
       it "exists" do
         expect(authn_request_node.name).to eq "AuthnRequest"
@@ -31,11 +31,11 @@ RSpec.describe Spid::AuthnRequest do
 
       it "contains an ID in uuid format" do
         regexp = /_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/
-        expect(authn_request_node_attributes["ID"].value).to match regexp
+        expect(attributes["ID"].value).to match regexp
       end
 
       it "contains Version with value '2.0'" do
-        expect(authn_request_node_attributes["Version"].value).to eq "2.0"
+        expect(attributes["Version"].value).to eq "2.0"
       end
     end
   end
