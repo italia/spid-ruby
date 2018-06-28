@@ -37,6 +37,10 @@ RSpec.describe Spid::AuthnRequest do
       it "contains Version with value '2.0'" do
         expect(attributes["Version"].value).to eq "2.0"
       end
+
+      it "contains IssueInstant with value equalt to current time" do
+        expect(attributes["IssueInstant"].value).to eq Time.now.utc.iso8601
+      end
     end
   end
 end
