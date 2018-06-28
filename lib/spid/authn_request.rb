@@ -7,9 +7,13 @@ module Spid
   class AuthnRequest # :nodoc:
     attr_reader :authn_request_attributes
 
-    def initialize(idp_sso_target_url:)
+    def initialize(
+          idp_sso_target_url:,
+          assertion_consumer_service_url:
+        )
       @authn_request_attributes = {
-        idp_sso_target_url: idp_sso_target_url
+        idp_sso_target_url: idp_sso_target_url,
+        assertion_consumer_service_url: assertion_consumer_service_url
       }
     end
 

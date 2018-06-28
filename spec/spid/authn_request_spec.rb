@@ -7,10 +7,13 @@ RSpec.describe Spid::AuthnRequest do
 
   let(:authn_request_options) do
     {
-      idp_sso_target_url: idp_sso_target_url
+      idp_sso_target_url: idp_sso_target_url,
+      assertion_consumer_service_url: sp_sso_target_url
     }
   end
+
   let(:idp_sso_target_url) { "https://identity.provider/sso" }
+  let(:sp_sso_target_url) { "https://service.provider/sso" }
 
   it { is_expected.to be_a described_class }
 
@@ -48,6 +51,11 @@ RSpec.describe Spid::AuthnRequest do
       end
 
       xit "contains attribute ForceAuthn"
+
+      it "contains attribute AssertionConsumerServiceURL" do
+        attribute = attributes["AssertionConsumerServiceURL"].value
+        expect(attribute).to eq sp_sso_target_url
+      end
     end
   end
 end
