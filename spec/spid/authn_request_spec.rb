@@ -15,9 +15,10 @@ RSpec.describe Spid::AuthnRequest do
   it { is_expected.to be_a described_class }
 
   describe "#to_xml" do
+    let(:xml_document) { subject.to_xml }
     let(:document_node) do
       Nokogiri::XML(
-        subject.to_xml.to_s
+        xml_document.to_s
       )
     end
 
