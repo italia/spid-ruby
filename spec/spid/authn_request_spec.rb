@@ -14,14 +14,14 @@ RSpec.describe Spid::AuthnRequest do
   it { is_expected.to be_a described_class }
 
   describe "#to_xml" do
-    let(:to_xml) do
+    let(:authn_request_node) do
       Nokogiri::XML(
-        subject.to_xml
+        subject.to_xml.to_s
       )
     end
 
     it "has a AuthnRequest element as root element" do
-      expect(to_xml.root.name).to eq "samlp:AuthnRequest"
+      expect(authn_request_node.root.name).to eq "AuthnRequest"
     end
   end
 end
