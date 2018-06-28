@@ -42,9 +42,11 @@ RSpec.describe Spid::AuthnRequest do
         expect(attributes["IssueInstant"].value).to eq Time.now.utc.iso8601
       end
 
-      it "contains Destination with value 'idp_entity_id" do
+      it "contains attribute Destination with value 'idp_entity_id" do
         expect(attributes["Destination"].value).to eq idp_sso_target_url
       end
+
+      xit "contains attribute ForceAuthn"
     end
   end
 end
