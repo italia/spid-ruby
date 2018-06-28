@@ -8,6 +8,8 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*.rb
+RSpec/NestedGroups:
+  Max: 4
 Style/EmptyMethod:
   EnforcedStyle: expanded
 Style/StringLiterals:

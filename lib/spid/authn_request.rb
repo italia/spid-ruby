@@ -9,12 +9,14 @@ module Spid
 
     def initialize(
           idp_sso_target_url:,
-          assertion_consumer_service_url:
+          assertion_consumer_service_url:,
+          issuer:
         )
       @authn_request_attributes = {
         idp_sso_target_url: idp_sso_target_url,
         assertion_consumer_service_url: assertion_consumer_service_url,
-        protocol_binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+        protocol_binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+        issuer: issuer
       }
     end
 

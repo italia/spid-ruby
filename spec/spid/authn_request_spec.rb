@@ -8,12 +8,14 @@ RSpec.describe Spid::AuthnRequest do
   let(:authn_request_options) do
     {
       idp_sso_target_url: idp_sso_target_url,
-      assertion_consumer_service_url: sp_sso_target_url
+      assertion_consumer_service_url: sp_sso_target_url,
+      issuer: sp_entity_id
     }
   end
 
   let(:idp_sso_target_url) { "https://identity.provider/sso" }
   let(:sp_sso_target_url) { "https://service.provider/sso" }
+  let(:sp_entity_id) { "https://service.provider" }
 
   it { is_expected.to be_a described_class }
 
@@ -68,6 +70,22 @@ RSpec.describe Spid::AuthnRequest do
       end
 
       xit "contains attribute AttributeConsumingServiceIndex"
+
+      describe "Issuer node" do
+        let(:issuer_node) do
+          authn_request_node.children.find do |child|
+            child.name == "Issuer"
+          end
+        end
+
+        it "exists" do
+          expect(issuer_node).not_to be_nil
+        end
+
+        it "contains sp_entity_id" do
+          expect(issuer_node.text).to eq sp_entity_id
+        end
+      end
     end
   end
 end
