@@ -61,6 +61,8 @@ RSpec.describe Spid::AuthnRequest do
         attribute = attributes["ProtocolBinding"].value
         expect(attribute).to eq "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
       end
+
+      xit "contains attribute AttributeConsumingServiceIndex"
     end
   end
 end
