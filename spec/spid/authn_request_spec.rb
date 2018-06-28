@@ -29,17 +29,21 @@ RSpec.describe Spid::AuthnRequest do
         expect(authn_request_node.name).to eq "AuthnRequest"
       end
 
-      it "contains an ID in uuid format" do
+      it "contains attribute ID in uuid format" do
         regexp = /_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/
         expect(attributes["ID"].value).to match regexp
       end
 
-      it "contains Version with value '2.0'" do
+      it "contains attribute Version with value '2.0'" do
         expect(attributes["Version"].value).to eq "2.0"
       end
 
-      it "contains IssueInstant with value equalt to current time" do
+      it "contains attribute IssueInstant with value equalt to current time" do
         expect(attributes["IssueInstant"].value).to eq Time.now.utc.iso8601
+      end
+
+      it "contains Destination with value 'idp_entity_id" do
+        expect(attributes["Destination"].value).to eq idp_sso_target_url
       end
     end
   end

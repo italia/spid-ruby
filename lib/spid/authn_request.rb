@@ -5,7 +5,12 @@ require "onelogin/ruby-saml/settings"
 
 module Spid
   class AuthnRequest # :nodoc:
+    attr_reader :authn_request_attributes
+
     def initialize(idp_sso_target_url:)
+      @authn_request_attributes = {
+        idp_sso_target_url: idp_sso_target_url
+      }
     end
 
     def to_xml
@@ -19,7 +24,7 @@ module Spid
     end
 
     def saml_settings
-      OneLogin::RubySaml::Settings.new
+      OneLogin::RubySaml::Settings.new authn_request_attributes
     end
   end
 end
