@@ -6,7 +6,7 @@ Ruby library for SPID authentication
 | ---------------------- | ------------ |
 | Gem name               | spid |
 | License                | [MIT](https://github.com/italia/spid-ruby/blob/master/LICENSE) |
-| Version                | [![Gem Version](https://badge.fury.io/rb/gem-release.svg)](http://badge.fury.io/rb/spid) |
+| Version                | [![Gem Version](https://badge.fury.io/rb/spid.svg)](http://badge.fury.io/rb/spid) |
 | Continuous integration | [![Build Status](https://secure.travis-ci.org/italia/spid-ruby.svg?branch=master)](https://travis-ci.org/italia/spid-ruby) |
 | Test coverage          | [![Coverage Status](https://coveralls.io/repos/italia/spid-ruby/badge.svg)](https://coveralls.io/r/italia/spid-ruby) |
 | Credits                | [Contributors](https://github.com/italia/spid-ruby/graphs/contributors) |
