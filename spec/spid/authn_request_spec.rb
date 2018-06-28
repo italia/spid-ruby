@@ -33,6 +33,10 @@ RSpec.describe Spid::AuthnRequest do
         regexp = /_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/
         expect(authn_request_node_attributes["ID"].value).to match regexp
       end
+
+      it "contains Version with value '2.0'" do
+        expect(authn_request_node_attributes["Version"].value).to eq "2.0"
+      end
     end
   end
 end
