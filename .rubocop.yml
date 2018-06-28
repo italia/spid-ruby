@@ -1,8 +1,13 @@
+require: rubocop-rspec
+
 AllCops:
   Exclude:
     - bin/stubs/*
   TargetRubyVersion: 2.3
 
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*.rb
 Style/EmptyMethod:
   EnforcedStyle: expanded
 Style/StringLiterals:

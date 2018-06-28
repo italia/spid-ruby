@@ -4,6 +4,7 @@ require "spec_helper"
 
 RSpec.describe Spid::AuthnRequest do
   subject { described_class.new authn_request_options }
+
   let(:authn_request_options) do
     {
       idp_sso_target_url: idp_sso_target_url
@@ -20,7 +21,7 @@ RSpec.describe Spid::AuthnRequest do
       )
     end
 
-    context "AuthnRequest node" do
+    describe "AuthnRequest node" do
       let(:authn_request_node) { document_node.root }
 
       it "exists" do
