@@ -26,7 +26,12 @@ RSpec.describe Spid::AuthnRequest do
     end
 
     describe "AuthnRequest node" do
-      let(:authn_request_node) { document_node.root }
+      let(:authn_request_node) do
+        document_node.children.find do |child|
+          child.name == "AuthnRequest"
+        end
+      end
+
       let(:attributes) { authn_request_node.attributes }
 
       it "exists" do
