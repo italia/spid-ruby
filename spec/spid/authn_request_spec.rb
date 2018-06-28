@@ -56,6 +56,11 @@ RSpec.describe Spid::AuthnRequest do
         attribute = attributes["AssertionConsumerServiceURL"].value
         expect(attribute).to eq sp_sso_target_url
       end
+
+      it "contains attribute ProtocolBinding" do
+        attribute = attributes["ProtocolBinding"].value
+        expect(attribute).to eq "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+      end
     end
   end
 end
