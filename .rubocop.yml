@@ -1,4 +1,6 @@
 AllCops:
+  Exclude:
+    - "bin/stubs/*"
   TargetRubyVersion: "2.3"
 
 Style/StringLiterals:
