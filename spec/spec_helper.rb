@@ -16,6 +16,7 @@ end
 
 require "bundler/setup"
 require "spid"
+require "nokogiri"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
