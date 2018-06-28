@@ -1,7 +1,9 @@
 AllCops:
   Exclude:
-    - "bin/stubs/*"
-  TargetRubyVersion: "2.3"
+    - bin/stubs/*
+  TargetRubyVersion: 2.3
 
+Style/EmptyMethod:
+  EnforcedStyle: expanded
 Style/StringLiterals:
-  EnforcedStyle: "double_quotes"
+  EnforcedStyle: double_quotes
