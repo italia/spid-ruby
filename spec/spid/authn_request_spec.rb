@@ -14,14 +14,18 @@ RSpec.describe Spid::AuthnRequest do
   it { is_expected.to be_a described_class }
 
   describe "#to_xml" do
-    let(:authn_request_node) do
+    let(:document_node) do
       Nokogiri::XML(
         subject.to_xml.to_s
       )
     end
 
-    it "has a AuthnRequest element as root element" do
-      expect(authn_request_node.root.name).to eq "AuthnRequest"
+    context "AuthnRequest node" do
+      let(:authn_request_node) { document_node.root }
+
+      it "exists" do
+        expect(authn_request_node.name).to eq "AuthnRequest"
+      end
     end
   end
 end
