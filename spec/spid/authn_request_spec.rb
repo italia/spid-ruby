@@ -35,7 +35,7 @@ RSpec.describe Spid::AuthnRequest do
       let(:attributes) { authn_request_node.attributes }
 
       it "exists" do
-        expect(authn_request_node.name).to eq "AuthnRequest"
+        expect(authn_request_node).not_to be_nil
       end
 
       it "contains attribute ID" do
