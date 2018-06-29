@@ -19,7 +19,8 @@ module Spid
         idp_sso_target_url: idp_sso_target_url,
         assertion_consumer_service_url: assertion_consumer_service_url,
         protocol_binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-        issuer: issuer
+        issuer: issuer,
+        name_identifier_format: name_identifier_format
       }
     end
 
@@ -28,6 +29,10 @@ module Spid
     end
 
     private
+
+    def name_identifier_format
+      "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+    end
 
     def authn_request
       ::OneLogin::RubySaml::Authrequest.new

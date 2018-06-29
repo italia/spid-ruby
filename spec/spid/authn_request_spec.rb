@@ -99,6 +99,26 @@ RSpec.describe Spid::AuthnRequest do
           expect(attribute).to eq sp_entity_id
         end
       end
+
+      describe "NameIDPolicy node" do
+        let(:name_id_policy_node) do
+          authn_request_node.children.find do |child|
+            child.name == "NameIDPolicy"
+          end
+        end
+
+        let(:attributes) { name_id_policy_node.attributes }
+
+        it "exists" do
+          expect(name_id_policy_node).not_to be_nil
+        end
+
+        it "contains attribute Format" do
+          attribute = attributes["Format"].value
+          expect(attribute).
+            to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+        end
+      end
     end
   end
 end
