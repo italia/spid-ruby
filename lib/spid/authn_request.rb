@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require "onelogin/ruby-saml/authrequest"
+require "spid/onelogin_extension"
 require "onelogin/ruby-saml/settings"
 
 module Spid
   class AuthnRequest # :nodoc:
+    using OneLoginExtension
+
     attr_reader :authn_request_attributes
 
     def initialize(
@@ -27,11 +30,11 @@ module Spid
     private
 
     def authn_request
-      OneLogin::RubySaml::Authrequest.new
+      ::OneLogin::RubySaml::Authrequest.new
     end
 
     def saml_settings
-      OneLogin::RubySaml::Settings.new authn_request_attributes
+      ::OneLogin::RubySaml::Settings.new authn_request_attributes
     end
   end
 end

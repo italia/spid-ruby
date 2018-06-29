@@ -5,6 +5,8 @@ AllCops:
     - bin/stubs/*
   TargetRubyVersion: 2.3
 
+Layout/DotPosition:
+  EnforcedStyle: trailing
 Metrics/BlockLength:
   Exclude:
     - spec/**/*.rb

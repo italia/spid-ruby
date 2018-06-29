@@ -78,12 +78,25 @@ RSpec.describe Spid::AuthnRequest do
           end
         end
 
+        let(:attributes) { issuer_node.attributes }
+
         it "exists" do
           expect(issuer_node).not_to be_nil
         end
 
         it "contains sp_entity_id" do
           expect(issuer_node.text).to eq sp_entity_id
+        end
+
+        it "contains attribute Format" do
+          attribute = attributes["Format"].value
+          expect(attribute).
+            to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
+        end
+
+        it "contains attribute NameQualifier" do
+          attribute = attributes["NameQualifier"].value
+          expect(attribute).to eq sp_entity_id
         end
       end
     end
