@@ -119,6 +119,16 @@ RSpec.describe Spid::AuthnRequest do
             to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
         end
       end
+
+      describe "Conditions node" do
+        let(:name_id_policy_node) do
+          authn_request_node.children.find do |child|
+            child.name == "NameIDPolicy"
+          end
+        end
+
+        xit "exists"
+      end
     end
   end
 end
