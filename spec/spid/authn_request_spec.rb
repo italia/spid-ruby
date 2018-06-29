@@ -6,12 +6,18 @@ RSpec.describe Spid::AuthnRequest do
   subject { described_class.new authn_request_options }
 
   let(:authn_request_options) do
+    base_authn_request_options.merge(optional_authn_request_options)
+  end
+
+  let(:base_authn_request_options) do
     {
       idp_sso_target_url: idp_sso_target_url,
       assertion_consumer_service_url: sp_sso_target_url,
       issuer: sp_entity_id
     }
   end
+
+  let(:optional_authn_request_options) { {} }
 
   let(:idp_sso_target_url) { "https://identity.provider/sso" }
   let(:sp_sso_target_url) { "#{sp_entity_id}/sso" }
@@ -128,6 +134,64 @@ RSpec.describe Spid::AuthnRequest do
         end
 
         xit "exists"
+      end
+
+      describe "RequestedAuthnContext node" do
+        let(:requested_authn_context) do
+          authn_request_node.children.find do |child|
+            child.name == "RequestedAuthnContext"
+          end
+        end
+
+        let(:attributes) { requested_authn_context.attributes }
+
+        it "exists" do
+          expect(requested_authn_context).not_to be_nil
+        end
+
+        describe "AuthnContextClassRef node" do
+          let(:authn_context_class_ref_node) do
+            requested_authn_context.children.find do |child|
+              child.name == "AuthnContextClassRef"
+            end
+          end
+
+          context "when authn_context is not provided" do
+            it "contains SPIDL1 class" do
+              expect(authn_context_class_ref_node.text).to eq Spid::L1
+            end
+          end
+
+          [
+            Spid::L1,
+            Spid::L2,
+            Spid::L3
+          ].each do |authn_level|
+            context "when provided authn_context is #{authn_level}" do
+              let(:optional_authn_request_options) do
+                {
+                  authn_context: authn_level
+                }
+              end
+
+              it "contains that level" do
+                expect(authn_context_class_ref_node.text).to eq authn_level
+              end
+            end
+          end
+
+          context "when provided authn_context is none of the expected" do
+            let(:optional_authn_request_options) do
+              {
+                authn_context: "another_authn_level"
+              }
+            end
+
+            it "contains that level" do
+              expect { xml_document }.to raise_error Spid::UnknownAuthnContext
+            end
+          end
+        end
       end
     end
   end

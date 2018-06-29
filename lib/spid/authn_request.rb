@@ -13,14 +13,19 @@ module Spid
     def initialize(
           idp_sso_target_url:,
           assertion_consumer_service_url:,
-          issuer:
+          issuer:,
+          authn_context: Spid::L1
         )
+
+      raise UnknownAuthnContext unless AUTHN_CONTEXTS.include?(authn_context)
+
       @authn_request_attributes = {
         idp_sso_target_url: idp_sso_target_url,
         assertion_consumer_service_url: assertion_consumer_service_url,
         protocol_binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
         issuer: issuer,
-        name_identifier_format: name_identifier_format
+        name_identifier_format: name_identifier_format,
+        authn_context: authn_context
       }
     end
 
