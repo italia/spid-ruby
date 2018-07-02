@@ -19,9 +19,9 @@ module Spid # :nodoc:
     MAXIMUM_COMPARISON
   ].freeze
 
-  L1 = "urn:oasis:names:tc:SAML:2.0:ac:classes:SpidL1"
-  L2 = "urn:oasis:names:tc:SAML:2.0:ac:classes:SpidL2"
-  L3 = "urn:oasis:names:tc:SAML:2.0:ac:classes:SpidL3"
+  L1 = "https://www.spid.gov.it/SpidL1"
+  L1 = "https://www.spid.gov.it/SpidL2"
+  L1 = "https://www.spid.gov.it/SpidL3"
 
   AUTHN_CONTEXTS = [
     L1,
