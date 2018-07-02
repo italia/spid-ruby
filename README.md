@@ -20,9 +20,9 @@ Ruby library for SPID authentication
 |parsing of AA XML metadata (2.2.4)||
 |SP XML metadata generation (1.3.2)||
 |**AuthnRequest generation (1.2.2.1):**||
-|generation of AuthnRequest XML||
+|generation of AuthnRequest XML|✓|
 |HTTP-Redirect binding||
-|HTTP-POST binding||
+|HTTP-POST binding|✓|
 |`AssertionConsumerServiceURL` customization||
 |`AssertionConsumerServiceIndex` customization||
 |`AttributeConsumingServiceIndex` customization||
