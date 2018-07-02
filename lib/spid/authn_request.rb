@@ -15,7 +15,8 @@ module Spid
           idp_sso_target_url:,
           assertion_consumer_service_url:,
           issuer:,
-          authn_context: Spid::L1
+          authn_context: Spid::L1,
+          authn_context_comparison: Spid::EXACT_COMPARISON
         )
 
       unless AUTHN_CONTEXTS.include?(authn_context)
@@ -24,13 +25,20 @@ module Spid
               " use one of #{AUTHN_CONTEXTS.join(', ')}"
       end
 
+      unless COMPARISON_METHODS.include?(authn_context_comparison)
+        raise Spid::UnknownAuthnComparisonMethodError,
+              "Provided authn_context_comparison_method is not valid:" \
+              " use one of #{COMPARISON_METHODS.join(', ')}"
+      end
+
       @authn_request_attributes = {
         idp_sso_target_url: idp_sso_target_url,
         assertion_consumer_service_url: assertion_consumer_service_url,
         protocol_binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
         issuer: issuer,
         name_identifier_format: name_identifier_format,
-        authn_context: authn_context
+        authn_context: authn_context,
+        authn_context_comparison: authn_context_comparison
       }
     end
     # rubocop:enable Metrics/MethodLength

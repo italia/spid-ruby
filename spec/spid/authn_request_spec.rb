@@ -149,6 +149,50 @@ RSpec.describe Spid::AuthnRequest do
           expect(requested_authn_context).not_to be_nil
         end
 
+        describe "attribute Comparison" do
+          let(:attribute) { attributes["Comparison"].value }
+
+          context "when comparison is not provided" do
+            it "contains 'exact' value" do
+              expect(attribute).to eq Spid::EXACT_COMPARISON.to_s
+            end
+          end
+
+          [
+            Spid::EXACT_COMPARISON,
+            Spid::MININUM_COMPARISON,
+            Spid::BETTER_COMPARISON,
+            Spid::MAXIMUM_COMPARISON
+          ].each do |comparison_method|
+            context "when comparison method is #{comparison_method}" do
+              let(:optional_authn_request_options) do
+                {
+                  authn_context_comparison: comparison_method
+                }
+              end
+
+              it "contians attributes Comparison" do
+                attribute = attributes["Comparison"].value
+
+                expect(attribute).to eq comparison_method.to_s
+              end
+            end
+          end
+
+          context "when comparison is none of the expected" do
+            let(:optional_authn_request_options) do
+              {
+                authn_context_comparison: :not_valid_comparison_method
+              }
+            end
+
+            it "raises an exception" do
+              expect { xml_document }.
+                to raise_error Spid::UnknownAuthnComparisonMethodError
+            end
+          end
+        end
+
         describe "AuthnContextClassRef node" do
           let(:authn_context_class_ref_node) do
             requested_authn_context.children.find do |child|
