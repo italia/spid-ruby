@@ -5,10 +5,11 @@ require "onelogin/ruby-saml/settings"
 
 module Spid
   class Metadata # :nodoc:
-    attr_reader :metadata_settings
+    attr_reader :metadata_attributes
 
     def initialize
-      @metadata_settings = {}
+      @metadata_attributes = {
+      }
     end
 
     def to_xml
@@ -22,7 +23,7 @@ module Spid
     end
 
     def saml_settings
-      ::OneLogin::RubySaml::Settings.new metadata_settings
+      ::OneLogin::RubySaml::Settings.new metadata_attributes
     end
   end
 end
