@@ -210,16 +210,16 @@ RSpec.describe Spid::AuthnRequest do
             Spid::L1,
             Spid::L2,
             Spid::L3
-          ].each do |authn_level|
-            context "when provided authn_context is #{authn_level}" do
+          ].each do |authn_context|
+            context "when provided authn_context is #{authn_context}" do
               let(:optional_authn_request_options) do
                 {
-                  authn_context: authn_level
+                  authn_context: authn_context
                 }
               end
 
               it "contains that level" do
-                expect(authn_context_class_ref_node.text).to eq authn_level
+                expect(authn_context_class_ref_node.text).to eq authn_context
               end
             end
           end
