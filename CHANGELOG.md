@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.2.2] - 2018-07-02
+### Fixed
+- Spid::L1 constant duplicated
+- Constraint for gemspec gem versions
+
 ## [0.2.1] - 2018-07-02
 ### Added
 - metadata in gemspec
@@ -21,6 +26,7 @@
 - Coveralls Integration
 - Rubygems version badge in README
 
-[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/italia/spid-ruby/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/italia/spid-ruby/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/italia/spid-ruby/compare/v0.1.1...v0.2.0
