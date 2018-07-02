@@ -10,6 +10,7 @@ module Spid
 
     attr_reader :authn_request_attributes
 
+    # rubocop:disable Metrics/MethodLength
     def initialize(
           idp_sso_target_url:,
           assertion_consumer_service_url:,
@@ -17,7 +18,11 @@ module Spid
           authn_context: Spid::L1
         )
 
-      raise UnknownAuthnContext unless AUTHN_CONTEXTS.include?(authn_context)
+      unless AUTHN_CONTEXTS.include?(authn_context)
+        raise Spid::UnknownAuthnContextError,
+              "Provided authn_context is not valid:" \
+              " use one of #{AUTHN_CONTEXTS.join(', ')}"
+      end
 
       @authn_request_attributes = {
         idp_sso_target_url: idp_sso_target_url,
@@ -28,6 +33,7 @@ module Spid
         authn_context: authn_context
       }
     end
+    # rubocop:enable Metrics/MethodLength
 
     def to_xml
       authn_request.create_xml_document(saml_settings)

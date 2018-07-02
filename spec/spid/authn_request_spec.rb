@@ -187,8 +187,9 @@ RSpec.describe Spid::AuthnRequest do
               }
             end
 
-            it "contains that level" do
-              expect { xml_document }.to raise_error Spid::UnknownAuthnContext
+            it "raises an exception" do
+              expect { xml_document }.
+                to raise_error Spid::UnknownAuthnContextError
             end
           end
         end
