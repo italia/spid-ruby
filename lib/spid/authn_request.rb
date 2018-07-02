@@ -40,6 +40,9 @@ module Spid
         authn_context: authn_context,
         authn_context_comparison: authn_context_comparison
       }
+
+      return if authn_context <= Spid::L1
+      @authn_request_attributes[:force_authn] = true
     end
     # rubocop:enable Metrics/MethodLength
 

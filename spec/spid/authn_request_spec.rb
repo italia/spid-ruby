@@ -63,7 +63,32 @@ RSpec.describe Spid::AuthnRequest do
         expect(attributes["Destination"].value).to eq idp_sso_target_url
       end
 
-      xit "contains attribute ForceAuthn"
+      describe "attribute ForceAuthn" do
+        let(:attribute) { attributes["ForceAuthn"] }
+
+        context "when authn_context is #{Spid::L1}" do
+          it "doesn't exist" do
+            expect(attribute).to be_nil
+          end
+        end
+
+        [
+          Spid::L2,
+          Spid::L3
+        ].each do |authn_context|
+          context "when authn_context is #{authn_context}" do
+            let(:optional_authn_request_options) do
+              {
+                authn_context: authn_context
+              }
+            end
+
+            it "exists" do
+              expect(attribute).not_to be_nil
+            end
+          end
+        end
+      end
 
       it "contains attribute AssertionConsumerServiceURL" do
         attribute = attributes["AssertionConsumerServiceURL"].value
