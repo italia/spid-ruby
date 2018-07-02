@@ -20,8 +20,8 @@ module Spid # :nodoc:
   ].freeze
 
   L1 = "https://www.spid.gov.it/SpidL1"
-  L1 = "https://www.spid.gov.it/SpidL2"
-  L1 = "https://www.spid.gov.it/SpidL3"
+  L2 = "https://www.spid.gov.it/SpidL2"
+  L3 = "https://www.spid.gov.it/SpidL3"
 
   AUTHN_CONTEXTS = [
     L1,
