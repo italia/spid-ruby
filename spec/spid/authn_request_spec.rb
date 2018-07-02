@@ -43,7 +43,7 @@ RSpec.describe Spid::AuthnRequest do
       let(:attributes) { authn_request_node.attributes }
 
       it "exists" do
-        expect(authn_request_node).not_to be_nil
+        expect(authn_request_node).to be_present
       end
 
       it "contains attribute ID" do
@@ -84,7 +84,7 @@ RSpec.describe Spid::AuthnRequest do
             end
 
             it "exists" do
-              expect(attribute).not_to be_nil
+              expect(attribute).to be_present
             end
           end
         end
@@ -112,7 +112,7 @@ RSpec.describe Spid::AuthnRequest do
         let(:attributes) { issuer_node.attributes }
 
         it "exists" do
-          expect(issuer_node).not_to be_nil
+          expect(issuer_node).to be_present
         end
 
         it "contains sp_entity_id" do
@@ -141,7 +141,7 @@ RSpec.describe Spid::AuthnRequest do
         let(:attributes) { name_id_policy_node.attributes }
 
         it "exists" do
-          expect(name_id_policy_node).not_to be_nil
+          expect(name_id_policy_node).to be_present
         end
 
         it "contains attribute Format" do
@@ -171,7 +171,7 @@ RSpec.describe Spid::AuthnRequest do
         let(:attributes) { requested_authn_context.attributes }
 
         it "exists" do
-          expect(requested_authn_context).not_to be_nil
+          expect(requested_authn_context).to be_present
         end
 
         describe "attribute Comparison" do
