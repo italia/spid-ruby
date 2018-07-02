@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spid/authn_request"
+require "spid/metadata"
 require "spid/version"
 
 module Spid # :nodoc:
