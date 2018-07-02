@@ -24,15 +24,15 @@ Gem::Specification.new do |spec|
   }
   spec.required_ruby_version = ">= 2.3.0"
 
-  spec.add_runtime_dependency "ruby-saml", "~> 1.8.0"
+  spec.add_runtime_dependency "ruby-saml", "~> 1.8", ">= 1.8.0"
 
   spec.add_development_dependency "bundler", "~> 1.16"
-  spec.add_development_dependency "bundler-audit"
-  spec.add_development_dependency "coveralls"
-  spec.add_development_dependency "nokogiri"
-  spec.add_development_dependency "pry"
+  spec.add_development_dependency "bundler-audit", "~> 0"
+  spec.add_development_dependency "coveralls", "~> 0"
+  spec.add_development_dependency "nokogiri", "~> 1.8", ">= 1.8.3"
+  spec.add_development_dependency "pry", "~> 0"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rubocop"
-  spec.add_development_dependency "rubocop-rspec"
+  spec.add_development_dependency "rubocop", "0.57.2"
+  spec.add_development_dependency "rubocop-rspec", "1.27.0"
 end
