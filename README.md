@@ -26,8 +26,8 @@ Ruby library for SPID authentication
 |`AssertionConsumerServiceURL` customization||
 |`AssertionConsumerServiceIndex` customization||
 |`AttributeConsumingServiceIndex` customization||
-|`AuthnContextClassRef` (SPID level) customization||
-|`RequestedAuthnContext/@Comparison` customization||
+|`AuthnContextClassRef` (SPID level) customization|✓|
+|`RequestedAuthnContext/@Comparison` customization|✓|
 |`RelayState` customization (1.2.2)||
 |**Response/Assertion parsing**||
 |verification of `Response/Signature` value (if any)||
