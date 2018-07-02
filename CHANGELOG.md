@@ -21,6 +21,6 @@
 - Coveralls Integration
 - Rubygems version badge in README
 
-[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.2.1...HEAD
 [0.2.1]: https://github.com/italia/spid-ruby/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/italia/spid-ruby/compare/v0.1.1...v0.2.0
