@@ -16,6 +16,12 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   end
 
+  spec.metadata    = {
+    "homepage_uri" => "https://github.com/italia/spid-ruby",
+    "changelog_uri" => "https://github.com/italia/spid-ruby/blob/master/CHANGELOG.md",
+    "source_code_uri" => "https://github.com/italia/spid-ruby/",
+    "bug_tracker_uri" => "https://github.com/italia/spid-ruby/issues"
+  }
   spec.required_ruby_version = ">= 2.3.0"
 
   spec.add_runtime_dependency "ruby-saml", "~> 1.8.0"
