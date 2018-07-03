@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe Spid::Metadata do
-  subject { described_class.new }
+  subject { described_class.new metadata_options }
+
+  let(:metadata_options) do
+    {
+      issuer: sp_entity_id
+    }
+  end
+  let(:sp_entity_id) { "https://service.provider" }
 
   it { is_expected.to be_a described_class }
 
@@ -21,8 +28,15 @@ RSpec.describe Spid::Metadata do
         end
       end
 
+      let(:attributes) { entity_descriptor_node.attributes }
+
       it "exists" do
         expect(entity_descriptor_node).to be_present
+      end
+
+      it "contains attribute entityID" do
+        attribute = attributes["entityID"].value
+        expect(attribute).to eq sp_entity_id
       end
     end
   end

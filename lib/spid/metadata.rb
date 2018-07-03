@@ -7,8 +7,11 @@ module Spid
   class Metadata # :nodoc:
     attr_reader :metadata_attributes
 
-    def initialize
+    def initialize(
+          issuer:
+        )
       @metadata_attributes = {
+        issuer: issuer
       }
     end
 
