@@ -8,10 +8,12 @@ module Spid
     attr_reader :metadata_attributes
 
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/ParameterLists
     def initialize(
           issuer:,
           private_key_filepath:,
           certificate_filepath:,
+          assertion_consumer_service_url:,
           digest_method: Spid::SHA256,
           signature_method: Spid::RSA_SHA256
         )
@@ -19,6 +21,7 @@ module Spid
         issuer: issuer,
         private_key: File.read(private_key_filepath),
         certificate: File.read(certificate_filepath),
+        assertion_consumer_service_url: assertion_consumer_service_url,
         security: {
           authn_requests_signed:     true,
           logout_requests_signed:    false,
@@ -33,6 +36,7 @@ module Spid
         }
       }
     end
+    # rubocop:enable Metrics/ParameterLists
     # rubocop:enable Metrics/MethodLength
 
     def to_xml

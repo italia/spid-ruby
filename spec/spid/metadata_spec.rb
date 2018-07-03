@@ -7,7 +7,8 @@ RSpec.describe Spid::Metadata do
     {
       issuer: sp_entity_id,
       private_key_filepath: generate_fixture_path("private-key.pem"),
-      certificate_filepath: generate_fixture_path("certificate.pem")
+      certificate_filepath: generate_fixture_path("certificate.pem"),
+      assertion_consumer_service_url: assertion_consumer_service_url
     }
   end
 
@@ -21,6 +22,8 @@ RSpec.describe Spid::Metadata do
   end
 
   let(:sp_entity_id) { "https://service.provider" }
+
+  let(:assertion_consumer_service_url) { "#{sp_entity_id}/sso" }
 
   it { is_expected.to be_a described_class }
 
@@ -91,6 +94,41 @@ RSpec.describe Spid::Metadata do
 
           it "exists" do
             expect(key_descriptor_node).to be_present
+          end
+        end
+
+        describe "AssertionConsumerService node" do
+          let(:assertion_consumer_service_node) do
+            sp_sso_descriptor_node.children.find do |child|
+              child.name == "AssertionConsumerService"
+            end
+          end
+
+          let(:attributes) { assertion_consumer_service_node.attributes }
+
+          it "exists" do
+            expect(assertion_consumer_service_node).to be_present
+          end
+
+          it "contains attribute index" do
+            attribute = attributes["index"].value
+            expect(attribute).to eq "0"
+          end
+
+          it "contains attribute isDefault" do
+            attribute = attributes["isDefault"].value
+            expect(attribute).to eq "true"
+          end
+
+          it "contains attribute Binding" do
+            attribute = attributes["Binding"].value
+            expect(attribute).
+              to eq "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+          end
+
+          it "contains attribute Location" do
+            attribute = attributes["Location"].value
+            expect(attribute).to eq assertion_consumer_service_url
           end
         end
       end
