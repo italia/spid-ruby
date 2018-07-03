@@ -12,15 +12,6 @@ RSpec.describe Spid::Metadata do
     }
   end
 
-  let(:private_key_filepath) do
-    File.join(
-      File.expand_path(__dir__),
-      "spec",
-      "fixtures",
-      "private-key.pem"
-    )
-  end
-
   let(:sp_entity_id) { "https://service.provider" }
 
   let(:assertion_consumer_service_url) { "#{sp_entity_id}/sso" }
