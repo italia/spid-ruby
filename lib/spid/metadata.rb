@@ -7,13 +7,31 @@ module Spid
   class Metadata # :nodoc:
     attr_reader :metadata_attributes
 
+    # rubocop:disable Metrics/MethodLength
     def initialize(
-          issuer:
+          issuer:,
+          private_key_filepath:,
+          certificate_filepath:
         )
       @metadata_attributes = {
-        issuer: issuer
+        issuer: issuer,
+        private_key: File.read(private_key_filepath),
+        certificate: File.read(certificate_filepath),
+        security: {
+          authn_requests_signed:     false,
+          logout_requests_signed:    false,
+          logout_responses_signed:   false,
+          want_assertions_signed:    false,
+          want_assertions_encrypted: false,
+          want_name_id:              false,
+          metadata_signed:           true,
+          embed_sign:                false,
+          digest_method:             XMLSecurity::Document::SHA1,
+          signature_method:          XMLSecurity::Document::RSA_SHA1
+        }
       }
     end
+    # rubocop:enable Metrics/MethodLength
 
     def to_xml
       metadata.generate(saml_settings)
