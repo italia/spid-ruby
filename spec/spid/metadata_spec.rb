@@ -70,6 +70,18 @@ RSpec.describe Spid::Metadata do
           end
         end
 
+        let(:attributes) { sp_sso_descriptor_node.attributes }
+
+        it "contains attribute AuthnRequestsSigned" do
+          attribute = attributes["AuthnRequestsSigned"].value
+          expect(attribute).to eq "true"
+        end
+
+        it "contains attribute protocolSupportEnumeration" do
+          attribute = attributes["protocolSupportEnumeration"].value
+          expect(attribute).to eq "urn:oasis:names:tc:SAML:2.0:protocol"
+        end
+
         describe "KeyDescriptor node" do
           let(:key_descriptor_node) do
             sp_sso_descriptor_node.children.find do |child|

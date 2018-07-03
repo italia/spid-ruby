@@ -11,14 +11,16 @@ module Spid
     def initialize(
           issuer:,
           private_key_filepath:,
-          certificate_filepath:
+          certificate_filepath:,
+          digest_method: Spid::SHA256,
+          signature_method: Spid::RSA_SHA256
         )
       @metadata_attributes = {
         issuer: issuer,
         private_key: File.read(private_key_filepath),
         certificate: File.read(certificate_filepath),
         security: {
-          authn_requests_signed:     false,
+          authn_requests_signed:     true,
           logout_requests_signed:    false,
           logout_responses_signed:   false,
           want_assertions_signed:    false,
@@ -26,8 +28,8 @@ module Spid
           want_name_id:              false,
           metadata_signed:           true,
           embed_sign:                false,
-          digest_method:             XMLSecurity::Document::SHA1,
-          signature_method:          XMLSecurity::Document::RSA_SHA1
+          digest_method:             digest_method,
+          signature_method:          signature_method
         }
       }
     end

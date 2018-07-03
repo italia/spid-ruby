@@ -20,6 +20,26 @@ module Spid # :nodoc:
     MAXIMUM_COMPARISON
   ].freeze
 
+  SHA256 = XMLSecurity::Document::SHA256
+  SHA384 = XMLSecurity::Document::SHA384
+  SHA512 = XMLSecurity::Document::SHA512
+
+  DIGEST_METHODS = [
+    SHA256,
+    SHA384,
+    SHA512
+  ].freeze
+
+  RSA_SHA256 = XMLSecurity::Document::RSA_SHA256
+  RSA_SHA384 = XMLSecurity::Document::RSA_SHA384
+  RSA_SHA512 = XMLSecurity::Document::RSA_SHA512
+
+  SIGNATURE_METHODS = [
+    RSA_SHA256,
+    RSA_SHA384,
+    RSA_SHA512
+  ].freeze
+
   L1 = "https://www.spid.gov.it/SpidL1"
   L2 = "https://www.spid.gov.it/SpidL2"
   L3 = "https://www.spid.gov.it/SpidL3"
