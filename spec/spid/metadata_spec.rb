@@ -133,9 +133,18 @@ RSpec.describe Spid::Metadata do
             end
           end
 
+          let(:attributes) { attribute_consuming_service_node.attributes }
+
           it "exists" do
             expect(attribute_consuming_service_node).to be_present
           end
+
+          it "contains attribute index" do
+            attribute = attributes["index"].value
+            expect(attribute).to eq "0"
+          end
+
+          xit "contains attribute list"
         end
       end
     end
