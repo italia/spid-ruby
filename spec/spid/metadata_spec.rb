@@ -147,6 +147,8 @@ RSpec.describe Spid::Metadata do
           xit "contains attribute list"
         end
       end
+
+      xdescribe "Could contain Organization node"
     end
   end
 end
