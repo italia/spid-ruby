@@ -5,7 +5,8 @@ require "onelogin/ruby-saml/settings"
 
 module Spid
   class Metadata # :nodoc:
-    attr_reader :metadata_attributes
+    attr_reader :metadata_attributes,
+                :attribute_service_name
 
     # rubocop:disable Metrics/MethodLength
     # rubocop:disable Metrics/ParameterLists
@@ -14,9 +15,11 @@ module Spid
           private_key_filepath:,
           certificate_filepath:,
           assertion_consumer_service_url:,
+          attribute_service_name:,
           digest_method: Spid::SHA256,
           signature_method: Spid::RSA_SHA256
         )
+      @attribute_service_name = attribute_service_name
       @metadata_attributes = {
         issuer: issuer,
         private_key: File.read(private_key_filepath),
@@ -50,7 +53,19 @@ module Spid
     end
 
     def saml_settings
-      ::OneLogin::RubySaml::Settings.new metadata_attributes
+      @saml_settings = ::OneLogin::RubySaml::Settings.new metadata_attributes
+
+      outer_self = self
+
+      @saml_settings.attribute_consuming_service.configure do
+        service_index 0
+        service_name outer_self.attribute_service_name
+        add_attribute name: "Name",
+                      name_format: "Name Format",
+                      friendly_name: "Friendly Name"
+      end
+
+      @saml_settings
     end
   end
 end

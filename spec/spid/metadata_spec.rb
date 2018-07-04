@@ -8,13 +8,16 @@ RSpec.describe Spid::Metadata do
       issuer: sp_entity_id,
       private_key_filepath: generate_fixture_path("private-key.pem"),
       certificate_filepath: generate_fixture_path("certificate.pem"),
-      assertion_consumer_service_url: assertion_consumer_service_url
+      assertion_consumer_service_url: assertion_consumer_service_url,
+      attribute_service_name: attribute_service_name
     }
   end
 
   let(:sp_entity_id) { "https://service.provider" }
 
   let(:assertion_consumer_service_url) { "#{sp_entity_id}/sso" }
+
+  let(:attribute_service_name) { "service-name" }
 
   it { is_expected.to be_a described_class }
 
@@ -120,6 +123,18 @@ RSpec.describe Spid::Metadata do
           it "contains attribute Location" do
             attribute = attributes["Location"].value
             expect(attribute).to eq assertion_consumer_service_url
+          end
+        end
+
+        describe "AttributeConsumingService node" do
+          let(:attribute_consuming_service_node) do
+            sp_sso_descriptor_node.children.find do |child|
+              child.name == "AttributeConsumingService"
+            end
+          end
+
+          it "exists" do
+            expect(attribute_consuming_service_node).to be_present
           end
         end
       end
