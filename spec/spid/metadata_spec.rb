@@ -9,13 +9,15 @@ RSpec.describe Spid::Metadata do
       private_key_filepath: generate_fixture_path("private-key.pem"),
       certificate_filepath: generate_fixture_path("certificate.pem"),
       assertion_consumer_service_url: assertion_consumer_service_url,
-      attribute_service_name: attribute_service_name
+      attribute_service_name: attribute_service_name,
+      single_logout_service_url: single_logout_service_url
     }
   end
 
   let(:sp_entity_id) { "https://service.provider" }
 
   let(:assertion_consumer_service_url) { "#{sp_entity_id}/sso" }
+  let(:single_logout_service_url) { "#{sp_entity_id}/slo" }
 
   let(:attribute_service_name) { "service-name" }
 
@@ -89,6 +91,33 @@ RSpec.describe Spid::Metadata do
           it "exists" do
             expect(key_descriptor_node).to be_present
           end
+        end
+
+        describe "SingleLogoutService node" do
+          let(:single_logout_service_node) do
+            sp_sso_descriptor_node.children.find do |child|
+              child.name == "SingleLogoutService"
+            end
+          end
+
+          let(:attributes) { single_logout_service_node.attributes }
+
+          it "exists" do
+            expect(single_logout_service_node).to be_present
+          end
+
+          it "contains attribute Binding" do
+            attribute = attributes["Binding"].value
+            expect(attribute).
+              to eq "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+          end
+
+          it "contains attribute Location" do
+            attribute = attributes["Location"].value
+            expect(attribute).to eq single_logout_service_url
+          end
+
+          xdescribe "Provide HTTP-POST binding"
         end
 
         describe "AssertionConsumerService node" do

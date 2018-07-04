@@ -15,6 +15,7 @@ module Spid
           private_key_filepath:,
           certificate_filepath:,
           assertion_consumer_service_url:,
+          single_logout_service_url:,
           attribute_service_name:,
           digest_method: Spid::SHA256,
           signature_method: Spid::RSA_SHA256
@@ -25,6 +26,7 @@ module Spid
         private_key: File.read(private_key_filepath),
         certificate: File.read(certificate_filepath),
         assertion_consumer_service_url: assertion_consumer_service_url,
+        single_logout_service_url: single_logout_service_url,
         security: {
           authn_requests_signed:     true,
           logout_requests_signed:    false,
