@@ -14,11 +14,14 @@ Ruby library for SPID authentication
 
 ## Installation
 
-```gem install spid```
+Add into your Gemfile
 
-or add into your Gemfile
-
-```gem "spid"```
+```
+gem "ruby-saml",
+  github: "onelogin/ruby-saml",
+  ref: "b0301c9da6c5c1674c29a8544c9e32d153bdbcca"
+gem "spid"
+```
 
 ## Features
 

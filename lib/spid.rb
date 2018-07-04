@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spid/authn_request"
+require "spid/metadata"
 require "spid/version"
 
 module Spid # :nodoc:
@@ -17,6 +18,26 @@ module Spid # :nodoc:
     MININUM_COMPARISON,
     BETTER_COMPARISON,
     MAXIMUM_COMPARISON
+  ].freeze
+
+  SHA256 = XMLSecurity::Document::SHA256
+  SHA384 = XMLSecurity::Document::SHA384
+  SHA512 = XMLSecurity::Document::SHA512
+
+  DIGEST_METHODS = [
+    SHA256,
+    SHA384,
+    SHA512
+  ].freeze
+
+  RSA_SHA256 = XMLSecurity::Document::RSA_SHA256
+  RSA_SHA384 = XMLSecurity::Document::RSA_SHA384
+  RSA_SHA512 = XMLSecurity::Document::RSA_SHA512
+
+  SIGNATURE_METHODS = [
+    RSA_SHA256,
+    RSA_SHA384,
+    RSA_SHA512
   ].freeze
 
   L1 = "https://www.spid.gov.it/SpidL1"
