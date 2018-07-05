@@ -21,6 +21,8 @@ require "nokogiri"
 
 Dir[File.join("./spec/support/**/*.rb")].each { |f| require f }
 
+ENV["ruby-saml/testing"] = "true" # disable ruby-saml logging
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"

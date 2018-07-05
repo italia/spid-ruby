@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::AuthnRequest do
+RSpec.describe Spid::GenerateAuthnRequest do
   subject { described_class.new authn_request_options }
 
   let(:authn_request_options) do
@@ -25,8 +25,11 @@ RSpec.describe Spid::AuthnRequest do
 
   it { is_expected.to be_a described_class }
 
-  describe "#to_xml" do
-    let(:xml_document) { subject.to_xml }
+  describe "#to_saml" do
+    let(:saml_url) { subject.to_saml }
+
+    let(:xml_document) { parse_saml_request_from_url(saml_url) }
+
     let(:document_node) do
       Nokogiri::XML(
         xml_document.to_s
