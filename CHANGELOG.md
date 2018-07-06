@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Fetch all identity provider from https://registry.spid.gov.it
+- Parse and store metadata from single Identity Provider
 
 ## [0.2.2] - 2018-07-02
 ### Fixed

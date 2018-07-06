@@ -18,10 +18,17 @@ end
 require "bundler/setup"
 require "spid"
 require "nokogiri"
+require "vcr"
 
 Dir[File.join("./spec/support/**/*.rb")].each { |f| require f }
 
 ENV["ruby-saml/testing"] = "true" # disable ruby-saml logging
+
+VCR.configure do |c|
+  c.cassette_library_dir = "spec/cassettes"
+  c.hook_into :webmock
+  c.configure_rspec_metadata!
+end
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
