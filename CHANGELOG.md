@@ -7,6 +7,9 @@
 ### Added
 - Fetch all identity provider from https://registry.spid.gov.it
 - Parse and store metadata from single Identity Provider
+### Changed
+- Spid::AuthnRequest class inherit from OneLogin::RubySaml::Authrequest in order to override create_xml_document in chain
+- Separate class for saml request generation
 
 ## [0.2.2] - 2018-07-02
 ### Fixed
