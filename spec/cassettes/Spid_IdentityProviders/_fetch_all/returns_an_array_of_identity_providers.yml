@@ -1,0 +1,113 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://registry.spid.gov.it/api/identity-providers
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.15.2
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.10.3 (Ubuntu)
+      Date:
+      - Fri, 06 Jul 2018 14:01:51 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Api-Version:
+      - '1'
+      Cache-Control:
+      - no-cache
+      Vary:
+      - accept-encoding
+      Strict-Transport-Security:
+      - max-age=15768000; preload
+      X-Frame-Options:
+      - DENY
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+    body:
+      encoding: ASCII-8BIT
+      string: '{"spidFederationRegistry":{"totalEntities":8,"date":"06/07/2018 16:01:51","entities":[{"ipa_entity_code":"idp_1","entity_id":"https://identity.infocert.it","entity_name":"Infocert
+        ID","metadata_url":"https://identity.infocert.it/metadata/metadata.xml","entity_type":"IdP"},{"ipa_entity_code":"idp_2","entity_id":"https://posteid.poste.it","entity_name":"Poste
+        ID","metadata_url":"http://posteid.poste.it/jod-fs/metadata/metadata.xml","entity_type":"IdP"},{"ipa_entity_code":"idp_3","entity_id":"https://login.id.tim.it/affwebservices/public/saml2sso","entity_name":"Tim
+        ID","metadata_url":"https://login.id.tim.it/spid-services/MetadataBrowser/idp","entity_type":"IdP"},{"ipa_entity_code":"idp_4","entity_id":"https://identity.sieltecloud.it","entity_name":"Sielte
+        ID","metadata_url":"https://identity.sieltecloud.it/simplesaml/metadata.xml","entity_type":"IdP"},{"ipa_entity_code":"idp_5","entity_id":"https://loginspid.aruba.it","entity_name":"Aruba
+        ID","metadata_url":"https://loginspid.aruba.it/metadata","entity_type":"IdP"},{"ipa_entity_code":"idp_6","entity_id":"https://idp.namirialtsp.com/idp","entity_name":"Namirial
+        ID","metadata_url":"https://idp.namirialtsp.com/idp/metadata","entity_type":"IdP"},{"ipa_entity_code":"idp_7","entity_id":"https://spid.register.it","entity_name":"SPIDItalia
+        Register.it","metadata_url":"https://spid.register.it/login/metadata","entity_type":"IdP"},{"ipa_entity_code":"idp_8","entity_id":"https://spid.intesa.it","entity_name":"Intesa
+        ID","metadata_url":"https://spid.intesa.it/metadata/metadata.xml","entity_type":"IdP"}]}}'
+    http_version: 
+  recorded_at: Fri, 06 Jul 2018 14:01:51 GMT
+- request:
+    method: get
+    uri: https://registry.spid.gov.it/api/identity-providers
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.15.2
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.10.3 (Ubuntu)
+      Date:
+      - Fri, 06 Jul 2018 14:01:51 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Api-Version:
+      - '1'
+      Cache-Control:
+      - no-cache
+      Vary:
+      - accept-encoding
+      Strict-Transport-Security:
+      - max-age=15768000; preload
+      X-Frame-Options:
+      - DENY
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+    body:
+      encoding: ASCII-8BIT
+      string: '{"spidFederationRegistry":{"totalEntities":8,"date":"06/07/2018 16:01:51","entities":[{"ipa_entity_code":"idp_1","entity_id":"https://identity.infocert.it","entity_name":"Infocert
+        ID","metadata_url":"https://identity.infocert.it/metadata/metadata.xml","entity_type":"IdP"},{"ipa_entity_code":"idp_2","entity_id":"https://posteid.poste.it","entity_name":"Poste
+        ID","metadata_url":"http://posteid.poste.it/jod-fs/metadata/metadata.xml","entity_type":"IdP"},{"ipa_entity_code":"idp_3","entity_id":"https://login.id.tim.it/affwebservices/public/saml2sso","entity_name":"Tim
+        ID","metadata_url":"https://login.id.tim.it/spid-services/MetadataBrowser/idp","entity_type":"IdP"},{"ipa_entity_code":"idp_4","entity_id":"https://identity.sieltecloud.it","entity_name":"Sielte
+        ID","metadata_url":"https://identity.sieltecloud.it/simplesaml/metadata.xml","entity_type":"IdP"},{"ipa_entity_code":"idp_5","entity_id":"https://loginspid.aruba.it","entity_name":"Aruba
+        ID","metadata_url":"https://loginspid.aruba.it/metadata","entity_type":"IdP"},{"ipa_entity_code":"idp_6","entity_id":"https://idp.namirialtsp.com/idp","entity_name":"Namirial
+        ID","metadata_url":"https://idp.namirialtsp.com/idp/metadata","entity_type":"IdP"},{"ipa_entity_code":"idp_7","entity_id":"https://spid.register.it","entity_name":"SPIDItalia
+        Register.it","metadata_url":"https://spid.register.it/login/metadata","entity_type":"IdP"},{"ipa_entity_code":"idp_8","entity_id":"https://spid.intesa.it","entity_name":"Intesa
+        ID","metadata_url":"https://spid.intesa.it/metadata/metadata.xml","entity_type":"IdP"}]}}'
+    http_version: 
+  recorded_at: Fri, 06 Jul 2018 14:01:52 GMT
+recorded_with: VCR 4.0.0

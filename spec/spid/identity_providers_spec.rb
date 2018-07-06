@@ -8,7 +8,7 @@ RSpec.describe Spid::IdentityProviders do
   describe ".fetch_all" do
     let(:result) { described_class.fetch_all }
 
-    it "returns an array of identity providers" do
+    it "returns an array of identity providers", :vcr do
       expect(result).to include a_hash_including(
         name: "aruba",
         entity_id: "https://loginspid.aruba.it",
