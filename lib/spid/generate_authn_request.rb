@@ -43,10 +43,6 @@ module Spid
     end
     # rubocop:enable Metrics/MethodLength
 
-    def to_xml
-      authn_request.create_xml_document(saml_settings)
-    end
-
     def to_saml
       authn_request.create(saml_settings)
     end
