@@ -2,6 +2,7 @@
 
 require "spid/authn_request"
 require "spid/generate_authn_request"
+require "spid/identity_providers"
 require "spid/metadata"
 require "spid/version"
 
