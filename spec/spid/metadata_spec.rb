@@ -5,13 +5,20 @@ RSpec.describe Spid::Metadata do
 
   let(:metadata_options) do
     {
-      issuer: sp_entity_id,
-      private_key_filepath: generate_fixture_path("private-key.pem"),
-      certificate_filepath: generate_fixture_path("certificate.pem"),
-      assertion_consumer_service_url: assertion_consumer_service_url,
-      attribute_service_name: attribute_service_name,
-      single_logout_service_url: single_logout_service_url
+      service_provider_configuration: service_provider_configuration,
+      attribute_service_name: attribute_service_name
     }
+  end
+
+  let(:service_provider_configuration) do
+    instance_double(
+      "Spid::ServiceProviderConfiguration",
+      sso_url: assertion_consumer_service_url,
+      slo_url: single_logout_service_url,
+      host: sp_entity_id,
+      private_key: File.read(generate_fixture_path("private-key.pem")),
+      certificate: File.read(generate_fixture_path("certificate.pem"))
+    )
   end
 
   let(:sp_entity_id) { "https://service.provider" }

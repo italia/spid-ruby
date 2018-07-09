@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- ServiceProviderConfiguration class handles configuration for a specific host
 
 ## [0.3.1] - 2018-07-09
 ### Added

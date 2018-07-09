@@ -3,19 +3,26 @@
 require "spec_helper"
 
 RSpec.describe Spid::GenerateAuthnRequest do
-  subject { described_class.new authn_request_options }
+  subject(:generate_authn_request) { described_class.new authn_request_options }
 
   let(:authn_request_options) do
     base_authn_request_options.merge(optional_authn_request_options)
   end
 
+  let(:service_provider_configuration) do
+    instance_double(
+      "Spid::ServiceProviderConfiguration",
+      sso_url: sp_sso_target_url,
+      host: sp_entity_id,
+      private_key: File.read(generate_fixture_path("private-key.pem")),
+      certificate: File.read(generate_fixture_path("certificate.pem"))
+    )
+  end
+
   let(:base_authn_request_options) do
     {
       idp_sso_target_url: idp_sso_target_url,
-      assertion_consumer_service_url: sp_sso_target_url,
-      private_key_filepath: generate_fixture_path("private-key.pem"),
-      certificate_filepath: generate_fixture_path("certificate.pem"),
-      issuer: sp_entity_id
+      service_provider_configuration: service_provider_configuration
     }
   end
 
@@ -26,6 +33,11 @@ RSpec.describe Spid::GenerateAuthnRequest do
   let(:sp_entity_id) { "https://service.provider" }
 
   it { is_expected.to be_a described_class }
+
+  it "requires a service_provider_configuration" do
+    expect(generate_authn_request.service_provider_configuration).
+      to eq service_provider_configuration
+  end
 
   describe "#to_saml" do
     let(:saml_url) { subject.to_saml }

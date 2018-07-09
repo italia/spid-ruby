@@ -6,25 +6,22 @@ require "onelogin/ruby-saml/settings"
 module Spid
   class Metadata # :nodoc:
     attr_reader :metadata_attributes,
+                :service_provider_configuration,
                 :attribute_service_name
 
     # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/ParameterLists
     def initialize(
-          issuer:,
-          private_key_filepath:,
-          certificate_filepath:,
-          assertion_consumer_service_url:,
-          single_logout_service_url:,
+          service_provider_configuration:,
           attribute_service_name:,
           digest_method: Spid::SHA256,
           signature_method: Spid::RSA_SHA256
         )
+      @service_provider_configuration = service_provider_configuration
       @attribute_service_name = attribute_service_name
       @metadata_attributes = {
         issuer: issuer,
-        private_key: File.read(private_key_filepath),
-        certificate: File.read(certificate_filepath),
+        private_key: private_key_content,
+        certificate: certificate_content,
         assertion_consumer_service_url: assertion_consumer_service_url,
         single_logout_service_url: single_logout_service_url,
         security: {
@@ -41,11 +38,30 @@ module Spid
         }
       }
     end
-    # rubocop:enable Metrics/ParameterLists
     # rubocop:enable Metrics/MethodLength
 
     def to_xml
       metadata.generate(saml_settings)
+    end
+
+    def issuer
+      service_provider_configuration.host
+    end
+
+    def private_key_content
+      service_provider_configuration.private_key
+    end
+
+    def certificate_content
+      service_provider_configuration.certificate
+    end
+
+    def assertion_consumer_service_url
+      service_provider_configuration.sso_url
+    end
+
+    def single_logout_service_url
+      service_provider_configuration.slo_url
     end
 
     private
