@@ -8,12 +8,17 @@ module Spid
     attr_reader :authn_request_attributes
 
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/ParameterLists
     def initialize(
           idp_sso_target_url:,
           assertion_consumer_service_url:,
+          private_key_filepath:,
+          certificate_filepath:,
           issuer:,
           authn_context: Spid::L1,
-          authn_context_comparison: Spid::EXACT_COMPARISON
+          authn_context_comparison: Spid::EXACT_COMPARISON,
+          digest_method: Spid::SHA256,
+          signature_method: Spid::RSA_SHA256
         )
 
       unless AUTHN_CONTEXTS.include?(authn_context)
@@ -33,14 +38,23 @@ module Spid
         assertion_consumer_service_url: assertion_consumer_service_url,
         protocol_binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
         issuer: issuer,
+        private_key: File.read(private_key_filepath),
+        certificate: File.read(certificate_filepath),
         name_identifier_format: name_identifier_format,
         authn_context: authn_context,
-        authn_context_comparison: authn_context_comparison
+        authn_context_comparison: authn_context_comparison,
+        security: {
+          authn_requests_signed: true,
+          embed_sign: true,
+          digest_method:             digest_method,
+          signature_method:          signature_method
+        }
       }
 
       return if authn_context <= Spid::L1
       @authn_request_attributes[:force_authn] = true
     end
+    # rubocop:enable Metrics/ParameterLists
     # rubocop:enable Metrics/MethodLength
 
     def to_saml

@@ -13,6 +13,8 @@ RSpec.describe Spid::GenerateAuthnRequest do
     {
       idp_sso_target_url: idp_sso_target_url,
       assertion_consumer_service_url: sp_sso_target_url,
+      private_key_filepath: generate_fixture_path("private-key.pem"),
+      certificate_filepath: generate_fixture_path("certificate.pem"),
       issuer: sp_entity_id
     }
   end
@@ -64,6 +66,18 @@ RSpec.describe Spid::GenerateAuthnRequest do
 
       it "contains attribute Destination" do
         expect(attributes["Destination"].value).to eq idp_sso_target_url
+      end
+
+      describe "Signature node" do
+        let(:signature_node) do
+          authn_request_node.children.find do |child|
+            child.name == "Signature"
+          end
+        end
+
+        it "exists" do
+          expect(signature_node).to be_present
+        end
       end
 
       describe "attribute ForceAuthn" do
