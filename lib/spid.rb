@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "spid/authn_request"
-require "spid/generate_authn_request"
+require "spid/sso_request"
 require "spid/identity_providers"
 require "spid/metadata"
 require "spid/idp_metadata"

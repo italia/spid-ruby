@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::GenerateAuthnRequest do
-  subject(:generate_authn_request) { described_class.new authn_request_options }
+RSpec.describe Spid::SsoRequest do
+  subject(:sso_request) { described_class.new authn_request_options }
 
   let(:authn_request_options) do
     base_authn_request_options.merge(optional_authn_request_options)
@@ -35,7 +35,7 @@ RSpec.describe Spid::GenerateAuthnRequest do
   it { is_expected.to be_a described_class }
 
   it "requires a service_provider_configuration" do
-    expect(generate_authn_request.service_provider_configuration).
+    expect(sso_request.service_provider_configuration).
       to eq service_provider_configuration
   end
 

@@ -4,7 +4,7 @@ require "spid/authn_request"
 require "onelogin/ruby-saml/settings"
 
 module Spid
-  class GenerateAuthnRequest # :nodoc:
+  class SsoRequest # :nodoc:
     attr_reader :authn_request_attributes,
                 :service_provider_configuration
 
