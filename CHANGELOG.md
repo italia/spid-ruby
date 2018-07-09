@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Signature in authn_request
 
 ## [0.3.0] - 2018-07-06
 
