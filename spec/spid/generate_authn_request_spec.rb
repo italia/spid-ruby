@@ -39,6 +39,10 @@ RSpec.describe Spid::GenerateAuthnRequest do
       to eq service_provider_configuration
   end
 
+  before { Timecop.freeze }
+
+  after { Timecop.return }
+
   describe "#to_saml" do
     let(:saml_url) { subject.to_saml }
 

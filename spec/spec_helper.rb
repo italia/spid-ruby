@@ -18,6 +18,7 @@ end
 require "bundler/setup"
 require "spid"
 require "nokogiri"
+require "timecop"
 require "vcr"
 
 Dir[File.join("./spec/support/**/*.rb")].each { |f| require f }
