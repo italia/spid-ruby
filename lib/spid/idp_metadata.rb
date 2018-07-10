@@ -13,7 +13,7 @@ module Spid
     end
 
     def [](idp_name)
-      return @metadata[idp_name] if @metadata[idp_name].present?
+      return @metadata[idp_name] unless @metadata[idp_name].nil?
       idp_hash = identity_provider_hash(idp_name)
 
       @metadata[idp_name] = parser.parse_remote_to_hash(
