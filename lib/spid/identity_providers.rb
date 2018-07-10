@@ -5,15 +5,18 @@ require "faraday_middleware"
 
 module Spid
   class IdentityProviders # :nodoc:
+    class MetadataFetchError < StandardError; end
+
     def self.fetch_all
       new.fetch_all
     end
 
     def fetch_all
       spid_idp_entities.map do |idp|
+        metadata_url = check_for_final_metadata_url(idp["metadata_url"])
         {
           name: idp["entity_name"].gsub(/ ID$/, "").downcase,
-          metadata_url: idp["metadata_url"],
+          metadata_url: metadata_url,
           entity_id: idp["entity_id"]
         }
       end
@@ -21,8 +24,21 @@ module Spid
 
     private
 
+    def check_for_final_metadata_url(metadata_url)
+      response = Faraday.get(metadata_url)
+      case response.status
+      when 200
+        metadata_url
+      when 301, 302
+        response["Location"]
+      else
+        raise MetadataFetchError,
+              "Impossible to fetch metadata from #{metadata_url}"
+      end
+    end
+
     def spid_idp_entities
-      return [] if response.body["spidFederationRegistry"].blank?
+      return [] if response.body["spidFederationRegistry"].nil?
       response.body["spidFederationRegistry"]["entities"]
     end
 
