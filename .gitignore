@@ -25,3 +25,4 @@ build-iPhoneOS/
 build-iPhoneSimulator/
 build/
 /Gemfile.lock
+/idp_metadata/*.xml
