@@ -12,7 +12,9 @@ RSpec.describe Spid::ServiceProviderConfiguration do
       slo_path: slo_path,
       metadata_path: metadata_path,
       private_key_file_path: private_key_file_path,
-      certificate_file_path: certificate_file_path
+      certificate_file_path: certificate_file_path,
+      digest_method: digest_method,
+      signature_method: signature_method
     }
   end
 
@@ -22,6 +24,8 @@ RSpec.describe Spid::ServiceProviderConfiguration do
   let(:metadata_path) { "/metadata" }
   let(:private_key_file_path) { "/path/to/private/key.pem" }
   let(:certificate_file_path) { "/path/to/certificate.pem" }
+  let(:digest_method) { Spid::SHA256 }
+  let(:signature_method) { Spid::RSA_SHA256 }
 
   it { is_expected.to be_a described_class }
 
@@ -47,6 +51,32 @@ RSpec.describe Spid::ServiceProviderConfiguration do
 
   it "requires a certificate file path" do
     expect(sp_configuration.certificate_file_path).to eq certificate_file_path
+  end
+
+  it "requires a digest method" do
+    expect(sp_configuration.digest_method).to eq digest_method
+  end
+
+  it "requires a signature method" do
+    expect(sp_configuration.signature_method).to eq signature_method
+  end
+
+  context "with invalid digest methods" do
+    let(:digest_method) { "a-not-valid-digest-method" }
+
+    it "raises a Spid::NotValidDigestMethodError" do
+      expect { sp_configuration }.
+        to raise_error Spid::UnknownDigestMethodError
+    end
+  end
+
+  context "with invalid signature methods" do
+    let(:signature_method) { "a-not-valid-signature-method" }
+
+    it "raises a Spid::UnknownSignatureMethodError" do
+      expect { sp_configuration }.
+        to raise_error Spid::UnknownSignatureMethodError
+    end
   end
 
   describe "#sso_url" do

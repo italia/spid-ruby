@@ -12,6 +12,8 @@ require "spid/service_provider_configuration"
 module Spid # :nodoc:
   class UnknownAuthnComparisonMethodError < StandardError; end
   class UnknownAuthnContextError < StandardError; end
+  class UnknownDigestMethodError < StandardError; end
+  class UnknownSignatureMethodError < StandardError; end
 
   EXACT_COMPARISON = :exact
   MININUM_COMPARISON = :minumum

@@ -9,7 +9,9 @@ module Spid
                 :slo_path,
                 :metadata_path,
                 :private_key_file_path,
-                :certificate_file_path
+                :certificate_file_path,
+                :digest_method,
+                :signature_method
 
     # rubocop:disable Metrics/ParameterLists
     def initialize(
@@ -18,7 +20,9 @@ module Spid
           slo_path:,
           metadata_path:,
           private_key_file_path:,
-          certificate_file_path:
+          certificate_file_path:,
+          digest_method:,
+          signature_method:
         )
       @host = host
       @sso_path = sso_path
@@ -26,6 +30,9 @@ module Spid
       @metadata_path = metadata_path
       @private_key_file_path = private_key_file_path
       @certificate_file_path = certificate_file_path
+      @digest_method = digest_method
+      @signature_method = signature_method
+      validate_attributes
     end
     # rubocop:enable Metrics/ParameterLists
 
@@ -47,6 +54,20 @@ module Spid
 
     def certificate
       @certificate ||= File.read(certificate_file_path)
+    end
+
+    private
+
+    def validate_attributes
+      if !DIGEST_METHODS.include?(digest_method)
+        raise UnknownDigestMethodError,
+              "Provided digest method is not valid:" \
+              " use one of #{DIGEST_METHODS.join(', ')}"
+      elsif !SIGNATURE_METHODS.include?(signature_method)
+        raise UnknownSignatureMethodError,
+              "Provided digest method is not valid:" \
+              " use one of #{SIGNATURE_METHODS.join(', ')}"
+      end
     end
   end
 end

@@ -9,14 +9,11 @@ module Spid
                 :service_provider_configuration
 
     # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/ParameterLists
     def initialize(
           idp_sso_target_url:,
           service_provider_configuration:,
           authn_context: Spid::L1,
-          authn_context_comparison: Spid::EXACT_COMPARISON,
-          digest_method: Spid::SHA256,
-          signature_method: Spid::RSA_SHA256
+          authn_context_comparison: Spid::EXACT_COMPARISON
         )
 
       unless AUTHN_CONTEXTS.include?(authn_context)
@@ -53,7 +50,7 @@ module Spid
       return if authn_context <= Spid::L1
       @authn_request_attributes[:force_authn] = true
     end
-    # rubocop:enable Metrics/ParameterLists
+
     # rubocop:enable Metrics/MethodLength
 
     def to_saml
@@ -74,6 +71,14 @@ module Spid
 
     def certificate_content
       service_provider_configuration.certificate
+    end
+
+    def digest_method
+      service_provider_configuration.digest_method
+    end
+
+    def signature_method
+      service_provider_configuration.signature_method
     end
 
     private

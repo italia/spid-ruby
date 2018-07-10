@@ -15,7 +15,9 @@ RSpec.describe Spid::SsoRequest do
       sso_url: sp_sso_target_url,
       host: sp_entity_id,
       private_key: File.read(generate_fixture_path("private-key.pem")),
-      certificate: File.read(generate_fixture_path("certificate.pem"))
+      certificate: File.read(generate_fixture_path("certificate.pem")),
+      digest_method: digest_method,
+      signature_method: signature_method
     )
   end
 
@@ -31,6 +33,8 @@ RSpec.describe Spid::SsoRequest do
   let(:idp_sso_target_url) { "https://identity.provider/sso" }
   let(:sp_sso_target_url) { "#{sp_entity_id}/sso" }
   let(:sp_entity_id) { "https://service.provider" }
+  let(:digest_method) { Spid::SHA256 }
+  let(:signature_method) { Spid::RSA_SHA256 }
 
   it { is_expected.to be_a described_class }
 
