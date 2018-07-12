@@ -6,6 +6,7 @@ require "spid/identity_providers"
 require "spid/metadata"
 require "spid/idp_metadata"
 require "spid/version"
+require "spid/identity_provider_configuration"
 require "spid/service_provider_configuration"
 
 module Spid # :nodoc:
