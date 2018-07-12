@@ -13,6 +13,9 @@ module Spid
       @entity_id ||= idp_metadata_hash[:idp_entity_id]
     end
 
+    def sso_target_url
+    end
+
     private
 
     def idp_metadata_parser
