@@ -31,9 +31,6 @@ module Spid
         metadata_url
       when 301, 302
         response["Location"]
-      else
-        raise MetadataFetchError,
-              "Impossible to fetch metadata from #{metadata_url}"
       end
     end
 
