@@ -12,12 +12,20 @@ RSpec.describe Spid::SsoSettings do
 
   let(:identity_provider_configuration) do
     instance_double(
-      "Spid::IdentityProviderConfiguration"
+      "Spid::IdentityProviderConfiguration",
+      sso_target_url: "https://identity.provider/sso",
+      cert_fingerprint: "certificate-fingerprint"
     )
   end
   let(:service_provider_configuration) do
     instance_double(
-      "Spid::ServiceProviderConfiguration"
+      "Spid::ServiceProviderConfiguration",
+      sso_url: "https://service.provider/sso",
+      host: "https://service.provider",
+      private_key: "a-private-key",
+      certificate: "a-certificate",
+      digest_method: "a-digest-method",
+      signature_method: "a-signature-method"
     )
   end
 
