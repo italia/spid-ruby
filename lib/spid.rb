@@ -9,6 +9,7 @@ require "spid/idp_metadata"
 require "spid/version"
 require "spid/identity_provider_configuration"
 require "spid/service_provider_configuration"
+require "spid/sso_settings"
 
 module Spid # :nodoc:
   class UnknownAuthnComparisonMethodError < StandardError; end

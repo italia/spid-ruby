@@ -3,11 +3,22 @@
 require "spec_helper"
 
 RSpec.describe Spid::SsoRequest do
-  subject(:sso_request) { described_class.new authn_request_options }
+  subject(:sso_request) { described_class.new sso_settings: sso_settings }
 
-  let(:authn_request_options) do
-    base_authn_request_options.merge(optional_authn_request_options)
+  let(:sso_settings) do
+    Spid::SsoSettings.new(
+      sso_settings_attributes.merge(sso_settings_optional_attributes)
+    )
   end
+
+  let(:sso_settings_attributes) do
+    {
+      service_provider_configuration: service_provider_configuration,
+      identity_provider_configuration: identity_provider_configuration
+    }
+  end
+
+  let(:sso_settings_optional_attributes) { {} }
 
   let(:service_provider_configuration) do
     instance_double(
@@ -29,16 +40,8 @@ RSpec.describe Spid::SsoRequest do
     )
   end
 
-  let(:base_authn_request_options) do
-    {
-      identity_provider_configuration: identity_provider_configuration,
-      service_provider_configuration: service_provider_configuration
-    }
-  end
-
-  let(:optional_authn_request_options) { {} }
-
   let(:idp_sso_target_url) { "https://identity.provider/sso" }
+  let(:protocol_binding) { "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" }
   let(:sp_sso_target_url) { "#{sp_entity_id}/sso" }
   let(:sp_entity_id) { "https://service.provider" }
   let(:digest_method) { Spid::SHA256 }
@@ -46,9 +49,8 @@ RSpec.describe Spid::SsoRequest do
 
   it { is_expected.to be_a described_class }
 
-  it "requires a service_provider_configuration" do
-    expect(sso_request.service_provider_configuration).
-      to eq service_provider_configuration
+  it "requires a sso_settings" do
+    expect(sso_request.sso_settings).to eq sso_settings
   end
 
   before { Timecop.freeze }
@@ -122,7 +124,7 @@ RSpec.describe Spid::SsoRequest do
           Spid::L3
         ].each do |authn_context|
           context "when authn_context is #{authn_context}" do
-            let(:optional_authn_request_options) do
+            let(:sso_settings_optional_attributes) do
               {
                 authn_context: authn_context
               }
@@ -142,7 +144,7 @@ RSpec.describe Spid::SsoRequest do
 
       it "contains attribute ProtocolBinding" do
         attribute = attributes["ProtocolBinding"].value
-        expect(attribute).to eq "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+        expect(attribute).to eq protocol_binding
       end
 
       xit "contains attribute AttributeConsumingServiceIndex"
@@ -235,7 +237,7 @@ RSpec.describe Spid::SsoRequest do
             Spid::MAXIMUM_COMPARISON
           ].each do |comparison_method|
             context "when comparison method is #{comparison_method}" do
-              let(:optional_authn_request_options) do
+              let(:sso_settings_optional_attributes) do
                 {
                   authn_context_comparison: comparison_method
                 }
@@ -250,7 +252,7 @@ RSpec.describe Spid::SsoRequest do
           end
 
           context "when comparison is none of the expected" do
-            let(:optional_authn_request_options) do
+            let(:sso_settings_optional_attributes) do
               {
                 authn_context_comparison: :not_valid_comparison_method
               }
@@ -282,7 +284,7 @@ RSpec.describe Spid::SsoRequest do
             Spid::L3
           ].each do |authn_context|
             context "when provided authn_context is #{authn_context}" do
-              let(:optional_authn_request_options) do
+              let(:sso_settings_optional_attributes) do
                 {
                   authn_context: authn_context
                 }
@@ -295,7 +297,7 @@ RSpec.describe Spid::SsoRequest do
           end
 
           context "when provided authn_context is none of the expected" do
-            let(:optional_authn_request_options) do
+            let(:sso_settings_optional_attributes) do
               {
                 authn_context: "another_authn_level"
               }
