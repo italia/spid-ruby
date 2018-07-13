@@ -2,6 +2,7 @@
 
 require "spid/authn_request"
 require "spid/sso_request"
+require "spid/sso_response"
 require "spid/identity_providers"
 require "spid/metadata"
 require "spid/idp_metadata"
