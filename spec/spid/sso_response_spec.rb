@@ -60,4 +60,14 @@ RSpec.describe Spid::SsoResponse do
 
     it { is_expected.not_to be_valid }
   end
+
+  describe "#attributes" do
+    it "returns attributes provided by identity provider" do
+      expect(sso_response.attributes).
+        to match a_hash_including(
+          family_name: ["Rossi"],
+          spid_code: ["ABCDEFGHILMNOPQ"]
+        )
+    end
+  end
 end

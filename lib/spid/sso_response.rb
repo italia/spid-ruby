@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "onelogin/ruby-saml/response"
+require "active_support/inflector/methods"
 
 module Spid
   class SsoResponse # :nodoc:
@@ -15,7 +16,23 @@ module Spid
       saml_response.is_valid?
     end
 
+    def attributes
+      raw_attributes.each_with_object({}) do |(key, value), acc|
+        acc[normalize_key(key)] = value
+      end
+    end
+
+    def raw_attributes
+      saml_response.attributes.attributes
+    end
+
     private
+
+    def normalize_key(key)
+      ActiveSupport::Inflector.underscore(
+        key.to_s
+      ).to_sym
+    end
 
     def saml_response
       @saml_response ||= ::OneLogin::RubySaml::Response.new(
