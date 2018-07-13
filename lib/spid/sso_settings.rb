@@ -7,18 +7,34 @@ module Spid
                 :authn_context,
                 :authn_context_comparison
 
+    # rubocop:disable Metrics/MethodLength
     def initialize(
           service_provider_configuration:,
           identity_provider_configuration:,
           authn_context: Spid::L1,
           authn_context_comparison: Spid::EXACT_COMPARISON
         )
+
+      unless AUTHN_CONTEXTS.include?(authn_context)
+        raise Spid::UnknownAuthnContextError,
+              "Provided authn_context is not valid:" \
+              " use one of #{AUTHN_CONTEXTS.join(', ')}"
+      end
+
+      unless COMPARISON_METHODS.include?(authn_context_comparison)
+        raise Spid::UnknownAuthnComparisonMethodError,
+              "Provided authn_context_comparison_method is not valid:" \
+              " use one of #{COMPARISON_METHODS.join(', ')}"
+      end
+
       @service_provider_configuration = service_provider_configuration
       @identity_provider_configuration = identity_provider_configuration
       @authn_context = authn_context
       @authn_context_comparison = authn_context_comparison
+
       super(sso_attributes)
     end
+    # rubocop:enable Metrics/MethodLength
 
     # rubocop:disable Metrics/MethodLength
     # rubocop:disable Metrics/AbcSize
