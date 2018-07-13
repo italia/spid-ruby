@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Spid::SsoResponse do
   subject(:sso_response) do
-    described_class.new(body: spid_response, sso_settings: saml_settings)
+    described_class.new(body: spid_response, sso_settings: sso_settings)
   end
 
   let(:spid_response) do
@@ -13,8 +13,8 @@ RSpec.describe Spid::SsoResponse do
   let(:idp_metadata) do
     File.read(generate_fixture_path("identity-provider-metadata.xml"))
   end
-  let(:sso_request) do
-    Spid::SsoRequest.new(
+  let(:sso_settings) do
+    Spid::SsoSettings.new(
       service_provider_configuration: service_provider_configuration,
       identity_provider_configuration: identity_provider_configuration
     )
@@ -37,9 +37,6 @@ RSpec.describe Spid::SsoResponse do
     )
   end
   let(:host) { "https://service.provider" }
-  let(:saml_settings) do
-    sso_request.saml_settings
-  end
 
   it { is_expected.to be_a described_class }
 
@@ -48,7 +45,7 @@ RSpec.describe Spid::SsoResponse do
   end
 
   it "requires a saml_settings configuration" do
-    expect(sso_response.sso_settings).to eq saml_settings
+    expect(sso_response.sso_settings).to eq sso_settings
   end
 
   context "when response conforms to the request" do
