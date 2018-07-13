@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="pfx2439db82-9082-9724-bbed-ea4686bb8cb3" Version="2.0" IssueInstant="2018-07-12T12:02:00Z" Destination="https://service.provider/sso" InResponseTo="_acae2f5c-a008-4cf6-b5b1-df15db7c3dc8">
+  <saml:Issuer>https://identity.provider</saml:Issuer><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+  <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+  <ds:Reference URI="#pfx2439db82-9082-9724-bbed-ea4686bb8cb3"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>h2jnqecyt31vY6I0IiMB7j2zQ0Y=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>N/aDc6OgHzPehjXaafWC0zjCdPoQ/5C0Qz4nQaSM+/rz1bBDRH/D3o3YNViQuOuM+Sd1vY4dbaHkUkQgjxIDD4mJTnPCZ15/Q7ktdSJT8MHVoSsd9Pj9go6NsbR29Dnwdh7VWsqhrYiYZ+JLnDLFcqVVELNOpbbvBPEZI1aKi3VZ7ushGUc/At/7oZVl3cgZ2Gmgz7j63pc0YqMWPPcq7cfve1GlXbGxdMFkbfv33hWh2bsEb4tWZQKhtMkfK9dVGggHhhcFWYkv/fLTUm+0A54N7ObD7WekXyLfFj2g5THi35QGuPsOdfiP6++Ul+rjMgZ1PhcRxmYdj8EZ9tj/u7W/T8vt5PFGcf+UifVk/9PvWpw+qW6DABHlPO0pmQTqfSxX3Bxy2w0qsf4iemUS97mm9JpD+2AlyJ2oojryoOvEV7ZoN32c007/cCp/RW1ntKVydcHLHLlH/a/5I/J4uyFvLHLb+r/xJt0NubwnBeqpJbNTcv6uN8pyvnQUHfoHpa+mczfuF2LBcWWLAmgTLLjE2i6mwdhPi/iaHWH9uhMNfX9Sknz7R1L93YOOLtNPiuRHt5qoXm+/JFEEC1XL5z1Q2X75t3cMJFhHRovpTusDgpCSYVCFZ4Yh/KMG0evxf5OwjSnnC3ByBgmIpYhkbJJqgyS0vGQRJ3D5Hh8C9sA=</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIE8DCCAtigAwIBAgIJAOcvEjSIO3zgMA0GCSqGSIb3DQEBCwUAMA0xCzAJBgNVBAYTAklUMB4XDTE4MDcxMjEzMDU1N1oXDTE5MDcxMjEzMDU1N1owDTELMAkGA1UEBhMCSVQwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC+OKub/VlBWV2qI5B99JzSM32B/u6nrY9mVw4/+7sCFqNRr9ukitiBCBIFpQcaqZXe6jCJl1XScrArQ6n/hWhsaRty9fQ2IH811Vk2N3YI1/dfYBZA6PjeNw6xjLOGDKHh++rKdwfs7BKn9mqAASaui61fpe9SVReL+dllg/EC9i05T+5N5jGkllBlztXvwotuxsbYPQoE3x/5YQZO0jAR9ATfPzokd+E8RPwugDGGOVK/4JY5zMMfDklv+qi7R6VlvRzcwph3ByQ4BD3tmRL3IvN7cHXCiVlA0VXDnOUre6cmd/VttRrm1hoT/LYFIYhbpFQF63LP+pMAJ3m+u3pRSeZf5+Mgpv7oW2wsGEdt7mlMhDr1kVnMsAPIrw+HF25QZN/JcJvB65tzixyJvuyOf4n/ZAoPQ8D2uZAh0vXWElY0JrCQUTbRTwfPIJDEtFBQjNso4yry+Kj/rcTabgJeqkHGwW7gle1d8gdRNN7sybIwUQrTSXFydYEJmctJbqw2EbKK8AzKkJug+iGDP1QQXiOm/ZZJ2ia4e1Fm5ugHW68NyDvF0nLek3aGfZnaINURTd5LY3TwLGFaOHRZANRAaLpiRssSOF89kpFoQ77wNeiQW1jN+FY4ne3ApLWVczTSfuk6Uxq3qRmHX1zX/I/Mm6wNg48+TgSRbxjCUPI0SwIDAQABo1MwUTAdBgNVHQ4EFgQUCetCSNMPU7KlhVn8Jth4KsFA3EQwHwYDVR0jBBgwFoAUCetCSNMPU7KlhVn8Jth4KsFA3EQwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAgEAF/v+hcO5TXv5ll7gsbi2uXwB7Q4K2J4upYp52EwcmXqNgVvoaPxRO7lO9eGlFz+QyEYrdVLmQdmf6QHUTMqK+x2l5j6TCZdZgLw+UWyOg68VZ73SUC0tHZJzBy01enB8Ov0l5uH8NEZ3UJzIkVsUXliILQLCNKfU2+3Buhv9kcV64pls0k99tRxcVkPptSv+aIx7QEAzlEB3dGpKFoBT7mR+ec+lrfMMhEvVggwqSnZjUQMeL6KHUhiGhAA2mV9g+USZpkOsQiUFGKTgeGnVM7+Trud/GO9vzsfjwXypLKze4Q44/giCsG+xPUyJABdY8OMwqRpHAhRVJnUsS9mdNaaWNlgH31Jc4AhLJkHwW4PSBom4sW1FsFiPGkPHnUl8TNJkGHT7yWre+d3cBZ8Otkmyn3AHxs84ombi5K90gjUG6D/SNoJ0F49Q+pAfU9Hp1zuDprCAT+kEStdrEtcNcyks8Id5Vb545zTmF3ZrKTXsS7rfP8WD72Va3IBAaH73S95S+bZizCI3fetiZQ8q9YfU9vTGNeoOA7PoxYJOuUQKVetzFOdwAOSIPSt8EYc6DrU0noWiZ0rxOz9TdIT1XBm8SDj9MCude+DaeETEObuTrrUWzfZSY0CjWV5z8WZ5k2xtD18iTAvcC2KJSqw04SE13cnHiowK0G+wKwXXPac=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature>
+  <samlp:Status>
+    <samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/>
+  </samlp:Status>
+  <saml:Assertion xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" ID="_d71a3a8e9fcc45c9e9d248ef7049393fc8f04e5f75" Version="2.0" IssueInstant="2018-07-12T12:01:00Z">
+    <saml:Issuer>https://identity.provider</saml:Issuer>
+    <saml:Subject>
+      <saml:NameID SPNameQualifier="https://service.provider" Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient">_ce3d2948b4cf20146dee0a0b3dd6f69b6cf86f62d7</saml:NameID>
+      <saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+        <saml:SubjectConfirmationData NotOnOrAfter="2024-01-18T06:21:48Z" Recipient="https://service.provider/sso" InResponseTo="_acae2f5c-a008-4cf6-b5b1-df15db7c3dc8"/>
+      </saml:SubjectConfirmation>
+    </saml:Subject>
+    <saml:Conditions NotBefore="2014-07-17T01:01:18Z" NotOnOrAfter="2024-01-18T06:21:48Z">
+      <saml:AudienceRestriction>
+        <saml:Audience>https://service.provider</saml:Audience>
+      </saml:AudienceRestriction>
+    </saml:Conditions>
+    <saml:AuthnStatement AuthnInstant="2018-07-12T12:01:00Z" SessionNotOnOrAfter="2024-07-17T09:01:48Z" SessionIndex="_be9967abd904ddcae3c0eb4189adbe3f71e327cf93">
+      <saml:AuthnContext>
+        <saml:AuthnContextClassRef>https://www.spid.gov.it/SpidL1</saml:AuthnContextClassRef>
+      </saml:AuthnContext>
+    </saml:AuthnStatement>
+    <saml:AttributeStatement xmlns:xsi="http://www.w3.org/2001/XMLSchemainstance">
+      <saml:Attribute Name="familyName">
+        <saml:AttributeValue xsi:type="xsi:string">Rossi</saml:AttributeValue>
+      </saml:Attribute>
+      <saml:Attribute Name="spidCode">
+        <saml:AttributeValue xsi:type="xsi:string">ABCDEFGHILMNOPQ</saml:AttributeValue>
+      </saml:Attribute>
+    </saml:AttributeStatement>
+  </saml:Assertion>
+</samlp:Response>

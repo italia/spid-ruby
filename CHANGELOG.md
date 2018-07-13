@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - ServiceProviderConfiguration class handles configuration for a specific host
+- SsoResponse class
 
 ## [0.3.1] - 2018-07-09
 ### Added

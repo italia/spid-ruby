@@ -55,6 +55,7 @@ module Spid
         name_identifier_format: name_identifier_format,
         authn_context: authn_context,
         authn_context_comparison: authn_context_comparison,
+        idp_cert_fingerprint: identity_provider_configuration.cert_fingerprint,
         security: {
           authn_requests_signed: true,
           embed_sign: true,
@@ -68,6 +69,14 @@ module Spid
     # rubocop:enable Metrics/AbcSize
     # rubocop:enable Metrics/MethodLength
 
+    def authn_request
+      AuthnRequest.new
+    end
+
+    def saml_settings
+      ::OneLogin::RubySaml::Settings.new authn_request_attributes
+    end
+
     private
 
     def protocol_binding
@@ -76,14 +85,6 @@ module Spid
 
     def name_identifier_format
       "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-    end
-
-    def authn_request
-      AuthnRequest.new
-    end
-
-    def saml_settings
-      ::OneLogin::RubySaml::Settings.new authn_request_attributes
     end
   end
 end
