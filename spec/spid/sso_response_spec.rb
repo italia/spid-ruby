@@ -8,7 +8,7 @@ RSpec.describe Spid::SsoResponse do
   end
 
   let(:spid_response) do
-    File.read(generate_fixture_path("spid-response-encoded.base64"))
+    File.read(generate_fixture_path("sso-response.base64"))
   end
   let(:idp_metadata) do
     File.read(generate_fixture_path("identity-provider-metadata.xml"))
