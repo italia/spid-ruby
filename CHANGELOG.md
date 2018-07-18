@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- SloResponse class in order to validate saml response
 
 ## [0.6.0] - 2018-07-18
 ### Added
