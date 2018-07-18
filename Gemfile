@@ -8,5 +8,5 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 gemspec
 
 gem "ruby-saml",
-    github: "onelogin/ruby-saml",
-    ref: "b0301c9da6c5c1674c29a8544c9e32d153bdbcca"
+    github: "davidlibrera/ruby-saml",
+    ref: "4204afc2439f712db8909bccfd8d6e15f9320c34"

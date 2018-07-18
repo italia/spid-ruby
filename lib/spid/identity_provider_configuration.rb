@@ -17,6 +17,10 @@ module Spid
       @sso_target_url ||= idp_metadata_hash[:idp_sso_target_url]
     end
 
+    def slo_target_url
+      @slo_target_url ||= idp_metadata_hash[:idp_slo_target_url]
+    end
+
     def cert_fingerprint
       @cert_fingerprint ||= idp_metadata_hash[:idp_cert_fingerprint]
     end
