@@ -31,6 +31,13 @@ RSpec.describe Spid::IdentityProviderConfiguration do
     end
   end
 
+  describe "#slo_target_url" do
+    it "returns the slo_target url of the identity provider" do
+      expect(identity_provider_configuration.slo_target_url).
+        to eq "https://identity.provider/slo"
+    end
+  end
+
   describe "#cert_fingerprint" do
     it "returns the certificate fingerprint" do
       expect(identity_provider_configuration.cert_fingerprint).
