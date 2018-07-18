@@ -32,6 +32,7 @@ module Spid
         name_identifier_format: name_identifier_format_value,
         private_key: service_provider_configuration.private_key,
         certificate: service_provider_configuration.certificate,
+        idp_cert_fingerprint: identity_provider_configuration.cert_fingerprint,
         sessionindex: session_index,
         security: {
           logout_requests_signed: true,
