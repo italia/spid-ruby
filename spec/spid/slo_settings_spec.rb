@@ -21,7 +21,8 @@ RSpec.describe Spid::SloSettings do
     instance_double(
       "Spid::IdentityProviderConfiguration",
       slo_target_url: "https://identity.provider/slo",
-      entity_id: "https://identity.provider"
+      entity_id: "https://identity.provider",
+      cert_fingerprint: "certificate-fingerprint"
     )
   end
 
