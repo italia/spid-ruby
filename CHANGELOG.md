@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Slo Settings and SloRequest class
 
 ## [0.5.0] - 2018-07-13
 ### Added
