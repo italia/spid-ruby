@@ -22,6 +22,10 @@ module Spid
       end
     end
 
+    def session_index
+      saml_response.sessionindex
+    end
+
     def raw_attributes
       saml_response.attributes.attributes
     end

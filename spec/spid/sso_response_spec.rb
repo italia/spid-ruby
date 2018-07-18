@@ -67,4 +67,11 @@ RSpec.describe Spid::SsoResponse do
         )
     end
   end
+
+  describe "#session_index" do
+    it "returns session index of current session" do
+      expect(sso_response.session_index).
+        to eq "_be9967abd904ddcae3c0eb4189adbe3f71e327cf93"
+    end
+  end
 end
