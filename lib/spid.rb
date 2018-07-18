@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require "spid/authn_request"
+require "spid/logout_request"
 require "spid/sso_request"
 require "spid/sso_response"
+require "spid/slo_request"
 require "spid/identity_providers"
 require "spid/metadata"
 require "spid/idp_metadata"
@@ -10,6 +12,7 @@ require "spid/version"
 require "spid/identity_provider_configuration"
 require "spid/service_provider_configuration"
 require "spid/sso_settings"
+require "spid/slo_settings"
 
 module Spid # :nodoc:
   class UnknownAuthnComparisonMethodError < StandardError; end
