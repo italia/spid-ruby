@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "spid/logout_request"
+require "onelogin/ruby-saml/settings"
+
 module Spid
   class SloRequest # :nodoc:
     attr_reader :slo_settings

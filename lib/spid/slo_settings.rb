@@ -20,6 +20,8 @@ module Spid
       super(slo_attributes)
     end
 
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def slo_attributes
       return @slo_attributes if @slo_attributes.present?
       @slo_attributes = {
@@ -28,10 +30,20 @@ module Spid
         idp_name_qualifier: identity_provider_configuration.entity_id,
         name_identifier_value: generated_name_identifier_value,
         name_identifier_format: name_identifier_format_value,
-        sessionindex: session_index
+        private_key: service_provider_configuration.private_key,
+        certificate: service_provider_configuration.certificate,
+        sessionindex: session_index,
+        security: {
+          logout_requests_signed: true,
+          embed_sign: true,
+          digest_method: service_provider_configuration.digest_method,
+          signature_method: service_provider_configuration.signature_method
+        }
       }
       @slo_attributes
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
 
     private
 

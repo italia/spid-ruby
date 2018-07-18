@@ -20,7 +20,11 @@ RSpec.describe Spid::SloRequest do
   let(:service_provider_configuration) do
     instance_double(
       "Spid::ServiceProviderConfiguration",
-      host: sp_entity_id
+      host: sp_entity_id,
+      private_key: File.read(generate_fixture_path("private-key.pem")),
+      certificate: File.read(generate_fixture_path("certificate.pem")),
+      digest_method: digest_method,
+      signature_method: signature_method
     )
   end
 
@@ -36,6 +40,8 @@ RSpec.describe Spid::SloRequest do
   let(:sp_entity_id) { "https://service.provider" }
   let(:idp_entity_id) { "https://identity.provider" }
   let(:session_index) { "session-index-value" }
+  let(:digest_method) { Spid::SHA256 }
+  let(:signature_method) { Spid::RSA_SHA256 }
 
   it { is_expected.to be_a described_class }
 
@@ -151,6 +157,18 @@ RSpec.describe Spid::SloRequest do
 
         it "contains provided session index" do
           expect(session_index_node.text).to eq session_index
+        end
+      end
+
+      describe "Signature node" do
+        let(:signature_node) do
+          logout_request_node.children.find do |child|
+            child.name == "Signature"
+          end
+        end
+
+        it "exists" do
+          expect(signature_node).to be_present
         end
       end
     end

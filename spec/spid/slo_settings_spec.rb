@@ -28,7 +28,11 @@ RSpec.describe Spid::SloSettings do
   let(:service_provider_configuration) do
     instance_double(
       "Spid::ServiceProviderConfiguration",
-      host: "https://service.provider"
+      host: "https://service.provider",
+      private_key: "a-private-key",
+      certificate: "a-certificate",
+      digest_method: "a-digest-method",
+      signature_method: "a-signature-method"
     )
   end
 
