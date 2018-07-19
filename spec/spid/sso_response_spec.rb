@@ -21,22 +21,25 @@ RSpec.describe Spid::SsoResponse do
     )
   end
   let(:identity_provider_configuration) do
-    Spid::IdentityProviderConfiguration.parse_from_xml(
-      name: "idp-name",
-      metadata: idp_metadata
+    instance_double(
+      "Spid::IdentityProviderConfiguration",
+      sso_target_url: "https://identity.provider/sso",
+      cert_fingerprint: cert_fingerprint
     )
   end
   let(:service_provider_configuration) do
-    Spid::ServiceProviderConfiguration.new(
+    instance_double(
+      "Spid::ServiceProviderConfiguration",
+      sso_url: "https://service.provider/sso",
       host: host,
-      sso_path: "/sso",
-      slo_path: "/slo",
-      metadata_path: "/metadata",
+      private_key: File.read(generate_fixture_path("private-key.pem")),
+      certificate: File.read(generate_fixture_path("certificate.pem")),
       digest_method: Spid::SHA256,
-      signature_method: Spid::RSA_SHA256,
-      private_key_file_path: generate_fixture_path("private-key.pem"),
-      certificate_file_path: generate_fixture_path("certificate.pem")
+      signature_method: Spid::RSA_SHA256
     )
+  end
+  let(:cert_fingerprint) do
+    "C6:82:11:E5:44:22:53:58:05:B2:3F:2D:24:52:8B:17:95:C3:62:89"
   end
   let(:host) { "https://service.provider" }
 
