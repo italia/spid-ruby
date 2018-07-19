@@ -13,6 +13,7 @@ RSpec.describe Spid::SsoResponse do
   let(:idp_metadata) do
     File.read(generate_fixture_path("identity-provider-metadata.xml"))
   end
+
   let(:sso_settings) do
     Spid::SsoSettings.new(
       service_provider_configuration: service_provider_configuration,
@@ -20,8 +21,9 @@ RSpec.describe Spid::SsoResponse do
     )
   end
   let(:identity_provider_configuration) do
-    Spid::IdentityProviderConfiguration.new(
-      idp_metadata: idp_metadata
+    Spid::IdentityProviderConfiguration.parse_from_xml(
+      name: "idp-name",
+      metadata: idp_metadata
     )
   end
   let(:service_provider_configuration) do

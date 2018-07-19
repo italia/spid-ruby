@@ -20,8 +20,9 @@ RSpec.describe Spid::SloResponse do
   end
 
   let(:identity_provider_configuration) do
-    Spid::IdentityProviderConfiguration.new(
-      idp_metadata: idp_metadata
+    Spid::IdentityProviderConfiguration.parse_from_xml(
+      name: "idp-name",
+      metadata: idp_metadata
     )
   end
 

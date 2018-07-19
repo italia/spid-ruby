@@ -2,33 +2,36 @@
 
 module Spid
   class IdentityProviderConfiguration # :nodoc:
-    attr_reader :idp_metadata, :idp_metadata_hash
+    attr_reader :name,
+                :entity_id,
+                :sso_target_url,
+                :slo_target_url,
+                :cert_fingerprint
 
-    def initialize(idp_metadata:)
-      @idp_metadata = idp_metadata
-      @idp_metadata_hash = idp_metadata_parser.parse_to_hash(idp_metadata)
+    def initialize(
+          name:,
+          entity_id:,
+          sso_target_url:,
+          slo_target_url:,
+          cert_fingerprint:
+        )
+      @name = name
+      @entity_id = entity_id
+      @sso_target_url = sso_target_url
+      @slo_target_url = slo_target_url
+      @cert_fingerprint = cert_fingerprint
     end
 
-    def entity_id
-      @entity_id ||= idp_metadata_hash[:idp_entity_id]
-    end
-
-    def sso_target_url
-      @sso_target_url ||= idp_metadata_hash[:idp_sso_target_url]
-    end
-
-    def slo_target_url
-      @slo_target_url ||= idp_metadata_hash[:idp_slo_target_url]
-    end
-
-    def cert_fingerprint
-      @cert_fingerprint ||= idp_metadata_hash[:idp_cert_fingerprint]
-    end
-
-    private
-
-    def idp_metadata_parser
-      @idp_metadata_parser ||= ::OneLogin::RubySaml::IdpMetadataParser.new
+    def self.parse_from_xml(name:, metadata:)
+      idp_metadata_parser = ::OneLogin::RubySaml::IdpMetadataParser.new
+      idp_settings = idp_metadata_parser.parse_to_hash(metadata)
+      new(
+        name: name,
+        entity_id: idp_settings[:idp_entity_id],
+        sso_target_url: idp_settings[:idp_sso_target_url],
+        slo_target_url: idp_settings[:idp_slo_target_url],
+        cert_fingerprint: idp_settings[:idp_cert_fingerprint]
+      )
     end
   end
 end
