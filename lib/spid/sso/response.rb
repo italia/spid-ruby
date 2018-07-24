@@ -23,6 +23,10 @@ module Spid
         end
       end
 
+      def issuer
+        saml_response.issuers.first
+      end
+
       def session_index
         saml_response.sessionindex
       end

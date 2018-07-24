@@ -51,6 +51,7 @@ RSpec.describe Spid::Sso::Response do
     "C6:82:11:E5:44:22:53:58:05:B2:3F:2D:24:52:8B:17:95:C3:62:89"
   end
   let(:host) { "https://service.provider" }
+  let(:idp_issuer) { "https://identity.provider" }
 
   it { is_expected.to be_a described_class }
 
@@ -70,6 +71,12 @@ RSpec.describe Spid::Sso::Response do
     let(:host) { "https://another-service.provider" }
 
     it { is_expected.not_to be_valid }
+  end
+
+  describe "#issuer" do
+    it "returns the identity provider issuer" do
+      expect(sso_response.issuer).to eq idp_issuer
+    end
   end
 
   describe "#attributes" do
