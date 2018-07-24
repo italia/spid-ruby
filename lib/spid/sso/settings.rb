@@ -38,31 +38,33 @@ module Spid
       # rubocop:enable Metrics/MethodLength
 
       def sso_settings
-        @sso_settings ||=
-          begin
-            [
-              service_provider_configuration.sso_attributes,
-              identity_provider_configuration.sso_attributes,
-              sso_attributes
-            ].inject(:merge)
-          end
+        [
+          service_provider_configuration.sso_attributes,
+          identity_provider_configuration.sso_attributes,
+          sso_attributes,
+          force_authn_attributes
+        ].inject(:merge)
       end
 
       # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/AbcSize
       def sso_attributes
-        @sso_attributes ||=
-          begin
-            {
-              protocol_binding: protocol_binding_value,
-              name_identifier_format: name_identifier_format_value,
-              authn_context: authn_context,
-              authn_context_comparison: authn_context_comparison,
-            }
-          end
+        {
+          protocol_binding: protocol_binding_value,
+          name_identifier_format: name_identifier_format_value,
+          authn_context: authn_context,
+          authn_context_comparison: authn_context_comparison,
+        }
       end
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/MethodLength
+
+      def force_authn_attributes
+        return {} if authn_context <= Spid::L1
+        {
+          force_authn: true
+        }
+      end
 
       private
 
