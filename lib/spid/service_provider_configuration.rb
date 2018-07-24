@@ -56,6 +56,7 @@ module Spid
       @certificate ||= File.read(certificate_file_path)
     end
 
+    # rubocop:disable Metrics/MethodLength
     def sso_attributes
       @sso_attributes ||=
         begin
@@ -73,6 +74,7 @@ module Spid
           }
         end
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
 

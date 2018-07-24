@@ -46,18 +46,14 @@ module Spid
         ].inject(:merge)
       end
 
-      # rubocop:disable Metrics/MethodLength
-      # rubocop:disable Metrics/AbcSize
       def sso_attributes
         {
           protocol_binding: protocol_binding_value,
           name_identifier_format: name_identifier_format_value,
           authn_context: authn_context,
-          authn_context_comparison: authn_context_comparison,
+          authn_context_comparison: authn_context_comparison
         }
       end
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
 
       def force_authn_attributes
         return {} if authn_context <= Spid::L1
