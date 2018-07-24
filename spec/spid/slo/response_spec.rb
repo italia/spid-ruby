@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::SloResponse do
+RSpec.describe Spid::Slo::Response do
   subject(:slo_response) do
     described_class.new(body: spid_response, slo_settings: slo_settings)
   end
@@ -12,7 +12,7 @@ RSpec.describe Spid::SloResponse do
   end
 
   let(:slo_settings) do
-    Spid::SloSettings.new(
+    Spid::Slo::Settings.new(
       service_provider_configuration: service_provider_configuration,
       identity_provider_configuration: identity_provider_configuration,
       session_index: session_index

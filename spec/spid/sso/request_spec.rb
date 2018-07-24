@@ -2,11 +2,11 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::SsoRequest do
+RSpec.describe Spid::Sso::Request do
   subject(:sso_request) { described_class.new sso_settings: sso_settings }
 
   let(:sso_settings) do
-    Spid::SsoSettings.new(
+    Spid::Sso::Settings.new(
       sso_settings_attributes.merge(sso_settings_optional_attributes)
     )
   end

@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::SsoResponse do
+RSpec.describe Spid::Sso::Response do
   subject(:sso_response) do
     described_class.new(body: spid_response, sso_settings: sso_settings)
   end
@@ -15,7 +15,7 @@ RSpec.describe Spid::SsoResponse do
   end
 
   let(:sso_settings) do
-    Spid::SsoSettings.new(
+    Spid::Sso::Settings.new(
       service_provider_configuration: service_provider_configuration,
       identity_provider_configuration: identity_provider_configuration
     )

@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::SloSettings do
+RSpec.describe Spid::Slo::Settings do
   subject(:slo_settings) do
     described_class.new(slo_attributes.merge(optional_slo_attributes))
   end
