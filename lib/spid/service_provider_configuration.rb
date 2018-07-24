@@ -56,6 +56,24 @@ module Spid
       @certificate ||= File.read(certificate_file_path)
     end
 
+    def sso_attributes
+      @sso_attributes ||=
+        begin
+          {
+            assertion_consumer_service_url: sso_url,
+            issuer: host,
+            private_key: private_key,
+            certificate: certificate,
+            security: {
+              authn_requests_signed: true,
+              embed_sign: true,
+              digest_method: digest_method,
+              signature_method: signature_method
+            }
+          }
+        end
+    end
+
     private
 
     def validate_attributes
