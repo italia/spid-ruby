@@ -57,4 +57,30 @@ module Spid # :nodoc:
     L2,
     L3
   ].freeze
+
+  class << self
+    attr_writer :configuration
+  end
+
+  def self.configuration
+    @configuration ||= Configuration.new
+  end
+
+  def self.reset
+    @configuration = Configuration.new
+  end
+
+  def self.configure
+    yield configuration
+  end
+
+  class Configuration # :nodoc:
+    attr_accessor :sp_configuration_file_path
+    attr_accessor :idp_metadata_dir_path
+
+    def initialize
+      @sp_configuration_file_path = nil
+      @idp_metadata_dir_path = nil
+    end
+  end
 end
