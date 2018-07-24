@@ -56,6 +56,45 @@ module Spid
       @certificate ||= File.read(certificate_file_path)
     end
 
+    # rubocop:disable Metrics/MethodLength
+    def sso_attributes
+      @sso_attributes ||=
+        begin
+          {
+            assertion_consumer_service_url: sso_url,
+            issuer: host,
+            private_key: private_key,
+            certificate: certificate,
+            security: {
+              authn_requests_signed: true,
+              embed_sign: true,
+              digest_method: digest_method,
+              signature_method: signature_method
+            }
+          }
+        end
+    end
+    # rubocop:enable Metrics/MethodLength
+
+    # rubocop:disable Metrics/MethodLength
+    def slo_attributes
+      @slo_attributes ||=
+        begin
+          {
+            issuer: host,
+            private_key: private_key,
+            certificate: certificate,
+            security: {
+              logout_requests_signed: true,
+              embed_sign: true,
+              digest_method: digest_method,
+              signature_method: signature_method
+            }
+          }
+        end
+    end
+    # rubocop:enable Metrics/MethodLength
+
     private
 
     def validate_attributes

@@ -20,20 +20,28 @@ RSpec.describe Spid::Slo::Request do
   let(:service_provider_configuration) do
     instance_double(
       "Spid::ServiceProviderConfiguration",
-      host: sp_entity_id,
-      private_key: File.read(generate_fixture_path("private-key.pem")),
-      certificate: File.read(generate_fixture_path("certificate.pem")),
-      digest_method: digest_method,
-      signature_method: signature_method
+      slo_attributes: {
+        issuer: sp_entity_id,
+        private_key: File.read(generate_fixture_path("private-key.pem")),
+        certificate: File.read(generate_fixture_path("certificate.pem")),
+        security: {
+          logout_requests_signed: true,
+          embed_sign: true,
+          digest_method: digest_method,
+          signature_method: signature_method
+        }
+      }
     )
   end
 
   let(:identity_provider_configuration) do
     instance_double(
       "Spid::IdentityProviderConfiguration",
-      entity_id: idp_entity_id,
-      cert_fingerprint: "certificate-fingerprint",
-      slo_target_url: idp_slo_target_url
+      slo_attributes: {
+        idp_slo_target_url: idp_slo_target_url,
+        idp_name_qualifier: idp_entity_id,
+        idp_cert_fingerprint: "certificate-fingerprint"
+      }
     )
   end
 

@@ -18,35 +18,24 @@ module Spid
         @identity_provider_configuration = identity_provider_configuration
         @session_index = session_index
 
-        super(slo_attributes)
+        super(slo_settings)
       end
 
-      # rubocop:disable Metrics/MethodLength
-      # rubocop:disable Metrics/AbcSize
+      def slo_settings
+        [
+          service_provider_configuration.slo_attributes,
+          identity_provider_configuration.slo_attributes,
+          slo_attributes
+        ].inject(:merge)
+      end
+
       def slo_attributes
-        return @slo_attributes if @slo_attributes.present?
-        @slo_attributes = {
-          idp_slo_target_url: identity_provider_configuration.slo_target_url,
-          issuer: service_provider_configuration.host,
-          idp_name_qualifier: identity_provider_configuration.entity_id,
+        {
           name_identifier_value: generated_name_identifier_value,
           name_identifier_format: name_identifier_format_value,
-          private_key: service_provider_configuration.private_key,
-          certificate: service_provider_configuration.certificate,
-          idp_cert_fingerprint:
-            identity_provider_configuration.cert_fingerprint,
-          sessionindex: session_index,
-          security: {
-            logout_requests_signed: true,
-            embed_sign: true,
-            digest_method: service_provider_configuration.digest_method,
-            signature_method: service_provider_configuration.signature_method
-          }
+          sessionindex: session_index
         }
-        @slo_attributes
       end
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
 
       private
 

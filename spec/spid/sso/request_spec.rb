@@ -23,20 +23,28 @@ RSpec.describe Spid::Sso::Request do
   let(:service_provider_configuration) do
     instance_double(
       "Spid::ServiceProviderConfiguration",
-      sso_url: sp_sso_target_url,
-      host: sp_entity_id,
-      private_key: File.read(generate_fixture_path("private-key.pem")),
-      certificate: File.read(generate_fixture_path("certificate.pem")),
-      digest_method: digest_method,
-      signature_method: signature_method
+      sso_attributes: {
+        assertion_consumer_service_url: sp_sso_target_url,
+        issuer: sp_entity_id,
+        private_key: File.read(generate_fixture_path("private-key.pem")),
+        certificate: File.read(generate_fixture_path("certificate.pem")),
+        security: {
+          authn_requests_signed: true,
+          embed_sign: true,
+          digest_method: digest_method,
+          signature_method: signature_method
+        }
+      }
     )
   end
 
   let(:identity_provider_configuration) do
     instance_double(
       "Spid::IdentityProviderConfiguration",
-      sso_target_url: idp_sso_target_url,
-      cert_fingerprint: nil
+      sso_attributes: {
+        idp_sso_target_url: idp_sso_target_url,
+        idp_cert_fingerprint: nil
+      }
     )
   end
 

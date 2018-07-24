@@ -23,19 +23,28 @@ RSpec.describe Spid::Sso::Response do
   let(:identity_provider_configuration) do
     instance_double(
       "Spid::IdentityProviderConfiguration",
-      sso_target_url: "https://identity.provider/sso",
-      cert_fingerprint: cert_fingerprint
+      sso_attributes: {
+        idp_sso_target_url: "https://identity.provider/sso",
+        idp_cert_fingerprint: cert_fingerprint
+      }
     )
   end
+
   let(:service_provider_configuration) do
     instance_double(
       "Spid::ServiceProviderConfiguration",
-      sso_url: "https://service.provider/sso",
-      host: host,
-      private_key: File.read(generate_fixture_path("private-key.pem")),
-      certificate: File.read(generate_fixture_path("certificate.pem")),
-      digest_method: Spid::SHA256,
-      signature_method: Spid::RSA_SHA256
+      sso_attributes: {
+        assertion_consumer_service_url: "https://service.provider/sso",
+        issuer: host,
+        private_key: File.read(generate_fixture_path("private-key.pem")),
+        certificate: File.read(generate_fixture_path("certificate.pem")),
+        security: {
+          authn_requests_signed: true,
+          embed_sign: true,
+          digest_method: Spid::SHA256,
+          signature_method: Spid::RSA_SHA256
+        }
+      }
     )
   end
   let(:cert_fingerprint) do
