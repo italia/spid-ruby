@@ -76,6 +76,25 @@ module Spid
     end
     # rubocop:enable Metrics/MethodLength
 
+    # rubocop:disable Metrics/MethodLength
+    def slo_attributes
+      @slo_attributes ||=
+        begin
+          {
+            issuer: host,
+            private_key: private_key,
+            certificate: certificate,
+            security: {
+              logout_requests_signed: true,
+              embed_sign: true,
+              digest_method: digest_method,
+              signature_method: signature_method
+            }
+          }
+        end
+    end
+    # rubocop:enable Metrics/MethodLength
+
     private
 
     def validate_attributes

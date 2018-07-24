@@ -20,20 +20,28 @@ RSpec.describe Spid::Slo::Settings do
   let(:identity_provider_configuration) do
     instance_double(
       "Spid::IdentityProviderConfiguration",
-      slo_target_url: "https://identity.provider/slo",
-      entity_id: "https://identity.provider",
-      cert_fingerprint: "certificate-fingerprint"
+      slo_attributes: {
+        idp_slo_target_url: "https://identity.provider/slo",
+        idp_name_qualifier: "https://identity.provider",
+        idp_cert_fingerprint: "certificate-fingerprint"
+      }
     )
   end
 
   let(:service_provider_configuration) do
     instance_double(
       "Spid::ServiceProviderConfiguration",
-      host: "https://service.provider",
-      private_key: "a-private-key",
-      certificate: "a-certificate",
-      digest_method: "a-digest-method",
-      signature_method: "a-signature-method"
+      slo_attributes: {
+        issuer: "https://service.provider",
+        private_key: "a-private-key",
+        certificate: "a-certificate",
+        security: {
+          logout_requests_signed: true,
+          embed_sign: true,
+          digest_method: "a-digest-method",
+          signature_method: "a-signature-method"
+        }
+      }
     )
   end
 

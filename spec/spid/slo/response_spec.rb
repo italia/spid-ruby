@@ -22,19 +22,27 @@ RSpec.describe Spid::Slo::Response do
   let(:identity_provider_configuration) do
     instance_double(
       "Spid::IdentityProviderConfiguration",
-      entity_id: "https://identity.provider",
-      slo_target_url: "https://identity.provider/slo",
-      cert_fingerprint: cert_fingerprint
+      slo_attributes: {
+        idp_slo_target_url: "https://identity.provider/slo",
+        idp_name_qualifier: "https://identity.provider",
+        idp_cert_fingerprint: cert_fingerprint
+      }
     )
   end
   let(:service_provider_configuration) do
     instance_double(
       "Spid::ServiceProviderConfiguration",
-      host: host,
-      private_key: File.read(generate_fixture_path("private-key.pem")),
-      certificate: File.read(generate_fixture_path("certificate.pem")),
-      digest_method: Spid::SHA256,
-      signature_method: Spid::RSA_SHA256
+      slo_attributes: {
+        issuer: host,
+        private_key: File.read(generate_fixture_path("private-key.pem")),
+        certificate: File.read(generate_fixture_path("certificate.pem")),
+        security: {
+          logout_requests_signed: true,
+          embed_sign: true,
+          digest_method: Spid::SHA256,
+          signature_method: Spid::RSA_SHA256
+        }
+      }
     )
   end
   let(:cert_fingerprint) do

@@ -16,6 +16,10 @@ module Spid
         saml_response.validate
       end
 
+      def errors
+        saml_response.errors
+      end
+
       private
 
       def saml_response
