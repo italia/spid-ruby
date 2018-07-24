@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "onelogin/ruby-saml/idp_metadata_parser"
+
 module Spid
   class IdentityProviderConfiguration # :nodoc:
     attr_reader :name,
