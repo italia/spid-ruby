@@ -9,6 +9,7 @@ require "spid/version"
 require "spid/identity_provider_configuration"
 require "spid/service_provider_configuration"
 require "spid/identity_provider_manager"
+require "spid/service_provider_manager"
 
 module Spid # :nodoc:
   class UnknownAuthnComparisonMethodError < StandardError; end
@@ -76,11 +77,13 @@ module Spid # :nodoc:
 
   class Configuration # :nodoc:
     attr_accessor :sp_configuration_file_path
+    attr_accessor :sp_certificates_dir_path
     attr_accessor :idp_metadata_dir_path
 
     def initialize
-      @sp_configuration_file_path = nil
-      @idp_metadata_dir_path = nil
+      @sp_certificates_dir_path = "sp_certificates"
+      @sp_configuration_file_path = "service_providers.yml"
+      @idp_metadata_dir_path = "idp_metadata"
     end
   end
 end
