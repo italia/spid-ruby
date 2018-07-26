@@ -9,16 +9,16 @@ RSpec.describe Spid::Sso::Settings do
 
   let(:sso_attributes) do
     {
-      service_provider_configuration: service_provider_configuration,
-      identity_provider_configuration: identity_provider_configuration
+      service_provider: service_provider,
+      identity_provider: identity_provider
     }
   end
 
   let(:optional_sso_attributes) { {} }
 
-  let(:identity_provider_configuration) do
+  let(:identity_provider) do
     instance_double(
-      "Spid::IdentityProviderConfiguration",
+      "Spid::IdentityProvider",
       sso_attributes: {
         idp_sso_target_url: "https://identity.provider/sso",
         idp_cert_fingerprint: "certificate-fingerprint"
@@ -26,9 +26,9 @@ RSpec.describe Spid::Sso::Settings do
     )
   end
 
-  let(:service_provider_configuration) do
+  let(:service_provider) do
     instance_double(
-      "Spid::ServiceProviderConfiguration",
+      "Spid::ServiceProvider",
       sso_attributes: {
         assertion_consumer_service_url: "https://service.provider/sso",
         issuer: "https://service.provider",
@@ -47,13 +47,13 @@ RSpec.describe Spid::Sso::Settings do
   it { is_expected.to be_a described_class }
 
   it "requires a service provider configuration" do
-    expect(sso_settings.service_provider_configuration).
-      to eq service_provider_configuration
+    expect(sso_settings.service_provider).
+      to eq service_provider
   end
 
   it "requires a identity provider configuration" do
-    expect(sso_settings.identity_provider_configuration).
-      to eq identity_provider_configuration
+    expect(sso_settings.identity_provider).
+      to eq identity_provider
   end
 
   describe "AuthnContextComparison" do
@@ -66,7 +66,7 @@ RSpec.describe Spid::Sso::Settings do
 
     [
       Spid::EXACT_COMPARISON,
-      Spid::MININUM_COMPARISON,
+      Spid::MINIMUM_COMPARISON,
       Spid::BETTER_COMPARISON,
       Spid::MAXIMUM_COMPARISON
     ].each do |authn_context_comparison|

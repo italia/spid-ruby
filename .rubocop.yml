@@ -14,7 +14,15 @@ Metrics/BlockLength:
 Metrics/LineLength:
   Exclude:
     - spid.gemspec
+RSpec/DescribeClass:
+  Exclude:
+    - spec/integration/**/*.rb
+RSpec/FilePath:
+  Exclude:
+    - spec/integration/**/*.rb
 RSpec/NestedGroups:
+  Enabled: false
+RSpec/SubjectStub:
   Enabled: false
 Style/EmptyMethod:
   EnforcedStyle: expanded

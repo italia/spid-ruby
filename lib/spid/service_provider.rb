@@ -3,41 +3,44 @@
 require "uri"
 
 module Spid
-  class ServiceProviderConfiguration # :nodoc:
+  class ServiceProvider # :nodoc:
     attr_reader :host,
-                :sso_path,
+                :acs_path,
                 :slo_path,
                 :metadata_path,
-                :private_key_file_path,
-                :certificate_file_path,
+                :private_key,
+                :certificate,
                 :digest_method,
-                :signature_method
+                :signature_method,
+                :attribute_service_name
 
     # rubocop:disable Metrics/ParameterLists
     def initialize(
           host:,
-          sso_path:,
+          acs_path:,
           slo_path:,
           metadata_path:,
-          private_key_file_path:,
-          certificate_file_path:,
+          private_key:,
+          certificate:,
           digest_method:,
-          signature_method:
+          signature_method:,
+          attribute_service_name:
         )
       @host = host
-      @sso_path = sso_path
-      @slo_path = slo_path
-      @metadata_path = metadata_path
-      @private_key_file_path = private_key_file_path
-      @certificate_file_path = certificate_file_path
-      @digest_method = digest_method
-      @signature_method = signature_method
+      @acs_path               = acs_path
+      @slo_path               = slo_path
+      @metadata_path          = metadata_path
+      @private_key            = private_key
+      @certificate            = certificate
+      @digest_method          = digest_method
+      @signature_method       = signature_method
+      @attribute_service_name = attribute_service_name
       validate_attributes
     end
     # rubocop:enable Metrics/ParameterLists
 
-    def sso_url
-      @sso_url ||= URI.join(host, sso_path).to_s
+    def acs_url
+      @acs_url ||= URI.join(host, acs_path).to_s
     end
 
     def slo_url
@@ -48,20 +51,12 @@ module Spid
       @metadata_url ||= URI.join(host, metadata_path).to_s
     end
 
-    def private_key
-      @private_key ||= File.read(private_key_file_path)
-    end
-
-    def certificate
-      @certificate ||= File.read(certificate_file_path)
-    end
-
     # rubocop:disable Metrics/MethodLength
     def sso_attributes
       @sso_attributes ||=
         begin
           {
-            assertion_consumer_service_url: sso_url,
+            assertion_consumer_service_url: acs_url,
             issuer: host,
             private_key: private_key,
             certificate: certificate,

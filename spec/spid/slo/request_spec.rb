@@ -3,183 +3,100 @@
 require "spec_helper"
 
 RSpec.describe Spid::Slo::Request do
-  subject(:sso_request) { described_class.new(slo_settings: slo_settings) }
-
-  let(:slo_settings) do
-    Spid::Slo::Settings.new(slo_settings_attributes)
-  end
-
-  let(:slo_settings_attributes) do
-    {
-      service_provider_configuration: service_provider_configuration,
-      identity_provider_configuration: identity_provider_configuration,
+  subject(:slo_request) do
+    described_class.new(
+      idp_name: idp_name,
       session_index: session_index
-    }
-  end
-
-  let(:service_provider_configuration) do
-    instance_double(
-      "Spid::ServiceProviderConfiguration",
-      slo_attributes: {
-        issuer: sp_entity_id,
-        private_key: File.read(generate_fixture_path("private-key.pem")),
-        certificate: File.read(generate_fixture_path("certificate.pem")),
-        security: {
-          logout_requests_signed: true,
-          embed_sign: true,
-          digest_method: digest_method,
-          signature_method: signature_method
-        }
-      }
     )
   end
 
-  let(:identity_provider_configuration) do
-    instance_double(
-      "Spid::IdentityProviderConfiguration",
-      slo_attributes: {
-        idp_slo_target_url: idp_slo_target_url,
-        idp_name_qualifier: idp_entity_id,
-        idp_cert_fingerprint: "certificate-fingerprint"
-      }
-    )
-  end
-
-  let(:idp_slo_target_url) { "https://identity.provider/slo" }
-  let(:sp_entity_id) { "https://service.provider" }
-  let(:idp_entity_id) { "https://identity.provider" }
-  let(:session_index) { "session-index-value" }
-  let(:digest_method) { Spid::SHA256 }
-  let(:signature_method) { Spid::RSA_SHA256 }
+  let(:idp_name) { "idp-name" }
+  let(:session_index) { "session-index" }
 
   it { is_expected.to be_a described_class }
 
-  describe "#to_saml" do
-    before { Timecop.freeze }
+  describe "#service_provider" do
+    let(:service_provider) { instance_double("Spid::ServiceProvider") }
 
-    after { Timecop.return }
-
-    let(:saml_url) { subject.to_saml }
-
-    let(:xml_document) { parse_saml_request_from_url(saml_url) }
-
-    let(:document_node) do
-      Nokogiri::XML(
-        xml_document.to_s
+    let(:spid_configuration) do
+      instance_double(
+        "Spid::Configuration",
+        service_provider: service_provider
       )
     end
 
-    describe "LogoutRequest node" do
-      let(:logout_request_node) do
-        document_node.children.find do |child|
-          child.name == "LogoutRequest"
-        end
-      end
+    before do
+      allow(Spid).to receive(:configuration).and_return(spid_configuration)
+    end
 
-      let(:attributes) { logout_request_node.attributes }
+    it "returns a service provider configuration" do
+      expect(slo_request.service_provider).to eq service_provider
+    end
+  end
 
-      it "exists" do
-        expect(logout_request_node).to be_present
-      end
+  describe "#identity_provider" do
+    let(:identity_provider) { instance_double("Spid::IdentityProvider") }
 
-      it "contains attribute ID" do
-        regexp = /_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/
-        expect(attributes["ID"].value).to match regexp
-      end
+    before do
+      allow(Spid::IdentityProviderManager).
+        to receive(:find_by_name).
+        with(idp_name).
+        and_return(identity_provider)
+    end
 
-      it "contains attribute Version" do
-        expect(attributes["Version"].value).to eq "2.0"
-      end
+    it "returns the identity_provider with provided name" do
+      expect(slo_request.identity_provider).to eq identity_provider
+    end
+  end
 
-      it "contains attribute IssueInstant" do
-        expect(attributes["IssueInstant"].value).to eq Time.now.utc.iso8601
-      end
+  describe "#to_saml" do
+    let(:logout_request) do
+      instance_double("Spid::LogoutRequest")
+    end
 
-      it "contains attribute Destination" do
-        expect(attributes["Destination"].value).to eq idp_slo_target_url
-      end
+    let(:saml_settings) { instance_double("::OneLogin::RubySaml::Settings") }
 
-      describe "Issuer node" do
-        let(:issuer_node) do
-          logout_request_node.children.find do |child|
-            child.name == "Issuer"
-          end
-        end
+    let(:saml_object) { "<saml></saml>" }
 
-        let(:attributes) { issuer_node.attributes }
+    before do
+      allow(slo_request).to receive(:logout_request).and_return(logout_request)
 
-        it "exists" do
-          expect(issuer_node).to be_present
-        end
+      allow(slo_request).to receive(:saml_settings).and_return(saml_settings)
 
-        it "contains sp_entity_id" do
-          expect(issuer_node.text).to eq sp_entity_id
-        end
+      allow(logout_request).
+        to receive(:create).with(saml_settings).and_return(saml_object)
+    end
 
-        it "contains attribute Format" do
-          attribute = attributes["Format"].value
-          expect(attribute).
-            to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
-        end
+    it "returns the saml object" do
+      expect(slo_request.to_saml).to eq saml_object
+    end
+  end
 
-        it "contains attribute NameQualifier" do
-          attribute = attributes["NameQualifier"].value
-          expect(attribute).to eq sp_entity_id
-        end
-      end
+  describe "#slo_settings" do
+    let(:identity_provider) { instance_double("Spid::IdentityProvider") }
+    let(:service_provider) { instance_double("Spid::ServiceProvider") }
+    let(:expected_params) do
+      {
+        service_provider: service_provider,
+        identity_provider: identity_provider,
+        session_index: session_index
+      }
+    end
 
-      describe "nameID" do
-        let(:name_id_node) do
-          logout_request_node.children.find do |child|
-            child.name == "NameID"
-          end
-        end
+    before do
+      allow(slo_request).
+        to receive(:identity_provider).and_return(identity_provider)
 
-        let(:attributes) { name_id_node.attributes }
+      allow(slo_request).
+        to receive(:service_provider).and_return(service_provider)
 
-        it "exists" do
-          expect(name_id_node).to be_present
-        end
+      allow(Spid::Slo::Settings).to receive(:new)
+    end
 
-        it "contains attribute Format" do
-          attribute = attributes["Format"].value
-          expect(attribute).
-            to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-        end
+    it "returns a new Spid::Slo::Settings instance with specific values" do
+      slo_request.slo_settings
 
-        it "contains attribute NameQualifier" do
-          attribute = attributes["NameQualifier"].value
-          expect(attribute).to eq idp_entity_id
-        end
-      end
-
-      describe "SessionIndex node" do
-        let(:session_index_node) do
-          logout_request_node.children.find do |child|
-            child.name == "SessionIndex"
-          end
-        end
-
-        it "exists" do
-          expect(session_index_node).to be_present
-        end
-
-        it "contains provided session index" do
-          expect(session_index_node.text).to eq session_index
-        end
-      end
-
-      describe "Signature node" do
-        let(:signature_node) do
-          logout_request_node.children.find do |child|
-            child.name == "Signature"
-          end
-        end
-
-        it "exists" do
-          expect(signature_node).to be_present
-        end
-      end
+      expect(Spid::Slo::Settings).to have_received(:new).with(expected_params)
     end
   end
 end

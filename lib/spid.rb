@@ -4,12 +4,12 @@ require "spid/authn_request"
 require "spid/logout_request"
 require "spid/sso"
 require "spid/slo"
-require "spid/identity_providers"
 require "spid/metadata"
-require "spid/idp_metadata"
 require "spid/version"
-require "spid/identity_provider_configuration"
-require "spid/service_provider_configuration"
+require "spid/configuration"
+require "spid/identity_provider"
+require "spid/service_provider"
+require "spid/identity_provider_manager"
 
 module Spid # :nodoc:
   class UnknownAuthnComparisonMethodError < StandardError; end
@@ -18,13 +18,13 @@ module Spid # :nodoc:
   class UnknownSignatureMethodError < StandardError; end
 
   EXACT_COMPARISON = :exact
-  MININUM_COMPARISON = :minumum
+  MINIMUM_COMPARISON = :minumum
   BETTER_COMPARISON = :better
   MAXIMUM_COMPARISON = :maximum
 
   COMPARISON_METHODS = [
     EXACT_COMPARISON,
-    MININUM_COMPARISON,
+    MINIMUM_COMPARISON,
     BETTER_COMPARISON,
     MAXIMUM_COMPARISON
   ].freeze
@@ -58,4 +58,20 @@ module Spid # :nodoc:
     L2,
     L3
   ].freeze
+
+  class << self
+    attr_writer :configuration
+  end
+
+  def self.configuration
+    @configuration ||= Configuration.new
+  end
+
+  def self.reset_configuration!
+    @configuration = Configuration.new
+  end
+
+  def self.configure
+    yield configuration
+  end
 end

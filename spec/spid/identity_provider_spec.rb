@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::IdentityProviderConfiguration do
+RSpec.describe Spid::IdentityProvider do
   subject(:idp_configuration) do
     described_class.new identity_provider_attributes
   end
@@ -24,7 +24,13 @@ RSpec.describe Spid::IdentityProviderConfiguration do
   let(:cert_fingerprint) { "a-certificate-fingerprint" }
 
   let(:idp_metadata) do
-    File.read(generate_fixture_path("identity-provider-metadata.xml"))
+    File.read(metadata_file_path)
+  end
+
+  let(:metadata_file_path) do
+    generate_fixture_path(
+      "config/idp_metadata/identity-provider-metadata.xml"
+    )
   end
 
   it { is_expected.to be_a described_class }

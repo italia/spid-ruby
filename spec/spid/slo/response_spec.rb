@@ -4,79 +4,50 @@ require "spec_helper"
 
 RSpec.describe Spid::Slo::Response do
   subject(:slo_response) do
-    described_class.new(body: spid_response, slo_settings: slo_settings)
-  end
-
-  let(:spid_response) do
-    File.read(generate_fixture_path("slo-response.base64"))
-  end
-
-  let(:slo_settings) do
-    Spid::Slo::Settings.new(
-      service_provider_configuration: service_provider_configuration,
-      identity_provider_configuration: identity_provider_configuration,
-      session_index: session_index
+    described_class.new(
+      body: response_body,
+      session_index: session_index,
+      matches_request_id: request_id
     )
   end
 
-  let(:identity_provider_configuration) do
-    instance_double(
-      "Spid::IdentityProviderConfiguration",
-      slo_attributes: {
-        idp_slo_target_url: "https://identity.provider/slo",
-        idp_name_qualifier: "https://identity.provider",
-        idp_cert_fingerprint: cert_fingerprint
-      }
-    )
-  end
-  let(:service_provider_configuration) do
-    instance_double(
-      "Spid::ServiceProviderConfiguration",
-      slo_attributes: {
-        issuer: host,
-        private_key: File.read(generate_fixture_path("private-key.pem")),
-        certificate: File.read(generate_fixture_path("certificate.pem")),
-        security: {
-          logout_requests_signed: true,
-          embed_sign: true,
-          digest_method: Spid::SHA256,
-          signature_method: Spid::RSA_SHA256
-        }
-      }
-    )
-  end
-  let(:cert_fingerprint) do
-    "C6:82:11:E5:44:22:53:58:05:B2:3F:2D:24:52:8B:17:95:C3:62:89"
-  end
-
-  let(:host) { "https://service.provider" }
+  let(:response_body) { "SAMLResponse" }
   let(:session_index) { "a-session-index" }
+  let(:request_id) { "a-request-id" }
 
-  let(:idp_metadata) do
-    File.read(generate_fixture_path("identity-provider-metadata.xml"))
-  end
+  describe "#service_provider" do
+    let(:service_provider) { instance_double("Spid::ServiceProvider") }
 
-  it { is_expected.to be_a described_class }
-
-  it "requires a body" do
-    expect(slo_response.body).to eq spid_response
-  end
-
-  it "requires a saml_settings configuration" do
-    expect(slo_response.slo_settings).to eq slo_settings
-  end
-
-  context "when response conforms to the request" do
-    it { is_expected.to be_valid }
-  end
-
-  context "when response isn't conform to the request" do
-    before do
-      allow(slo_settings).
-        to receive(:idp_entity_id).
-        and_return("https://another-identity.provider")
+    let(:spid_configuration) do
+      instance_double(
+        "Spid::Configuration",
+        service_provider: service_provider
+      )
     end
 
-    it { is_expected.not_to be_valid }
+    before do
+      allow(Spid).to receive(:configuration).and_return(spid_configuration)
+    end
+
+    it "returns a service provider configuration" do
+      expect(slo_response.service_provider).to eq service_provider
+    end
+  end
+
+  describe "#identity_provider" do
+    let(:identity_provider) { instance_double("Spid::IdentityProvider") }
+    let(:issuer) { "https://identity.provider" }
+
+    before do
+      allow(slo_response).
+        to receive(:issuer).and_return(issuer)
+
+      allow(Spid::IdentityProviderManager).
+        to receive(:find_by_entity).with(issuer).and_return(identity_provider)
+    end
+
+    it "returns the identity_provider with provided name" do
+      expect(slo_response.identity_provider).to eq identity_provider
+    end
   end
 end

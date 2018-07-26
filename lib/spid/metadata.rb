@@ -5,19 +5,13 @@ require "onelogin/ruby-saml/settings"
 
 module Spid
   class Metadata # :nodoc:
-    attr_reader :metadata_attributes,
-                :service_provider_configuration,
-                :attribute_service_name
+    attr_reader :metadata_attributes
 
     # rubocop:disable Metrics/MethodLength
     def initialize(
-          service_provider_configuration:,
-          attribute_service_name:,
           digest_method: Spid::SHA256,
           signature_method: Spid::RSA_SHA256
         )
-      @service_provider_configuration = service_provider_configuration
-      @attribute_service_name = attribute_service_name
       @metadata_attributes = {
         issuer: issuer,
         private_key: private_key_content,
@@ -45,23 +39,31 @@ module Spid
     end
 
     def issuer
-      service_provider_configuration.host
+      service_provider.host
     end
 
     def private_key_content
-      service_provider_configuration.private_key
+      service_provider.private_key
     end
 
     def certificate_content
-      service_provider_configuration.certificate
+      service_provider.certificate
     end
 
     def assertion_consumer_service_url
-      service_provider_configuration.sso_url
+      service_provider.acs_url
     end
 
     def single_logout_service_url
-      service_provider_configuration.slo_url
+      service_provider.slo_url
+    end
+
+    def attribute_service_name
+      service_provider.attribute_service_name
+    end
+
+    def service_provider
+      @service_provider ||= Spid.configuration.service_provider
     end
 
     private

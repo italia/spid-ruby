@@ -1,6 +1,13 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Spid configuration singleton class
+
+### Changed
+- Slo prefixed classes moved to Slo:: Namespace
+- Sso prefixed classes moved to Sso:: Namespace
+- Request and Response classes generate themselves setting objects
 
 ## [0.7.0] - 2018-07-18
 ### Added

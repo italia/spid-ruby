@@ -3,321 +3,106 @@
 require "spec_helper"
 
 RSpec.describe Spid::Sso::Request do
-  subject(:sso_request) { described_class.new sso_settings: sso_settings }
-
-  let(:sso_settings) do
-    Spid::Sso::Settings.new(
-      sso_settings_attributes.merge(sso_settings_optional_attributes)
+  subject(:sso_request) do
+    described_class.new(
+      idp_name: idp_name,
+      authn_context: authn_context,
+      authn_context_comparison: authn_context_comparison
     )
   end
 
-  let(:sso_settings_attributes) do
-    {
-      service_provider_configuration: service_provider_configuration,
-      identity_provider_configuration: identity_provider_configuration
-    }
-  end
-
-  let(:sso_settings_optional_attributes) { {} }
-
-  let(:service_provider_configuration) do
-    instance_double(
-      "Spid::ServiceProviderConfiguration",
-      sso_attributes: {
-        assertion_consumer_service_url: sp_sso_target_url,
-        issuer: sp_entity_id,
-        private_key: File.read(generate_fixture_path("private-key.pem")),
-        certificate: File.read(generate_fixture_path("certificate.pem")),
-        security: {
-          authn_requests_signed: true,
-          embed_sign: true,
-          digest_method: digest_method,
-          signature_method: signature_method
-        }
-      }
-    )
-  end
-
-  let(:identity_provider_configuration) do
-    instance_double(
-      "Spid::IdentityProviderConfiguration",
-      sso_attributes: {
-        idp_sso_target_url: idp_sso_target_url,
-        idp_cert_fingerprint: nil
-      }
-    )
-  end
-
-  let(:idp_sso_target_url) { "https://identity.provider/sso" }
-  let(:protocol_binding) { "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" }
-  let(:sp_sso_target_url) { "#{sp_entity_id}/sso" }
-  let(:sp_entity_id) { "https://service.provider" }
-  let(:digest_method) { Spid::SHA256 }
-  let(:signature_method) { Spid::RSA_SHA256 }
+  let(:idp_name) { "idp-name" }
+  let(:authn_context) { Spid::L1 }
+  let(:authn_context_comparison) { Spid::EXACT_COMPARISON }
 
   it { is_expected.to be_a described_class }
 
-  it "requires a sso_settings" do
-    expect(sso_request.sso_settings).to eq sso_settings
-  end
+  describe "#service_provider" do
+    let(:service_provider) { instance_double("Spid::ServiceProvider") }
 
-  before { Timecop.freeze }
-
-  after { Timecop.return }
-
-  describe "#to_saml" do
-    let(:saml_url) { subject.to_saml }
-
-    let(:xml_document) { parse_saml_request_from_url(saml_url) }
-
-    let(:document_node) do
-      Nokogiri::XML(
-        xml_document.to_s
+    let(:spid_configuration) do
+      instance_double(
+        "Spid::Configuration",
+        service_provider: service_provider
       )
     end
 
-    describe "AuthnRequest node" do
-      let(:authn_request_node) do
-        document_node.children.find do |child|
-          child.name == "AuthnRequest"
-        end
-      end
+    before do
+      allow(Spid).to receive(:configuration).and_return(spid_configuration)
+    end
 
-      let(:attributes) { authn_request_node.attributes }
+    it "returns a service provider configuration" do
+      expect(sso_request.service_provider).to eq service_provider
+    end
+  end
 
-      it "exists" do
-        expect(authn_request_node).to be_present
-      end
+  describe "#identity_provider" do
+    let(:identity_provider) { instance_double("Spid::IdentityProvider") }
 
-      it "contains attribute ID" do
-        regexp = /_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/
-        expect(attributes["ID"].value).to match regexp
-      end
+    before do
+      allow(Spid::IdentityProviderManager).
+        to receive(:find_by_name).
+        with(idp_name).
+        and_return(identity_provider)
+    end
 
-      it "contains attribute Version" do
-        expect(attributes["Version"].value).to eq "2.0"
-      end
+    it "returns the identity_provider with provided name" do
+      expect(sso_request.identity_provider).to eq identity_provider
+    end
+  end
 
-      it "contains attribute IssueInstant" do
-        expect(attributes["IssueInstant"].value).to eq Time.now.utc.iso8601
-      end
+  describe "#to_saml" do
+    let(:authn_request) do
+      instance_double("Spid::AuthnRequest")
+    end
 
-      it "contains attribute Destination" do
-        expect(attributes["Destination"].value).to eq idp_sso_target_url
-      end
+    let(:saml_settings) { instance_double("::OneLogin::RubySaml::Settings") }
 
-      describe "Signature node" do
-        let(:signature_node) do
-          authn_request_node.children.find do |child|
-            child.name == "Signature"
-          end
-        end
+    let(:saml_object) { "<saml></saml>" }
 
-        it "exists" do
-          expect(signature_node).to be_present
-        end
-      end
+    let(:antani) { sso_request }
 
-      describe "attribute ForceAuthn" do
-        let(:attribute) { attributes["ForceAuthn"] }
+    before do
+      allow(sso_request).to receive(:authn_request).and_return(authn_request)
 
-        context "when authn_context is #{Spid::L1}" do
-          it "doesn't exist" do
-            expect(attribute).to be_nil
-          end
-        end
+      allow(sso_request).to receive(:saml_settings).and_return(saml_settings)
 
-        [
-          Spid::L2,
-          Spid::L3
-        ].each do |authn_context|
-          context "when authn_context is #{authn_context}" do
-            let(:sso_settings_optional_attributes) do
-              {
-                authn_context: authn_context
-              }
-            end
+      allow(authn_request).
+        to receive(:create).with(saml_settings).and_return(saml_object)
+    end
 
-            it "exists" do
-              expect(attribute).to be_present
-            end
-          end
-        end
-      end
+    it "returns the saml object" do
+      expect(sso_request.to_saml).to eq saml_object
+    end
+  end
 
-      it "contains attribute AssertionConsumerServiceURL" do
-        attribute = attributes["AssertionConsumerServiceURL"].value
-        expect(attribute).to eq sp_sso_target_url
-      end
+  describe "#sso_settings" do
+    let(:identity_provider) { instance_double("Spid::IdentityProvider") }
+    let(:service_provider) { instance_double("Spid::ServiceProvider") }
 
-      it "contains attribute ProtocolBinding" do
-        attribute = attributes["ProtocolBinding"].value
-        expect(attribute).to eq protocol_binding
-      end
+    let(:expected_params) do
+      {
+        service_provider: service_provider,
+        identity_provider: identity_provider,
+        authn_context_comparison: authn_context_comparison,
+        authn_context: authn_context
+      }
+    end
 
-      xit "contains attribute AttributeConsumingServiceIndex"
+    before do
+      allow(sso_request).
+        to receive(:identity_provider).and_return(identity_provider)
 
-      describe "Issuer node" do
-        let(:issuer_node) do
-          authn_request_node.children.find do |child|
-            child.name == "Issuer"
-          end
-        end
+      allow(sso_request).
+        to receive(:service_provider).and_return(service_provider)
 
-        let(:attributes) { issuer_node.attributes }
+      allow(Spid::Sso::Settings).to receive(:new)
+    end
 
-        it "exists" do
-          expect(issuer_node).to be_present
-        end
+    it "returns a new Spid::Sso::Settings instance with specific values" do
+      sso_request.sso_settings
 
-        it "contains sp_entity_id" do
-          expect(issuer_node.text).to eq sp_entity_id
-        end
-
-        it "contains attribute Format" do
-          attribute = attributes["Format"].value
-          expect(attribute).
-            to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
-        end
-
-        it "contains attribute NameQualifier" do
-          attribute = attributes["NameQualifier"].value
-          expect(attribute).to eq sp_entity_id
-        end
-      end
-
-      describe "NameIDPolicy node" do
-        let(:name_id_policy_node) do
-          authn_request_node.children.find do |child|
-            child.name == "NameIDPolicy"
-          end
-        end
-
-        let(:attributes) { name_id_policy_node.attributes }
-
-        it "exists" do
-          expect(name_id_policy_node).to be_present
-        end
-
-        it "contains attribute Format" do
-          attribute = attributes["Format"].value
-          expect(attribute).
-            to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-        end
-      end
-
-      describe "Conditions node" do
-        let(:name_id_policy_node) do
-          authn_request_node.children.find do |child|
-            child.name == "NameIDPolicy"
-          end
-        end
-
-        xit "exists"
-      end
-
-      describe "RequestedAuthnContext node" do
-        let(:requested_authn_context) do
-          authn_request_node.children.find do |child|
-            child.name == "RequestedAuthnContext"
-          end
-        end
-
-        let(:attributes) { requested_authn_context.attributes }
-
-        it "exists" do
-          expect(requested_authn_context).to be_present
-        end
-
-        describe "attribute Comparison" do
-          let(:attribute) { attributes["Comparison"].value }
-
-          context "when comparison is not provided" do
-            it "contains 'exact' value" do
-              expect(attribute).to eq Spid::EXACT_COMPARISON.to_s
-            end
-          end
-
-          [
-            Spid::EXACT_COMPARISON,
-            Spid::MININUM_COMPARISON,
-            Spid::BETTER_COMPARISON,
-            Spid::MAXIMUM_COMPARISON
-          ].each do |comparison_method|
-            context "when comparison method is #{comparison_method}" do
-              let(:sso_settings_optional_attributes) do
-                {
-                  authn_context_comparison: comparison_method
-                }
-              end
-
-              it "contians attributes Comparison" do
-                attribute = attributes["Comparison"].value
-
-                expect(attribute).to eq comparison_method.to_s
-              end
-            end
-          end
-
-          context "when comparison is none of the expected" do
-            let(:sso_settings_optional_attributes) do
-              {
-                authn_context_comparison: :not_valid_comparison_method
-              }
-            end
-
-            it "raises an exception" do
-              expect { xml_document }.
-                to raise_error Spid::UnknownAuthnComparisonMethodError
-            end
-          end
-        end
-
-        describe "AuthnContextClassRef node" do
-          let(:authn_context_class_ref_node) do
-            requested_authn_context.children.find do |child|
-              child.name == "AuthnContextClassRef"
-            end
-          end
-
-          context "when authn_context is not provided" do
-            it "contains SPIDL1 class" do
-              expect(authn_context_class_ref_node.text).to eq Spid::L1
-            end
-          end
-
-          [
-            Spid::L1,
-            Spid::L2,
-            Spid::L3
-          ].each do |authn_context|
-            context "when provided authn_context is #{authn_context}" do
-              let(:sso_settings_optional_attributes) do
-                {
-                  authn_context: authn_context
-                }
-              end
-
-              it "contains that level" do
-                expect(authn_context_class_ref_node.text).to eq authn_context
-              end
-            end
-          end
-
-          context "when provided authn_context is none of the expected" do
-            let(:sso_settings_optional_attributes) do
-              {
-                authn_context: "another_authn_level"
-              }
-            end
-
-            it "raises an exception" do
-              expect { xml_document }.
-                to raise_error Spid::UnknownAuthnContextError
-            end
-          end
-        end
-      end
+      expect(Spid::Sso::Settings).to have_received(:new).with(expected_params)
     end
   end
 end
