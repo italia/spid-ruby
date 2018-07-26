@@ -7,10 +7,12 @@ module Spid
     class Response # :nodoc:
       attr_reader :body
       attr_reader :session_index
+      attr_reader :matches_request_id
 
-      def initialize(body:, session_index:)
+      def initialize(body:, session_index:, matches_request_id:)
         @body = body
         @session_index = session_index
+        @matches_request_id = matches_request_id
       end
 
       def valid?

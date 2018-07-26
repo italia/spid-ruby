@@ -6,12 +6,14 @@ RSpec.describe Spid::Slo::Response do
   subject(:slo_response) do
     described_class.new(
       body: response_body,
-      session_index: session_index
+      session_index: session_index,
+      matches_request_id: request_id
     )
   end
 
   let(:response_body) { "SAMLResponse" }
   let(:session_index) { "a-session-index" }
+  let(:request_id) { "a-request-id" }
 
   describe "#service_provider" do
     let(:service_provider) { instance_double("Spid::ServiceProvider") }
