@@ -29,5 +29,23 @@ module Spid
       @certificate           = nil
     end
     # rubocop:enable Metrics/MethodLength
+
+    # rubocop:disable Metrics/MethodLength
+    def service_provider
+      @service_provider ||=
+        begin
+          Spid::ServiceProvider.new(
+            host: hostname,
+            acs_path: acs_path,
+            slo_path: slo_path,
+            metadata_path: metadata_path,
+            private_key: private_key,
+            certificate: certificate,
+            digest_method: digest_method,
+            signature_method: signature_method
+          )
+        end
+    end
+    # rubocop:enable Metrics/MethodLength
   end
 end
