@@ -5,9 +5,9 @@ require "onelogin/ruby-saml/settings"
 module Spid
   module Slo
     class Settings # :nodoc:
-      attr_reader :service_provider,
-                  :identity_provider,
-                  :session_index
+      attr_reader :service_provider
+      attr_reader :identity_provider
+      attr_reader :session_index
 
       def initialize(
             service_provider:,

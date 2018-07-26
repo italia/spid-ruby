@@ -3,9 +3,10 @@
 module Spid
   module Sso
     class Settings # :nodoc:
-      attr_reader :service_provider,
-                  :identity_provider,
-                  :authn_context
+      attr_reader :service_provider
+      attr_reader :identity_provider
+      attr_reader :authn_context
+
       def initialize(
             service_provider:,
             identity_provider:,

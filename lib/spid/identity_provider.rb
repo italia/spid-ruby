@@ -4,11 +4,11 @@ require "onelogin/ruby-saml/idp_metadata_parser"
 
 module Spid
   class IdentityProvider # :nodoc:
-    attr_reader :name,
-                :entity_id,
-                :sso_target_url,
-                :slo_target_url,
-                :cert_fingerprint
+    attr_reader :name
+    attr_reader :entity_id
+    attr_reader :sso_target_url
+    attr_reader :slo_target_url
+    attr_reader :cert_fingerprint
 
     def initialize(
           name:,

@@ -4,15 +4,15 @@ require "uri"
 
 module Spid
   class ServiceProvider # :nodoc:
-    attr_reader :host,
-                :acs_path,
-                :slo_path,
-                :metadata_path,
-                :private_key,
-                :certificate,
-                :digest_method,
-                :signature_method,
-                :attribute_service_name
+    attr_reader :host
+    attr_reader :acs_path
+    attr_reader :slo_path
+    attr_reader :metadata_path
+    attr_reader :private_key
+    attr_reader :certificate
+    attr_reader :digest_method
+    attr_reader :signature_method
+    attr_reader :attribute_service_name
 
     # rubocop:disable Metrics/ParameterLists
     def initialize(
