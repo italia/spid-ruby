@@ -56,49 +56,6 @@ RSpec.describe Spid::Sso::Settings do
       to eq identity_provider
   end
 
-  describe "AuthnContextComparison" do
-    context "when authn_context_comparison is not provided" do
-      it "contains :exact value" do
-        expect(sso_settings.authn_context_comparison).
-          to eq Spid::EXACT_COMPARISON
-      end
-    end
-
-    [
-      Spid::EXACT_COMPARISON,
-      Spid::MINIMUM_COMPARISON,
-      Spid::BETTER_COMPARISON,
-      Spid::MAXIMUM_COMPARISON
-    ].each do |authn_context_comparison|
-      context "when provided authn_context_comparison" \
-              "is #{authn_context_comparison}" do
-        let(:optional_sso_attributes) do
-          {
-            authn_context_comparison: authn_context_comparison
-          }
-        end
-
-        it "contains that value" do
-          expect(sso_settings.authn_context_comparison).
-            to eq authn_context_comparison
-        end
-      end
-    end
-
-    context "when provided authn_context is none of the expected" do
-      let(:optional_sso_attributes) do
-        {
-          authn_context_comparison: "another_authn_comparison"
-        }
-      end
-
-      it "raises an exception" do
-        expect { sso_settings }.
-          to raise_error Spid::UnknownAuthnComparisonMethodError
-      end
-    end
-  end
-
   describe "AuthnContext attribute" do
     context "when authn_context is not provided" do
       it "contains SPIDL1 class" do
