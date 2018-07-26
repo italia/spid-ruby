@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-## [0.8.0]
+## [0.8.0] - 2018-07-26
 ### Added
 - Spid configuration singleton class
 
