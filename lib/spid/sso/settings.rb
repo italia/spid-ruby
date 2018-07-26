@@ -22,7 +22,6 @@ module Spid
         @identity_provider = identity_provider
         @authn_context = authn_context
       end
-      # rubocop:enable Metrics/MethodLength
 
       def saml_settings
         ::OneLogin::RubySaml::Settings.new(sso_attributes)
