@@ -13,7 +13,7 @@ RSpec.describe Spid::Metadata do
   let(:service_provider) do
     instance_double(
       "Spid::ServiceProvider",
-      sso_url: assertion_consumer_service_url,
+      acs_url: assertion_consumer_service_url,
       slo_url: single_logout_service_url,
       host: sp_entity_id,
       private_key: File.read(generate_fixture_path("private-key.pem")),

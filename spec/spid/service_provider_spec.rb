@@ -8,7 +8,7 @@ RSpec.describe Spid::ServiceProvider do
   let(:service_provider_attributes) do
     {
       host: host,
-      sso_path: sso_path,
+      acs_path: acs_path,
       slo_path: slo_path,
       metadata_path: metadata_path,
       private_key_file_path: private_key_file_path,
@@ -19,7 +19,7 @@ RSpec.describe Spid::ServiceProvider do
   end
 
   let(:host) { "https://service.provider" }
-  let(:sso_path) { "/sso" }
+  let(:acs_path) { "/sso" }
   let(:slo_path) { "/slo" }
   let(:metadata_path) { "/metadata" }
   let(:private_key_file_path) { "/path/to/private/key.pem" }
@@ -34,7 +34,7 @@ RSpec.describe Spid::ServiceProvider do
   end
 
   it "requires a sso path" do
-    expect(service_provider.sso_path).to eq sso_path
+    expect(service_provider.acs_path).to eq acs_path
   end
 
   it "requires a slo path" do
@@ -79,19 +79,19 @@ RSpec.describe Spid::ServiceProvider do
     end
   end
 
-  describe "#sso_url" do
+  describe "#acs_url" do
     it "generates the sso url" do
-      expect(service_provider.sso_url).to eq "https://service.provider/sso"
+      expect(service_provider.acs_url).to eq "https://service.provider/sso"
     end
   end
 
-  describe "#sso_url" do
+  describe "#slot_url" do
     it "generates the slo url" do
       expect(service_provider.slo_url).to eq "https://service.provider/slo"
     end
   end
 
-  describe "#sso_url" do
+  describe "#metadata_url" do
     it "generates the metadata url" do
       expect(service_provider.metadata_url).to eq "https://service.provider/metadata"
     end

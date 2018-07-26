@@ -1,5 +1,5 @@
 - host: "https://service.provider"
-  sso_path: "/spid/sso"
+  acs_path: "/spid/sso"
   slo_path: "/spid/slo"
   metadata_path: "/spid/metadata"
   certificate_name: "service.provider.pem"
@@ -7,7 +7,7 @@
   digest_method_size: 512
   signature_method_size: 512
 - host: "https://another-service.provider"
-  sso_path: "/sso"
+  acs_path: "/sso"
   slo_path: "/slo"
   metadata_path: "/metadata"
   certificate_name: "another-service.provider.pem"

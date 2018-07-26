@@ -5,7 +5,7 @@ require "uri"
 module Spid
   class ServiceProvider # :nodoc:
     attr_reader :host,
-                :sso_path,
+                :acs_path,
                 :slo_path,
                 :metadata_path,
                 :private_key_file_path,
@@ -16,7 +16,7 @@ module Spid
     # rubocop:disable Metrics/ParameterLists
     def initialize(
           host:,
-          sso_path:,
+          acs_path:,
           slo_path:,
           metadata_path:,
           private_key_file_path:,
@@ -25,7 +25,7 @@ module Spid
           signature_method:
         )
       @host = host
-      @sso_path = sso_path
+      @acs_path = acs_path
       @slo_path = slo_path
       @metadata_path = metadata_path
       @private_key_file_path = private_key_file_path
@@ -36,8 +36,8 @@ module Spid
     end
     # rubocop:enable Metrics/ParameterLists
 
-    def sso_url
-      @sso_url ||= URI.join(host, sso_path).to_s
+    def acs_url
+      @acs_url ||= URI.join(host, acs_path).to_s
     end
 
     def slo_url
@@ -61,7 +61,7 @@ module Spid
       @sso_attributes ||=
         begin
           {
-            assertion_consumer_service_url: sso_url,
+            assertion_consumer_service_url: acs_url,
             issuer: host,
             private_key: private_key,
             certificate: certificate,

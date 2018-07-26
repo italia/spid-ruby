@@ -29,9 +29,9 @@ RSpec.describe Spid::Configuration do
     end
   end
 
-  describe "#acs_endpoint" do
+  describe "#acs_path" do
     it "has a default value" do
-      expect(config.acs_endpoint).to eq "/spid/sso"
+      expect(config.acs_path).to eq "/spid/sso"
     end
   end
 
@@ -41,9 +41,9 @@ RSpec.describe Spid::Configuration do
     end
   end
 
-  describe "#slo_endpoint" do
+  describe "#slo_path" do
     it "has a default value" do
-      expect(config.slo_endpoint).to eq "/spid/slo"
+      expect(config.slo_path).to eq "/spid/slo"
     end
   end
 
@@ -68,6 +68,12 @@ RSpec.describe Spid::Configuration do
   describe "#certificate" do
     it "has a default value" do
       expect(config.certificate).to eq nil
+    end
+  end
+
+  describe "#service_provider" do
+    it "returns a service provider" do
+      expect(config.service_provider).to be_a Spid::ServiceProvider
     end
   end
 end

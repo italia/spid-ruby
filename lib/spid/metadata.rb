@@ -57,7 +57,7 @@ module Spid
     end
 
     def assertion_consumer_service_url
-      service_provider.sso_url
+      service_provider.acs_url
     end
 
     def single_logout_service_url
