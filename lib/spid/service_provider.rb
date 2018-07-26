@@ -8,8 +8,8 @@ module Spid
                 :acs_path,
                 :slo_path,
                 :metadata_path,
-                :private_key_file_path,
-                :certificate_file_path,
+                :private_key,
+                :certificate,
                 :digest_method,
                 :signature_method
 
@@ -19,8 +19,8 @@ module Spid
           acs_path:,
           slo_path:,
           metadata_path:,
-          private_key_file_path:,
-          certificate_file_path:,
+          private_key:,
+          certificate:,
           digest_method:,
           signature_method:
         )
@@ -28,8 +28,8 @@ module Spid
       @acs_path = acs_path
       @slo_path = slo_path
       @metadata_path = metadata_path
-      @private_key_file_path = private_key_file_path
-      @certificate_file_path = certificate_file_path
+      @private_key = private_key
+      @certificate = certificate
       @digest_method = digest_method
       @signature_method = signature_method
       validate_attributes
@@ -46,14 +46,6 @@ module Spid
 
     def metadata_url
       @metadata_url ||= URI.join(host, metadata_path).to_s
-    end
-
-    def private_key
-      @private_key ||= File.read(private_key_file_path)
-    end
-
-    def certificate
-      @certificate ||= File.read(certificate_file_path)
     end
 
     # rubocop:disable Metrics/MethodLength

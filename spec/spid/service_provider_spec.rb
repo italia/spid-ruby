@@ -11,8 +11,8 @@ RSpec.describe Spid::ServiceProvider do
       acs_path: acs_path,
       slo_path: slo_path,
       metadata_path: metadata_path,
-      private_key_file_path: private_key_file_path,
-      certificate_file_path: certificate_file_path,
+      private_key: private_key,
+      certificate: certificate,
       digest_method: digest_method,
       signature_method: signature_method
     }
@@ -22,8 +22,8 @@ RSpec.describe Spid::ServiceProvider do
   let(:acs_path) { "/sso" }
   let(:slo_path) { "/slo" }
   let(:metadata_path) { "/metadata" }
-  let(:private_key_file_path) { "/path/to/private/key.pem" }
-  let(:certificate_file_path) { "/path/to/certificate.pem" }
+  let(:private_key) { "private_key" }
+  let(:certificate) { "certificate" }
   let(:digest_method) { Spid::SHA256 }
   let(:signature_method) { Spid::RSA_SHA256 }
 
@@ -46,11 +46,11 @@ RSpec.describe Spid::ServiceProvider do
   end
 
   it "requires a private key file path" do
-    expect(service_provider.private_key_file_path).to eq private_key_file_path
+    expect(service_provider.private_key).to eq private_key
   end
 
   it "requires a certificate file path" do
-    expect(service_provider.certificate_file_path).to eq certificate_file_path
+    expect(service_provider.certificate).to eq certificate
   end
 
   it "requires a digest method" do
@@ -95,43 +95,5 @@ RSpec.describe Spid::ServiceProvider do
     it "generates the metadata url" do
       expect(service_provider.metadata_url).to eq "https://service.provider/metadata"
     end
-  end
-
-  describe "#private_key" do
-    let(:private_key_content) { "private_key_content" }
-
-    let(:private_key_tempfile) do
-      Tempfile.new("private_key.pem").tap do |file|
-        file.write private_key_content
-        file.close
-      end
-    end
-
-    let(:private_key_file_path) { private_key_tempfile.path }
-
-    it "returns the filecontent" do
-      expect(service_provider.private_key).to eq private_key_content
-    end
-
-    after { private_key_tempfile.unlink }
-  end
-
-  describe "#certificate" do
-    let(:certificate_content) { "certificate_content" }
-
-    let(:certificate_tempfile) do
-      Tempfile.new("certificate.pem").tap do |file|
-        file.write certificate_content
-        file.close
-      end
-    end
-
-    let(:certificate_file_path) { certificate_tempfile.path }
-
-    it "returns the filecontent" do
-      expect(service_provider.certificate).to eq certificate_content
-    end
-
-    after { certificate_tempfile.unlink }
   end
 end
