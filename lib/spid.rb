@@ -67,7 +67,7 @@ module Spid # :nodoc:
     @configuration ||= Configuration.new
   end
 
-  def self.reset
+  def self.reset_configuration!
     @configuration = Configuration.new
   end
 

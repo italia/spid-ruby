@@ -9,6 +9,10 @@ RSpec.describe Spid::IdentityProviderManager do
     end
   end
 
+  after do
+    Spid.reset_configuration!
+  end
+
   let(:metadata_dir_path) do
     generate_fixture_path("config/idp_metadata")
   end
