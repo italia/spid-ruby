@@ -61,7 +61,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
       let(:attributes) { authn_request_node.attributes }
 
       it "exists" do
-        expect(authn_request_node).to be_present
+        expect(authn_request_node).not_to eq nil
       end
 
       it "contains attribute ID" do
@@ -89,7 +89,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
         end
 
         it "exists" do
-          expect(signature_node).to be_present
+          expect(signature_node).not_to eq nil
         end
       end
 
@@ -110,7 +110,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
             let(:authn_context) { authn_context_value }
 
             it "exists" do
-              expect(attribute).to be_present
+              expect(attribute).not_to eq nil
             end
           end
         end
@@ -138,7 +138,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
         let(:attributes) { issuer_node.attributes }
 
         it "exists" do
-          expect(issuer_node).to be_present
+          expect(issuer_node).not_to eq nil
         end
 
         it "contains sp_entity_id" do
@@ -167,7 +167,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
         let(:attributes) { name_id_policy_node.attributes }
 
         it "exists" do
-          expect(name_id_policy_node).to be_present
+          expect(name_id_policy_node).not_to eq nil
         end
 
         it "contains attribute Format" do
@@ -197,7 +197,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
         let(:attributes) { requested_authn_context.attributes }
 
         it "exists" do
-          expect(requested_authn_context).to be_present
+          expect(requested_authn_context).not_to eq nil
         end
 
         describe "AuthnContextClassRef node" do

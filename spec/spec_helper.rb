@@ -2,7 +2,6 @@
 
 require "simplecov"
 require "coveralls"
-require "active_support/core_ext/object"
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
   [

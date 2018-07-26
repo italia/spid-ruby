@@ -10,7 +10,7 @@ module SamlManipulation
     uri = URI.parse(saml_request_url)
     query_params = CGI.parse(uri.query)
     saml_request_param = query_params["SAMLRequest"]
-    saml_request_param = saml_request_param[0] if saml_request_param.present?
+    saml_request_param = saml_request_param[0] if saml_request_param.any?
     decode_and_inflate(saml_request_param)
   end
 end

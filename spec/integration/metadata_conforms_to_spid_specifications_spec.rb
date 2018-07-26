@@ -42,7 +42,7 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
       let(:attributes) { entity_descriptor_node.attributes }
 
       it "exists" do
-        expect(entity_descriptor_node).to be_present
+        expect(entity_descriptor_node).not_to eq nil
       end
 
       it "contains attribute entityID" do
@@ -58,7 +58,7 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
         end
 
         it "exists" do
-          expect(signature_node).to be_present
+          expect(signature_node).not_to eq nil
         end
       end
 
@@ -89,7 +89,7 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
           end
 
           it "exists" do
-            expect(key_descriptor_node).to be_present
+            expect(key_descriptor_node).not_to eq nil
           end
         end
 
@@ -103,7 +103,7 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
           let(:attributes) { single_logout_service_node.attributes }
 
           it "exists" do
-            expect(single_logout_service_node).to be_present
+            expect(single_logout_service_node).not_to eq nil
           end
 
           it "contains attribute Binding" do
@@ -130,7 +130,7 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
           let(:attributes) { assertion_consumer_service_node.attributes }
 
           it "exists" do
-            expect(assertion_consumer_service_node).to be_present
+            expect(assertion_consumer_service_node).not_to eq nil
           end
 
           it "contains attribute index" do
@@ -165,7 +165,7 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
           let(:attributes) { attribute_consuming_service_node.attributes }
 
           it "exists" do
-            expect(attribute_consuming_service_node).to be_present
+            expect(attribute_consuming_service_node).not_to eq nil
           end
 
           it "contains attribute index" do
