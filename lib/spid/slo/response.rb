@@ -20,7 +20,7 @@ module Spid
       end
 
       def errors
-        saml_response.errors
+        validated_saml_response.errors
       end
 
       def saml_settings

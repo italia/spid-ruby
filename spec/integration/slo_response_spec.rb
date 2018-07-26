@@ -57,5 +57,13 @@ RSpec.describe "Validation of Spid::Slo::Response" do
     let(:request_id) { "not-valid-request-id" }
 
     it { is_expected.not_to be_valid }
+
+    describe "#errors" do
+      it "contains an error" do
+        slo_response.valid?
+
+        expect(slo_response.errors).not_to be_empty
+      end
+    end
   end
 end
