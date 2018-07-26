@@ -66,7 +66,7 @@ RSpec.describe Spid::Sso::Settings do
 
     [
       Spid::EXACT_COMPARISON,
-      Spid::MININUM_COMPARISON,
+      Spid::MINIMUM_COMPARISON,
       Spid::BETTER_COMPARISON,
       Spid::MAXIMUM_COMPARISON
     ].each do |authn_context_comparison|

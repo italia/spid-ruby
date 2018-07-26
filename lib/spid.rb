@@ -18,13 +18,13 @@ module Spid # :nodoc:
   class UnknownSignatureMethodError < StandardError; end
 
   EXACT_COMPARISON = :exact
-  MININUM_COMPARISON = :minumum
+  MINIMUM_COMPARISON = :minumum
   BETTER_COMPARISON = :better
   MAXIMUM_COMPARISON = :maximum
 
   COMPARISON_METHODS = [
     EXACT_COMPARISON,
-    MININUM_COMPARISON,
+    MINIMUM_COMPARISON,
     BETTER_COMPARISON,
     MAXIMUM_COMPARISON
   ].freeze

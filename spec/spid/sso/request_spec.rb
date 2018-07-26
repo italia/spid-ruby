@@ -240,7 +240,7 @@ RSpec.describe Spid::Sso::Request do
 
           [
             Spid::EXACT_COMPARISON,
-            Spid::MININUM_COMPARISON,
+            Spid::MINIMUM_COMPARISON,
             Spid::BETTER_COMPARISON,
             Spid::MAXIMUM_COMPARISON
           ].each do |comparison_method|
