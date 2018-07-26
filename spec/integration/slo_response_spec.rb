@@ -2,49 +2,25 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::Slo::Response do
+RSpec.describe "Validation of Spid::Slo::Response" do
   subject(:slo_response) do
-    described_class.new(body: spid_response, slo_settings: slo_settings)
+    Spid::Slo::Response.new(
+      body: spid_response,
+      session_index: session_index,
+      matches_request_id: request_id
+    )
   end
 
   let(:spid_response) do
     File.read(generate_fixture_path("slo-response.base64"))
   end
 
-  let(:slo_settings) do
-    Spid::Slo::Settings.new(
-      service_provider: service_provider,
-      identity_provider: identity_provider,
-      session_index: session_index
-    )
-  end
+  let(:request_id) { "_21df91a89767879fc0f7df6a1490c6000c81644d" }
 
-  let(:identity_provider) do
-    instance_double(
-      "Spid::IdentityProvider",
-      slo_attributes: {
-        idp_slo_target_url: "https://identity.provider/slo",
-        idp_name_qualifier: "https://identity.provider",
-        idp_cert_fingerprint: cert_fingerprint
-      }
-    )
-  end
-  let(:service_provider) do
-    instance_double(
-      "Spid::ServiceProvider",
-      slo_attributes: {
-        issuer: host,
-        private_key: File.read(generate_fixture_path("private-key.pem")),
-        certificate: File.read(generate_fixture_path("certificate.pem")),
-        security: {
-          logout_requests_signed: true,
-          embed_sign: true,
-          digest_method: Spid::SHA256,
-          signature_method: Spid::RSA_SHA256
-        }
-      }
-    )
-  end
+  let(:idp_metadata_dir_path) { generate_fixture_path("config/idp_metadata") }
+  let(:private_key_path) { generate_fixture_path("private-key.pem") }
+  let(:certificate_path) { generate_fixture_path("certificate.pem") }
+
   let(:cert_fingerprint) do
     "C6:82:11:E5:44:22:53:58:05:B2:3F:2D:24:52:8B:17:95:C3:62:89"
   end
@@ -56,14 +32,21 @@ RSpec.describe Spid::Slo::Response do
     File.read(generate_fixture_path("identity-provider-metadata.xml"))
   end
 
-  it { is_expected.to be_a described_class }
+  before do
+    Spid.configure do |config|
+      config.hostname = host
+      config.idp_metadata_dir_path = idp_metadata_dir_path
+      config.private_key = File.read(private_key_path)
+      config.certificate = File.read(certificate_path)
+    end
+  end
 
   it "requires a body" do
     expect(slo_response.body).to eq spid_response
   end
 
-  it "requires a saml_settings configuration" do
-    expect(slo_response.slo_settings).to eq slo_settings
+  it "requires a session_index" do
+    expect(slo_response.session_index).to eq session_index
   end
 
   context "when response conforms to the request" do
@@ -71,11 +54,7 @@ RSpec.describe Spid::Slo::Response do
   end
 
   context "when response isn't conform to the request" do
-    before do
-      allow(slo_settings).
-        to receive(:idp_entity_id).
-        and_return("https://another-identity.provider")
-    end
+    let(:request_id) { "not-valid-request-id" }
 
     it { is_expected.not_to be_valid }
   end

@@ -16,11 +16,15 @@ module Spid
       end
 
       def valid?
-        saml_response.validate
+        validated_saml_response.validate
       end
 
       def errors
         saml_response.errors
+      end
+
+      def saml_settings
+        slo_settings.saml_settings
       end
 
       def slo_settings
@@ -42,20 +46,26 @@ module Spid
       end
 
       def issuer
-        saml_response.issuers.first
+        saml_response.issuer.strip
       end
 
       private
 
-      def saml_settings
-        slo_settings.saml_settings
+      def saml_response
+        ::OneLogin::RubySaml::Logoutresponse.new(
+          body,
+          nil,
+          matches_request_id: matches_request_id
+        )
       end
 
-      def saml_response
-        @saml_response ||= ::OneLogin::RubySaml::Logoutresponse.new(
-          body,
-          saml_settings
-        )
+      def validated_saml_response
+        @validated_saml_response ||=
+          begin
+            response = saml_response
+            response.settings = saml_settings
+            response
+          end
       end
     end
   end
