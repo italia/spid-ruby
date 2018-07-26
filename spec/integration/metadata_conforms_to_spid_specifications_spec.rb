@@ -1,32 +1,27 @@
 # frozen_string_literal: true
 
 RSpec.describe "Spid::Metadata conforms to SPID specification" do
-  let(:metadata) { Spid::Metadata.new metadata_options }
-
-  let(:metadata_options) do
-    {
-      service_provider: service_provider,
-      attribute_service_name: attribute_service_name
-    }
-  end
-
-  let(:service_provider) do
-    instance_double(
-      "Spid::ServiceProvider",
-      acs_url: assertion_consumer_service_url,
-      slo_url: single_logout_service_url,
-      host: sp_entity_id,
-      private_key: File.read(generate_fixture_path("private-key.pem")),
-      certificate: File.read(generate_fixture_path("certificate.pem"))
-    )
-  end
+  let(:metadata) { Spid::Metadata.new }
 
   let(:sp_entity_id) { "https://service.provider" }
 
-  let(:assertion_consumer_service_url) { "#{sp_entity_id}/sso" }
-  let(:single_logout_service_url) { "#{sp_entity_id}/slo" }
+  let(:assertion_consumer_service_url) { "#{sp_entity_id}/spid/sso" }
+  let(:single_logout_service_url) { "#{sp_entity_id}/spid/slo" }
 
   let(:attribute_service_name) { "service-name" }
+  let(:private_key_path) { generate_fixture_path("private-key.pem") }
+  let(:certificate_path) { generate_fixture_path("certificate.pem") }
+
+  before do
+    Spid.configure do |config|
+      config.hostname = sp_entity_id
+      config.acs_path = "/spid/sso"
+      config.slo_path = "/spid/slo"
+      config.attribute_service_name = attribute_service_name
+      config.private_key = File.read(private_key_path)
+      config.certificate = File.read(certificate_path)
+    end
+  end
 
   describe "#to_xml" do
     let(:xml_document) { metadata.to_xml }

@@ -17,6 +17,12 @@ RSpec.describe Spid::Configuration do
     end
   end
 
+  describe "#attribute_service_name" do
+    it "has not a default value" do
+      expect(config.attribute_service_name).to eq nil
+    end
+  end
+
   describe "#metadata_path" do
     it "has a default value" do
       expect(config.metadata_path).to eq "/spid/metadata"

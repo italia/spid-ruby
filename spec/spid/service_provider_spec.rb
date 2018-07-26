@@ -14,11 +14,13 @@ RSpec.describe Spid::ServiceProvider do
       private_key: private_key,
       certificate: certificate,
       digest_method: digest_method,
-      signature_method: signature_method
+      signature_method: signature_method,
+      attribute_service_name: attribute_service_name
     }
   end
 
   let(:host) { "https://service.provider" }
+  let(:attribute_service_name) { "attribute-service-name" }
   let(:acs_path) { "/sso" }
   let(:slo_path) { "/slo" }
   let(:metadata_path) { "/metadata" }
@@ -59,6 +61,11 @@ RSpec.describe Spid::ServiceProvider do
 
   it "requires a signature method" do
     expect(service_provider.signature_method).to eq signature_method
+  end
+
+  it "requires an attribute_service_name" do
+    expect(service_provider.attribute_service_name).
+      to eq attribute_service_name
   end
 
   context "with invalid digest methods" do

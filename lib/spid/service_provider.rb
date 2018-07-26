@@ -11,7 +11,8 @@ module Spid
                 :private_key,
                 :certificate,
                 :digest_method,
-                :signature_method
+                :signature_method,
+                :attribute_service_name
 
     # rubocop:disable Metrics/ParameterLists
     def initialize(
@@ -22,16 +23,18 @@ module Spid
           private_key:,
           certificate:,
           digest_method:,
-          signature_method:
+          signature_method:,
+          attribute_service_name:
         )
       @host = host
-      @acs_path = acs_path
-      @slo_path = slo_path
-      @metadata_path = metadata_path
-      @private_key = private_key
-      @certificate = certificate
-      @digest_method = digest_method
-      @signature_method = signature_method
+      @acs_path               = acs_path
+      @slo_path               = slo_path
+      @metadata_path          = metadata_path
+      @private_key            = private_key
+      @certificate            = certificate
+      @digest_method          = digest_method
+      @signature_method       = signature_method
+      @attribute_service_name = attribute_service_name
       validate_attributes
     end
     # rubocop:enable Metrics/ParameterLists
