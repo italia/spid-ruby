@@ -22,6 +22,8 @@ RSpec/FilePath:
     - spec/integration/**/*.rb
 RSpec/NestedGroups:
   Enabled: false
+RSpec/SubjectStub:
+  Enabled: false
 Style/EmptyMethod:
   EnforcedStyle: expanded
 Style/StringLiterals:
