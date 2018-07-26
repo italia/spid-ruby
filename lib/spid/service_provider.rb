@@ -3,7 +3,7 @@
 require "uri"
 
 module Spid
-  class ServiceProviderConfiguration # :nodoc:
+  class ServiceProvider # :nodoc:
     attr_reader :host,
                 :sso_path,
                 :slo_path,

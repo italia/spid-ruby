@@ -13,7 +13,7 @@ RSpec.describe Spid::Slo::Response do
 
   let(:slo_settings) do
     Spid::Slo::Settings.new(
-      service_provider_configuration: service_provider_configuration,
+      service_provider: service_provider,
       identity_provider_configuration: identity_provider_configuration,
       session_index: session_index
     )
@@ -29,9 +29,9 @@ RSpec.describe Spid::Slo::Response do
       }
     )
   end
-  let(:service_provider_configuration) do
+  let(:service_provider) do
     instance_double(
-      "Spid::ServiceProviderConfiguration",
+      "Spid::ServiceProvider",
       slo_attributes: {
         issuer: host,
         private_key: File.read(generate_fixture_path("private-key.pem")),

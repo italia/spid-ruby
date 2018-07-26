@@ -9,7 +9,7 @@ RSpec.describe Spid::Sso::Settings do
 
   let(:sso_attributes) do
     {
-      service_provider_configuration: service_provider_configuration,
+      service_provider: service_provider,
       identity_provider_configuration: identity_provider_configuration
     }
   end
@@ -26,9 +26,9 @@ RSpec.describe Spid::Sso::Settings do
     )
   end
 
-  let(:service_provider_configuration) do
+  let(:service_provider) do
     instance_double(
-      "Spid::ServiceProviderConfiguration",
+      "Spid::ServiceProvider",
       sso_attributes: {
         assertion_consumer_service_url: "https://service.provider/sso",
         issuer: "https://service.provider",
@@ -47,8 +47,8 @@ RSpec.describe Spid::Sso::Settings do
   it { is_expected.to be_a described_class }
 
   it "requires a service provider configuration" do
-    expect(sso_settings.service_provider_configuration).
-      to eq service_provider_configuration
+    expect(sso_settings.service_provider).
+      to eq service_provider
   end
 
   it "requires a identity provider configuration" do

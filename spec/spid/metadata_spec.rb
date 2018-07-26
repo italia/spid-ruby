@@ -5,14 +5,14 @@ RSpec.describe Spid::Metadata do
 
   let(:metadata_options) do
     {
-      service_provider_configuration: service_provider_configuration,
+      service_provider: service_provider,
       attribute_service_name: attribute_service_name
     }
   end
 
-  let(:service_provider_configuration) do
+  let(:service_provider) do
     instance_double(
-      "Spid::ServiceProviderConfiguration",
+      "Spid::ServiceProvider",
       sso_url: assertion_consumer_service_url,
       slo_url: single_logout_service_url,
       host: sp_entity_id,

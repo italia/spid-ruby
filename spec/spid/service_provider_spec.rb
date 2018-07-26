@@ -2,8 +2,8 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::ServiceProviderConfiguration do
-  subject(:sp_configuration) { described_class.new service_provider_attributes }
+RSpec.describe Spid::ServiceProvider do
+  subject(:service_provider) { described_class.new service_provider_attributes }
 
   let(:service_provider_attributes) do
     {
@@ -30,42 +30,42 @@ RSpec.describe Spid::ServiceProviderConfiguration do
   it { is_expected.to be_a described_class }
 
   it "requires an host" do
-    expect(sp_configuration.host).to eq host
+    expect(service_provider.host).to eq host
   end
 
   it "requires a sso path" do
-    expect(sp_configuration.sso_path).to eq sso_path
+    expect(service_provider.sso_path).to eq sso_path
   end
 
   it "requires a slo path" do
-    expect(sp_configuration.slo_path).to eq slo_path
+    expect(service_provider.slo_path).to eq slo_path
   end
 
   it "requires a metadata path" do
-    expect(sp_configuration.metadata_path).to eq metadata_path
+    expect(service_provider.metadata_path).to eq metadata_path
   end
 
   it "requires a private key file path" do
-    expect(sp_configuration.private_key_file_path).to eq private_key_file_path
+    expect(service_provider.private_key_file_path).to eq private_key_file_path
   end
 
   it "requires a certificate file path" do
-    expect(sp_configuration.certificate_file_path).to eq certificate_file_path
+    expect(service_provider.certificate_file_path).to eq certificate_file_path
   end
 
   it "requires a digest method" do
-    expect(sp_configuration.digest_method).to eq digest_method
+    expect(service_provider.digest_method).to eq digest_method
   end
 
   it "requires a signature method" do
-    expect(sp_configuration.signature_method).to eq signature_method
+    expect(service_provider.signature_method).to eq signature_method
   end
 
   context "with invalid digest methods" do
     let(:digest_method) { "a-not-valid-digest-method" }
 
     it "raises a Spid::NotValidDigestMethodError" do
-      expect { sp_configuration }.
+      expect { service_provider }.
         to raise_error Spid::UnknownDigestMethodError
     end
   end
@@ -74,26 +74,26 @@ RSpec.describe Spid::ServiceProviderConfiguration do
     let(:signature_method) { "a-not-valid-signature-method" }
 
     it "raises a Spid::UnknownSignatureMethodError" do
-      expect { sp_configuration }.
+      expect { service_provider }.
         to raise_error Spid::UnknownSignatureMethodError
     end
   end
 
   describe "#sso_url" do
     it "generates the sso url" do
-      expect(sp_configuration.sso_url).to eq "https://service.provider/sso"
+      expect(service_provider.sso_url).to eq "https://service.provider/sso"
     end
   end
 
   describe "#sso_url" do
     it "generates the slo url" do
-      expect(sp_configuration.slo_url).to eq "https://service.provider/slo"
+      expect(service_provider.slo_url).to eq "https://service.provider/slo"
     end
   end
 
   describe "#sso_url" do
     it "generates the metadata url" do
-      expect(sp_configuration.metadata_url).to eq "https://service.provider/metadata"
+      expect(service_provider.metadata_url).to eq "https://service.provider/metadata"
     end
   end
 
@@ -110,7 +110,7 @@ RSpec.describe Spid::ServiceProviderConfiguration do
     let(:private_key_file_path) { private_key_tempfile.path }
 
     it "returns the filecontent" do
-      expect(sp_configuration.private_key).to eq private_key_content
+      expect(service_provider.private_key).to eq private_key_content
     end
 
     after { private_key_tempfile.unlink }
@@ -129,7 +129,7 @@ RSpec.describe Spid::ServiceProviderConfiguration do
     let(:certificate_file_path) { certificate_tempfile.path }
 
     it "returns the filecontent" do
-      expect(sp_configuration.certificate).to eq certificate_content
+      expect(service_provider.certificate).to eq certificate_content
     end
 
     after { certificate_tempfile.unlink }

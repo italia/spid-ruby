@@ -16,7 +16,7 @@ RSpec.describe Spid::Sso::Response do
 
   let(:sso_settings) do
     Spid::Sso::Settings.new(
-      service_provider_configuration: service_provider_configuration,
+      service_provider: service_provider,
       identity_provider_configuration: identity_provider_configuration
     )
   end
@@ -30,9 +30,9 @@ RSpec.describe Spid::Sso::Response do
     )
   end
 
-  let(:service_provider_configuration) do
+  let(:service_provider) do
     instance_double(
-      "Spid::ServiceProviderConfiguration",
+      "Spid::ServiceProvider",
       sso_attributes: {
         assertion_consumer_service_url: "https://service.provider/sso",
         issuer: host,

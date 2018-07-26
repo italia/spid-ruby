@@ -13,16 +13,16 @@ RSpec.describe Spid::Sso::Request do
 
   let(:sso_settings_attributes) do
     {
-      service_provider_configuration: service_provider_configuration,
+      service_provider: service_provider,
       identity_provider_configuration: identity_provider_configuration
     }
   end
 
   let(:sso_settings_optional_attributes) { {} }
 
-  let(:service_provider_configuration) do
+  let(:service_provider) do
     instance_double(
-      "Spid::ServiceProviderConfiguration",
+      "Spid::ServiceProvider",
       sso_attributes: {
         assertion_consumer_service_url: sp_sso_target_url,
         issuer: sp_entity_id,

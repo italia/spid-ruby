@@ -5,16 +5,16 @@ require "onelogin/ruby-saml/settings"
 module Spid
   module Slo
     class Settings < ::OneLogin::RubySaml::Settings # :nodoc:
-      attr_reader :service_provider_configuration,
+      attr_reader :service_provider,
                   :identity_provider_configuration,
                   :session_index
 
       def initialize(
-            service_provider_configuration:,
+            service_provider:,
             identity_provider_configuration:,
             session_index:
           )
-        @service_provider_configuration = service_provider_configuration
+        @service_provider = service_provider
         @identity_provider_configuration = identity_provider_configuration
         @session_index = session_index
 
@@ -23,7 +23,7 @@ module Spid
 
       def slo_settings
         [
-          service_provider_configuration.slo_attributes,
+          service_provider.slo_attributes,
           identity_provider_configuration.slo_attributes,
           slo_attributes
         ].inject(:merge)
