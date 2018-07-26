@@ -17,12 +17,12 @@ RSpec.describe Spid::Sso::Response do
   let(:sso_settings) do
     Spid::Sso::Settings.new(
       service_provider: service_provider,
-      identity_provider_configuration: identity_provider_configuration
+      identity_provider: identity_provider
     )
   end
-  let(:identity_provider_configuration) do
+  let(:identity_provider) do
     instance_double(
-      "Spid::IdentityProviderConfiguration",
+      "Spid::IdentityProvider",
       sso_attributes: {
         idp_sso_target_url: "https://identity.provider/sso",
         idp_cert_fingerprint: cert_fingerprint

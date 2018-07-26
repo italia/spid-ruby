@@ -14,7 +14,7 @@ RSpec.describe Spid::Sso::Request do
   let(:sso_settings_attributes) do
     {
       service_provider: service_provider,
-      identity_provider_configuration: identity_provider_configuration
+      identity_provider: identity_provider
     }
   end
 
@@ -38,9 +38,9 @@ RSpec.describe Spid::Sso::Request do
     )
   end
 
-  let(:identity_provider_configuration) do
+  let(:identity_provider) do
     instance_double(
-      "Spid::IdentityProviderConfiguration",
+      "Spid::IdentityProvider",
       sso_attributes: {
         idp_sso_target_url: idp_sso_target_url,
         idp_cert_fingerprint: nil

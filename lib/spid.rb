@@ -7,7 +7,7 @@ require "spid/slo"
 require "spid/metadata"
 require "spid/version"
 require "spid/configuration"
-require "spid/identity_provider_configuration"
+require "spid/identity_provider"
 require "spid/service_provider"
 require "spid/identity_provider_manager"
 

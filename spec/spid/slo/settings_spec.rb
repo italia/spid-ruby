@@ -10,16 +10,16 @@ RSpec.describe Spid::Slo::Settings do
   let(:slo_attributes) do
     {
       service_provider: service_provider,
-      identity_provider_configuration: identity_provider_configuration,
+      identity_provider: identity_provider,
       session_index: session_index
     }
   end
 
   let(:optional_slo_attributes) { {} }
 
-  let(:identity_provider_configuration) do
+  let(:identity_provider) do
     instance_double(
-      "Spid::IdentityProviderConfiguration",
+      "Spid::IdentityProvider",
       slo_attributes: {
         idp_slo_target_url: "https://identity.provider/slo",
         idp_name_qualifier: "https://identity.provider",
@@ -55,8 +55,8 @@ RSpec.describe Spid::Slo::Settings do
   end
 
   it "requires a identity provider configuration" do
-    expect(slo_settings.identity_provider_configuration).
-      to eq identity_provider_configuration
+    expect(slo_settings.identity_provider).
+      to eq identity_provider
   end
 
   it "requires a session index" do

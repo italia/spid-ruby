@@ -12,7 +12,7 @@ RSpec.describe Spid::Slo::Request do
   let(:slo_settings_attributes) do
     {
       service_provider: service_provider,
-      identity_provider_configuration: identity_provider_configuration,
+      identity_provider: identity_provider,
       session_index: session_index
     }
   end
@@ -34,9 +34,9 @@ RSpec.describe Spid::Slo::Request do
     )
   end
 
-  let(:identity_provider_configuration) do
+  let(:identity_provider) do
     instance_double(
-      "Spid::IdentityProviderConfiguration",
+      "Spid::IdentityProvider",
       slo_attributes: {
         idp_slo_target_url: idp_slo_target_url,
         idp_name_qualifier: idp_entity_id,

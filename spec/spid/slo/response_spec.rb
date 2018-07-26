@@ -14,14 +14,14 @@ RSpec.describe Spid::Slo::Response do
   let(:slo_settings) do
     Spid::Slo::Settings.new(
       service_provider: service_provider,
-      identity_provider_configuration: identity_provider_configuration,
+      identity_provider: identity_provider,
       session_index: session_index
     )
   end
 
-  let(:identity_provider_configuration) do
+  let(:identity_provider) do
     instance_double(
-      "Spid::IdentityProviderConfiguration",
+      "Spid::IdentityProvider",
       slo_attributes: {
         idp_slo_target_url: "https://identity.provider/slo",
         idp_name_qualifier: "https://identity.provider",

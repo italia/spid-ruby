@@ -10,15 +10,15 @@ RSpec.describe Spid::Sso::Settings do
   let(:sso_attributes) do
     {
       service_provider: service_provider,
-      identity_provider_configuration: identity_provider_configuration
+      identity_provider: identity_provider
     }
   end
 
   let(:optional_sso_attributes) { {} }
 
-  let(:identity_provider_configuration) do
+  let(:identity_provider) do
     instance_double(
-      "Spid::IdentityProviderConfiguration",
+      "Spid::IdentityProvider",
       sso_attributes: {
         idp_sso_target_url: "https://identity.provider/sso",
         idp_cert_fingerprint: "certificate-fingerprint"
@@ -52,8 +52,8 @@ RSpec.describe Spid::Sso::Settings do
   end
 
   it "requires a identity provider configuration" do
-    expect(sso_settings.identity_provider_configuration).
-      to eq identity_provider_configuration
+    expect(sso_settings.identity_provider).
+      to eq identity_provider
   end
 
   describe "AuthnContextComparison" do

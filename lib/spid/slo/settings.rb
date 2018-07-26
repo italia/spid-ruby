@@ -6,16 +6,16 @@ module Spid
   module Slo
     class Settings < ::OneLogin::RubySaml::Settings # :nodoc:
       attr_reader :service_provider,
-                  :identity_provider_configuration,
+                  :identity_provider,
                   :session_index
 
       def initialize(
             service_provider:,
-            identity_provider_configuration:,
+            identity_provider:,
             session_index:
           )
         @service_provider = service_provider
-        @identity_provider_configuration = identity_provider_configuration
+        @identity_provider = identity_provider
         @session_index = session_index
 
         super(slo_settings)
@@ -24,7 +24,7 @@ module Spid
       def slo_settings
         [
           service_provider.slo_attributes,
-          identity_provider_configuration.slo_attributes,
+          identity_provider.slo_attributes,
           slo_attributes
         ].inject(:merge)
       end

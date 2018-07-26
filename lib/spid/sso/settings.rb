@@ -4,14 +4,14 @@ module Spid
   module Sso
     class Settings < ::OneLogin::RubySaml::Settings # :nodoc:
       attr_reader :service_provider,
-                  :identity_provider_configuration,
+                  :identity_provider,
                   :authn_context,
                   :authn_context_comparison
 
       # rubocop:disable Metrics/MethodLength
       def initialize(
             service_provider:,
-            identity_provider_configuration:,
+            identity_provider:,
             authn_context: Spid::L1,
             authn_context_comparison: Spid::EXACT_COMPARISON
           )
@@ -29,7 +29,7 @@ module Spid
         end
 
         @service_provider = service_provider
-        @identity_provider_configuration = identity_provider_configuration
+        @identity_provider = identity_provider
         @authn_context = authn_context
         @authn_context_comparison = authn_context_comparison
 
@@ -40,7 +40,7 @@ module Spid
       def sso_settings
         [
           service_provider.sso_attributes,
-          identity_provider_configuration.sso_attributes,
+          identity_provider.sso_attributes,
           sso_attributes,
           force_authn_attributes
         ].inject(:merge)
