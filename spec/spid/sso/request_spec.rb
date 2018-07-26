@@ -6,14 +6,12 @@ RSpec.describe Spid::Sso::Request do
   subject(:sso_request) do
     described_class.new(
       idp_name: idp_name,
-      authn_context: authn_context,
-      authn_context_comparison: authn_context_comparison
+      authn_context: authn_context
     )
   end
 
   let(:idp_name) { "idp-name" }
   let(:authn_context) { Spid::L1 }
-  let(:authn_context_comparison) { Spid::EXACT_COMPARISON }
 
   it { is_expected.to be_a described_class }
 
@@ -84,7 +82,6 @@ RSpec.describe Spid::Sso::Request do
       {
         service_provider: service_provider,
         identity_provider: identity_provider,
-        authn_context_comparison: authn_context_comparison,
         authn_context: authn_context
       }
     end
