@@ -2,48 +2,12 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::Slo::Request do
-  subject(:sso_request) { described_class.new(slo_settings: slo_settings) }
-
-  let(:slo_settings) do
-    Spid::Slo::Settings.new(slo_settings_attributes)
+RSpec.describe "Spid::Slo::Request conforms SPID specification" do
+  let(:slo_request) do
+    Spid::Slo::Request.new(idp_name: idp_name, session_index: session_index)
   end
 
-  let(:slo_settings_attributes) do
-    {
-      service_provider: service_provider,
-      identity_provider: identity_provider,
-      session_index: session_index
-    }
-  end
-
-  let(:service_provider) do
-    instance_double(
-      "Spid::ServiceProvider",
-      slo_attributes: {
-        issuer: sp_entity_id,
-        private_key: File.read(generate_fixture_path("private-key.pem")),
-        certificate: File.read(generate_fixture_path("certificate.pem")),
-        security: {
-          logout_requests_signed: true,
-          embed_sign: true,
-          digest_method: digest_method,
-          signature_method: signature_method
-        }
-      }
-    )
-  end
-
-  let(:identity_provider) do
-    instance_double(
-      "Spid::IdentityProvider",
-      slo_attributes: {
-        idp_slo_target_url: idp_slo_target_url,
-        idp_name_qualifier: idp_entity_id,
-        idp_cert_fingerprint: "certificate-fingerprint"
-      }
-    )
-  end
+  let(:idp_name) { "identity-provider" }
 
   let(:idp_slo_target_url) { "https://identity.provider/slo" }
   let(:sp_entity_id) { "https://service.provider" }
@@ -52,14 +16,27 @@ RSpec.describe Spid::Slo::Request do
   let(:digest_method) { Spid::SHA256 }
   let(:signature_method) { Spid::RSA_SHA256 }
 
-  it { is_expected.to be_a described_class }
+  let(:idp_metadata_dir_path) { generate_fixture_path("config/idp_metadata") }
+  let(:private_key_path) { generate_fixture_path("private-key.pem") }
+  let(:certificate_path) { generate_fixture_path("certificate.pem") }
+
+  before do
+    Spid.configure do |config|
+      config.hostname = "https://service.provider"
+      config.idp_metadata_dir_path = idp_metadata_dir_path
+      config.private_key = File.read(private_key_path)
+      config.certificate = File.read(certificate_path)
+    end
+    Timecop.freeze
+  end
+
+  after do
+    Spid.reset_configuration!
+    Timecop.return
+  end
 
   describe "#to_saml" do
-    before { Timecop.freeze }
-
-    after { Timecop.return }
-
-    let(:saml_url) { subject.to_saml }
+    let(:saml_url) { slo_request.to_saml }
 
     let(:xml_document) { parse_saml_request_from_url(saml_url) }
 

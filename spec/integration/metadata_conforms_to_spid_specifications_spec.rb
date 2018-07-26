@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe Spid::Metadata do
-  subject { described_class.new metadata_options }
+RSpec.describe "Spid::Metadata conforms to SPID specification" do
+  let(:metadata) { Spid::Metadata.new metadata_options }
 
   let(:metadata_options) do
     {
@@ -28,10 +28,8 @@ RSpec.describe Spid::Metadata do
 
   let(:attribute_service_name) { "service-name" }
 
-  it { is_expected.to be_a described_class }
-
   describe "#to_xml" do
-    let(:xml_document) { subject.to_xml }
+    let(:xml_document) { metadata.to_xml }
 
     let(:document_node) do
       Nokogiri::XML(

@@ -2,71 +2,48 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::Sso::Request do
-  subject(:sso_request) { described_class.new sso_settings: sso_settings }
-
-  let(:sso_settings) do
-    Spid::Sso::Settings.new(
-      sso_settings_attributes.merge(sso_settings_optional_attributes)
+RSpec.describe "Spid::Sso::Request conforms SPID specification" do
+  let(:sso_request) do
+    Spid::Sso::Request.new(
+      idp_name: idp_name,
+      authn_context: authn_context,
+      authn_context_comparison: authn_context_comparison
     )
   end
 
-  let(:sso_settings_attributes) do
-    {
-      service_provider: service_provider,
-      identity_provider: identity_provider
-    }
-  end
+  let(:idp_name) { "identity-provider" }
 
-  let(:sso_settings_optional_attributes) { {} }
+  let(:authn_context) { Spid::L1 }
+  let(:authn_context_comparison) { Spid::EXACT_COMPARISON }
 
-  let(:service_provider) do
-    instance_double(
-      "Spid::ServiceProvider",
-      sso_attributes: {
-        assertion_consumer_service_url: sp_sso_target_url,
-        issuer: sp_entity_id,
-        private_key: File.read(generate_fixture_path("private-key.pem")),
-        certificate: File.read(generate_fixture_path("certificate.pem")),
-        security: {
-          authn_requests_signed: true,
-          embed_sign: true,
-          digest_method: digest_method,
-          signature_method: signature_method
-        }
-      }
-    )
-  end
-
-  let(:identity_provider) do
-    instance_double(
-      "Spid::IdentityProvider",
-      sso_attributes: {
-        idp_sso_target_url: idp_sso_target_url,
-        idp_cert_fingerprint: nil
-      }
-    )
-  end
+  let(:idp_metadata_dir_path) { generate_fixture_path("config/idp_metadata") }
+  let(:private_key_path) { generate_fixture_path("private-key.pem") }
+  let(:certificate_path) { generate_fixture_path("certificate.pem") }
 
   let(:idp_sso_target_url) { "https://identity.provider/sso" }
   let(:protocol_binding) { "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" }
-  let(:sp_sso_target_url) { "#{sp_entity_id}/sso" }
+  let(:sp_sso_target_url) { "#{sp_entity_id}/spid/sso" }
   let(:sp_entity_id) { "https://service.provider" }
   let(:digest_method) { Spid::SHA256 }
   let(:signature_method) { Spid::RSA_SHA256 }
 
-  it { is_expected.to be_a described_class }
-
-  it "requires a sso_settings" do
-    expect(sso_request.sso_settings).to eq sso_settings
+  before do
+    Spid.configure do |config|
+      config.hostname = "https://service.provider"
+      config.idp_metadata_dir_path = idp_metadata_dir_path
+      config.private_key = File.read(private_key_path)
+      config.certificate = File.read(certificate_path)
+    end
+    Timecop.freeze
   end
 
-  before { Timecop.freeze }
-
-  after { Timecop.return }
+  after do
+    Timecop.return
+    Spid.reset_configuration!
+  end
 
   describe "#to_saml" do
-    let(:saml_url) { subject.to_saml }
+    let(:saml_url) { sso_request.to_saml }
 
     let(:xml_document) { parse_saml_request_from_url(saml_url) }
 
@@ -130,13 +107,9 @@ RSpec.describe Spid::Sso::Request do
         [
           Spid::L2,
           Spid::L3
-        ].each do |authn_context|
-          context "when authn_context is #{authn_context}" do
-            let(:sso_settings_optional_attributes) do
-              {
-                authn_context: authn_context
-              }
-            end
+        ].each do |authn_context_value|
+          context "when authn_context is #{authn_context_value}" do
+            let(:authn_context) { authn_context_value }
 
             it "exists" do
               expect(attribute).to be_present
@@ -245,11 +218,7 @@ RSpec.describe Spid::Sso::Request do
             Spid::MAXIMUM_COMPARISON
           ].each do |comparison_method|
             context "when comparison method is #{comparison_method}" do
-              let(:sso_settings_optional_attributes) do
-                {
-                  authn_context_comparison: comparison_method
-                }
-              end
+              let(:authn_context_comparison) { comparison_method }
 
               it "contians attributes Comparison" do
                 attribute = attributes["Comparison"].value
@@ -260,11 +229,7 @@ RSpec.describe Spid::Sso::Request do
           end
 
           context "when comparison is none of the expected" do
-            let(:sso_settings_optional_attributes) do
-              {
-                authn_context_comparison: :not_valid_comparison_method
-              }
-            end
+            let(:authn_context_comparison) { :not_valid_comparison_method }
 
             it "raises an exception" do
               expect { xml_document }.
@@ -290,13 +255,9 @@ RSpec.describe Spid::Sso::Request do
             Spid::L1,
             Spid::L2,
             Spid::L3
-          ].each do |authn_context|
-            context "when provided authn_context is #{authn_context}" do
-              let(:sso_settings_optional_attributes) do
-                {
-                  authn_context: authn_context
-                }
-              end
+          ].each do |authn_context_value|
+            context "when provided authn_context is #{authn_context_value}" do
+              let(:authn_context) { authn_context_value }
 
               it "contains that level" do
                 expect(authn_context_class_ref_node.text).to eq authn_context
@@ -305,11 +266,7 @@ RSpec.describe Spid::Sso::Request do
           end
 
           context "when provided authn_context is none of the expected" do
-            let(:sso_settings_optional_attributes) do
-              {
-                authn_context: "another_authn_level"
-              }
-            end
+            let(:authn_context) { "another_authn_level" }
 
             it "raises an exception" do
               expect { xml_document }.
