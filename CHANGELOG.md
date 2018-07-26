@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.8.0]
 ### Added
 - Spid configuration singleton class
 
@@ -63,7 +65,8 @@
 - Coveralls Integration
 - Rubygems version badge in README
 
-[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/italia/spid-ruby/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/italia/spid-ruby/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/italia/spid-ruby/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/italia/spid-ruby/compare/v0.4.0...v0.5.0
