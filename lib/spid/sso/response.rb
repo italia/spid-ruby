@@ -13,7 +13,7 @@ module Spid
       end
 
       def valid?
-        saml_response.is_valid?
+        validated_saml_response.is_valid?
       end
 
       def saml_settings
@@ -64,10 +64,16 @@ module Spid
       end
 
       def saml_response
-        @saml_response ||= ::OneLogin::RubySaml::Response.new(
-          body,
-          settings: saml_settings
-        )
+        ::OneLogin::RubySaml::Response.new(body)
+      end
+
+      def validated_saml_response
+        @validated_saml_response ||=
+          begin
+            response = saml_response
+            response.settings = saml_settings
+            response
+          end
       end
     end
   end
