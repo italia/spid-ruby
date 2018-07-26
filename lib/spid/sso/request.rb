@@ -10,10 +10,9 @@ module Spid
       attr_reader :authn_context
       attr_reader :authn_context_comparison
 
-      def initialize(idp_name:, authn_context:, authn_context_comparison:)
+      def initialize(idp_name:, authn_context:)
         @idp_name = idp_name
         @authn_context = authn_context
-        @authn_context_comparison = authn_context_comparison
       end
 
       def to_saml
@@ -28,8 +27,7 @@ module Spid
         Settings.new(
           service_provider: service_provider,
           identity_provider: identity_provider,
-          authn_context: authn_context,
-          authn_context_comparison: authn_context_comparison
+          authn_context: authn_context
         )
       end
 

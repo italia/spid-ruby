@@ -6,15 +6,13 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
   let(:sso_request) do
     Spid::Sso::Request.new(
       idp_name: idp_name,
-      authn_context: authn_context,
-      authn_context_comparison: authn_context_comparison
+      authn_context: authn_context
     )
   end
 
   let(:idp_name) { "identity-provider" }
 
   let(:authn_context) { Spid::L1 }
-  let(:authn_context_comparison) { Spid::EXACT_COMPARISON }
 
   let(:idp_metadata_dir_path) { generate_fixture_path("config/idp_metadata") }
   let(:private_key_path) { generate_fixture_path("private-key.pem") }
@@ -200,42 +198,6 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
 
         it "exists" do
           expect(requested_authn_context).to be_present
-        end
-
-        describe "attribute Comparison" do
-          let(:attribute) { attributes["Comparison"].value }
-
-          context "when comparison is not provided" do
-            it "contains 'exact' value" do
-              expect(attribute).to eq Spid::EXACT_COMPARISON.to_s
-            end
-          end
-
-          [
-            Spid::EXACT_COMPARISON,
-            Spid::MINIMUM_COMPARISON,
-            Spid::BETTER_COMPARISON,
-            Spid::MAXIMUM_COMPARISON
-          ].each do |comparison_method|
-            context "when comparison method is #{comparison_method}" do
-              let(:authn_context_comparison) { comparison_method }
-
-              it "contians attributes Comparison" do
-                attribute = attributes["Comparison"].value
-
-                expect(attribute).to eq comparison_method.to_s
-              end
-            end
-          end
-
-          context "when comparison is none of the expected" do
-            let(:authn_context_comparison) { :not_valid_comparison_method }
-
-            it "raises an exception" do
-              expect { xml_document }.
-                to raise_error Spid::UnknownAuthnComparisonMethodError
-            end
-          end
         end
 
         describe "AuthnContextClassRef node" do
