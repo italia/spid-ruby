@@ -20,6 +20,8 @@ require "nokogiri"
 require "timecop"
 require "vcr"
 
+require "rack"
+
 Dir[File.join("./spec/support/**/*.rb")].each { |f| require f }
 
 ENV["ruby-saml/testing"] = "true" # disable ruby-saml logging
