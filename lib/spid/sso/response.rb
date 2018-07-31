@@ -60,7 +60,7 @@ module Spid
       def normalize_key(key)
         ActiveSupport::Inflector.underscore(
           key.to_s
-        ).to_sym
+        ).to_s
       end
 
       def saml_response
