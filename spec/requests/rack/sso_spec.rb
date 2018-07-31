@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "Receiving an SSO assertion" do
+RSpec.describe "Receiving a SSO assertion" do
   let(:app) do
     Rack::Builder.new do
       use Spid::Rack::Sso
