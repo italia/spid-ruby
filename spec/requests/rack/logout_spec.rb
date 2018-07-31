@@ -4,9 +4,7 @@ require "spec_helper"
 
 RSpec.describe "Using the Spid::Rack::Logout middleware" do
   let(:app) do
-    initial_session = session
     Rack::Builder.new do
-      use MockSessionMiddleware, initial_session
       use Spid::Rack::Logout
       run ->(_env) { [200, { "Content-Type" => "text/plain" }, ["OK"]] }
     end
@@ -17,6 +15,13 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
       "spid" => {
         "session_index" => "a-session-index"
       }
+    }
+  end
+
+  let(:env) do
+    {
+      "rack.session" => session,
+      params: params
     }
   end
 
@@ -44,9 +49,17 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
   describe "GET start_slo_path" do
     let(:path) { slo_path.to_s }
 
+    let(:params) { {} }
+
+    let(:response) do
+      request.get(path, env)
+    end
+
     context "with an idp-name" do
-      let(:response) do
-        request.get(path, params: { idp_name: "identity-provider" })
+      let(:params) do
+        {
+          idp_name: "identity-provider"
+        }
       end
 
       it "responds with a redirect" do
@@ -60,7 +73,16 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
     end
 
     context "without an idp-name" do
-      let(:response) { request.get(path, {}) }
+      let(:response) do
+        request.get(
+          path,
+          "rack.session" => {
+            "spid" => {
+              "session_index" => "a-session-index"
+            }
+          }
+        )
+      end
 
       it "returns the app response" do
         expect(response.status).to eq 200
