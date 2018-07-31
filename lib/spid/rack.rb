@@ -5,6 +5,7 @@ require "spid/rack/login"
 require "spid/rack/logout"
 require "spid/rack/sso"
 require "spid/rack/slo"
+require "spid/rack/metadata"
 
 module Spid
   class Rack # :nodoc:
@@ -12,6 +13,7 @@ module Spid
 
     def initialize(app)
       @app = ::Rack::Builder.new do
+        use Spid::Rack::Metadata
         use Spid::Rack::Login
         use Spid::Rack::Logout
         use Spid::Rack::Sso
