@@ -1,6 +1,13 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Rack middleware that handles spid login requests
+- Rack middleware that handles spid logout requests
+- Rack middleware that handles spid sso assertion
+- Rack middleware that handles spid slo assertion
+- Rack middleware that handles spid metadata requests
+- Rack middleware that contains all specific middlewares
 
 ## [0.8.0] - 2018-07-26
 ### Added
