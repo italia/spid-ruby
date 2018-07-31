@@ -17,9 +17,11 @@ Metrics/LineLength:
 RSpec/DescribeClass:
   Exclude:
     - spec/integration/**/*.rb
+    - spec/requests/**/*.rb
 RSpec/FilePath:
   Exclude:
     - spec/integration/**/*.rb
+    - spec/requests/**/*.rb
 RSpec/NestedGroups:
   Enabled: false
 RSpec/SubjectStub:

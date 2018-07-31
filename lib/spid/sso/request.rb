@@ -10,7 +10,7 @@ module Spid
       attr_reader :authn_context
       attr_reader :authn_context_comparison
 
-      def initialize(idp_name:, authn_context:)
+      def initialize(idp_name:, authn_context: Spid::L1)
         @idp_name = idp_name
         @authn_context = authn_context
       end
