@@ -10,10 +10,6 @@ RSpec.describe "Receiving a SSO assertion" do
     end
   end
 
-  let(:session) do
-    {}
-  end
-
   let(:request) { Rack::MockRequest.new(app) }
 
   let(:hostname) { "https://service.provider" }
