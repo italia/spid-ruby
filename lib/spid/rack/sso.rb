@@ -12,7 +12,7 @@ module Spid
       def call(env)
         @sso = SsoEnv.new(env)
 
-        if @sso.valid_path?
+        if @sso.valid_request?
           response = @sso.sso_response
           env["rack.session"]["spid"] = {
             "attributes" => response.attributes,
@@ -35,7 +35,7 @@ module Spid
           request.params["SAMLResponse"]
         end
 
-        def valid_path?
+        def valid_request?
           request.path == Spid.configuration.acs_path
         end
 
