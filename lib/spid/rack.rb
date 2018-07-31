@@ -4,6 +4,7 @@ require "rack/builder"
 require "spid/rack/login"
 require "spid/rack/logout"
 require "spid/rack/sso"
+require "spid/rack/slo"
 
 module Spid
   class Rack # :nodoc:
@@ -14,6 +15,7 @@ module Spid
         use Spid::Rack::Login
         use Spid::Rack::Logout
         use Spid::Rack::Sso
+        use Spid::Rack::Slo
         run app
       end
     end
