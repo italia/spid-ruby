@@ -14,21 +14,23 @@ module Spid
     attr_accessor :private_key
     attr_accessor :certificate
     attr_accessor :attribute_service_name
+    attr_accessor :default_relay_state_path
 
     # rubocop:disable Metrics/MethodLength
     def initialize
-      @idp_metadata_dir_path  = "idp_metadata"
-      @metadata_path          = "/spid/metadata"
-      @start_sso_path         = "/spid/login"
-      @start_slo_path         = "/spid/logout"
-      @acs_path               = "/spid/sso"
-      @slo_path               = "/spid/slo"
-      @digest_method          = Spid::SHA256
-      @signature_method       = Spid::RSA_SHA256
-      @attribute_service_name = attribute_service_name
-      @hostname               = nil
-      @private_key            = nil
-      @certificate            = nil
+      @idp_metadata_dir_path    = "idp_metadata"
+      @metadata_path            = "/spid/metadata"
+      @start_sso_path           = "/spid/login"
+      @start_slo_path           = "/spid/logout"
+      @acs_path                 = "/spid/sso"
+      @slo_path                 = "/spid/slo"
+      @digest_method            = Spid::SHA256
+      @signature_method         = Spid::RSA_SHA256
+      @attribute_service_name   = attribute_service_name
+      @hostname                 = nil
+      @private_key              = nil
+      @certificate              = nil
+      @default_relay_state_path = "/"
     end
     # rubocop:enable Metrics/MethodLength
 
