@@ -7,16 +7,29 @@ module Spid
   module Sso
     class Request # :nodoc:
       attr_reader :idp_name
+      attr_reader :relay_state
       attr_reader :authn_context
       attr_reader :authn_context_comparison
 
-      def initialize(idp_name:, authn_context: Spid::L1)
+      def initialize(
+            idp_name:,
+            relay_state: nil,
+            authn_context: nil
+          )
         @idp_name = idp_name
-        @authn_context = authn_context
+        @relay_state = relay_state
+        @authn_context = authn_context || Spid::L1
+        @relay_state =
+          begin
+            relay_state || Spid.configuration.default_relay_state_path
+          end
       end
 
       def to_saml
-        authn_request.create(saml_settings)
+        authn_request.create(
+          saml_settings,
+          "RelayState" => relay_state
+        )
       end
 
       def saml_settings

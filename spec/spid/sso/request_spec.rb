@@ -6,11 +6,13 @@ RSpec.describe Spid::Sso::Request do
   subject(:sso_request) do
     described_class.new(
       idp_name: idp_name,
+      relay_state: relay_state,
       authn_context: authn_context
     )
   end
 
   let(:idp_name) { "idp-name" }
+  let(:relay_state) { "/path/to/return" }
   let(:authn_context) { Spid::L1 }
 
   it { is_expected.to be_a described_class }
@@ -66,7 +68,8 @@ RSpec.describe Spid::Sso::Request do
       allow(sso_request).to receive(:saml_settings).and_return(saml_settings)
 
       allow(authn_request).
-        to receive(:create).with(saml_settings).and_return(saml_object)
+        to receive(:create).with(saml_settings, "RelayState" => relay_state).
+        and_return(saml_object)
     end
 
     it "returns the saml object" do

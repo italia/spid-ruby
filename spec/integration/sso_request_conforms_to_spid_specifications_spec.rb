@@ -6,6 +6,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
   let(:sso_request) do
     Spid::Sso::Request.new(
       idp_name: idp_name,
+      relay_state: relay_state,
       authn_context: authn_context
     )
   end
@@ -24,6 +25,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
   let(:sp_entity_id) { "https://service.provider" }
   let(:digest_method) { Spid::SHA256 }
   let(:signature_method) { Spid::RSA_SHA256 }
+  let(:relay_state) { "/path/to/return" }
 
   before do
     Spid.configure do |config|
@@ -49,23 +51,6 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
       Nokogiri::XML(
         xml_document.to_s
       )
-    end
-
-    describe "params query" do
-      let(:query) { URI.parse(saml_url).query }
-      let(:params) { CGI.parse(query) }
-
-      [
-        "SAMLRequest",
-        "SigAlg",
-        "Signature"
-      ].each do |param_name|
-        it "contains #{param_name}" do
-          param = params[param_name]
-
-          expect(param.first).not_to eq nil
-        end
-      end
     end
 
     describe "AuthnRequest node" do
