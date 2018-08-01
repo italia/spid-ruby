@@ -16,12 +16,13 @@ Ruby library for SPID authentication
 
 Add into your Gemfile
 
-```
+```ruby
 gem "ruby-saml",
   github: "davidlibrera/ruby-saml",
-  ref: "4204afc2439f712db8909bccfd8d6e15f9320c34"
+  ref: "571e280031883abe3aad7c5b856353f94354fd06"
 gem "spid"
 ```
+
 
 ## Features
 
