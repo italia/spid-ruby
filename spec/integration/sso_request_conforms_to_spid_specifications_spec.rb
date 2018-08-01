@@ -51,6 +51,23 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
       )
     end
 
+    describe "params query" do
+      let(:query) { URI.parse(saml_url).query }
+      let(:params) { CGI.parse(query) }
+
+      [
+        "SAMLRequest",
+        "SigAlg",
+        "Signature"
+      ].each do |param_name|
+        it "contains #{param_name}" do
+          param = params[param_name]
+
+          expect(param.first).not_to eq nil
+        end
+      end
+    end
+
     describe "AuthnRequest node" do
       let(:authn_request_node) do
         document_node.children.find do |child|
@@ -88,8 +105,8 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
           end
         end
 
-        it "exists" do
-          expect(signature_node).not_to eq nil
+        it "doesn't exists" do
+          expect(signature_node).to eq nil
         end
       end
 

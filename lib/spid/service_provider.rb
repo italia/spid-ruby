@@ -62,7 +62,7 @@ module Spid
             certificate: certificate,
             security: {
               authn_requests_signed: true,
-              embed_sign: true,
+              embed_sign: false,
               digest_method: digest_method,
               signature_method: signature_method
             }
