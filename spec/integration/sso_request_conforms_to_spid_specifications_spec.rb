@@ -170,6 +170,11 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
           expect(name_id_policy_node).not_to eq nil
         end
 
+        it "doesn't contain the AllowCreate attribute" do
+          attribute = attributes["AllowCreate"]
+          expect(attribute).to eq nil
+        end
+
         it "contains attribute Format" do
           attribute = attributes["Format"].value
           expect(attribute).

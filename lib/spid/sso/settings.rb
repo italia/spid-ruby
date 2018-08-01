@@ -40,7 +40,6 @@ module Spid
       def inner_sso_attributes
         {
           protocol_binding: protocol_binding_value,
-          name_identifier_format: name_identifier_format_value,
           authn_context: authn_context,
           authn_context_comparison: Spid::MINIMUM_COMPARISON
         }
@@ -57,10 +56,6 @@ module Spid
 
       def protocol_binding_value
         "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
-      end
-
-      def name_identifier_format_value
-        "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
       end
     end
   end
