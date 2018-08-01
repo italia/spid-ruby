@@ -12,13 +12,7 @@ module Spid
       def call(env)
         @sso = SsoEnv.new(env)
 
-        if @sso.valid_request?
-          response = @sso.sso_response
-          env["rack.session"]["spid"] = {
-            "attributes" => response.attributes,
-            "session_index" => response.session_index
-          }
-        end
+        @sso.store_session if @sso.valid_request?
         app.call(env)
       end
 
@@ -29,6 +23,13 @@ module Spid
         def initialize(env)
           @env = env
           @request = ::Rack::Request.new(env)
+        end
+
+        def store_session
+          request.session["spid"] = {
+            "attributes" => sso_response.attributes,
+            "session_index" => sso_response.session_index
+          }
         end
 
         def saml_response
