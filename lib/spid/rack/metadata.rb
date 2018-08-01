@@ -33,7 +33,7 @@ module Spid
           [
             200,
             { "Content-Type" => "application/xml" },
-            metadata.to_xml
+            [metadata.to_xml]
           ]
         end
 
