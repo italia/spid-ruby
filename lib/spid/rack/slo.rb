@@ -49,8 +49,26 @@ module Spid
           end
         end
 
-        def valid_request?
+        def valid_get?
+          request.get? &&
+            Spid.configuration.slo_binding == Spid::BINDINGS_HTTP_REDIRECT
+        end
+
+        def valid_post?
+          request.post? &&
+            Spid.configuration.slo_binding == Spid::BINDINGS_HTTP_POST
+        end
+
+        def valid_http_verb?
+          valid_post? || valid_get?
+        end
+
+        def valid_path?
           request.path == Spid.configuration.slo_path
+        end
+
+        def valid_request?
+          valid_path? && valid_http_verb?
         end
       end
     end

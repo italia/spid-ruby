@@ -4,6 +4,7 @@
 ### Added
 - Handled Relay State in sso/slo responses
 - session["spid"] initialized
+- Configurable Bindings
 
 ### Changed
 - Signature in url instead of in SAMLRequest body

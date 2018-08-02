@@ -32,7 +32,7 @@ RSpec.describe "Receiving a SLO assertion" do
     Spid.reset_configuration!
   end
 
-  describe "POST /spid/slo" do
+  describe "GET /spid/slo" do
     let(:path) { slo_path.to_s }
 
     let(:saml_response) do
@@ -46,7 +46,7 @@ RSpec.describe "Receiving a SLO assertion" do
     end
 
     let(:response) do
-      request.post(
+      request.get(
         path,
         params: params,
         "rack.session" => rack_session
