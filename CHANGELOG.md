@@ -13,6 +13,7 @@
 - Metadata rack response body is now an array
 - Typo on authn context comparison value
 - AllowCreate is not expected in NameIDPolicy element
+- Redirects to idp will not cached anymore
 
 ## [0.9.0] - 2017-07-31
 ### Added
