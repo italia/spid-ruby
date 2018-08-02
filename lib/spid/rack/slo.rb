@@ -41,7 +41,12 @@ module Spid
         end
 
         def relay_state
-          request.params["RelayState"]
+          if !request.params["RelayState"].nil? &&
+             request.params["RelayState"] != ""
+            request.params["RelayState"]
+          else
+            Spid.configuration.default_relay_state_path
+          end
         end
 
         def valid_request?
