@@ -24,6 +24,7 @@ RSpec.describe "Receiving a SSO assertion" do
       config.idp_metadata_dir_path = metadata_dir_path
       config.hostname = hostname
       config.acs_path = acs_path
+      config.default_relay_state_path = "/default/relay/state/path"
     end
   end
 
@@ -44,9 +45,13 @@ RSpec.describe "Receiving a SSO assertion" do
     let(:response) do
       request.post(
         path,
-        params: { SAMLResponse: saml_response, RelayState: "/path/to/return" },
+        params: params,
         "rack.session" => rack_session
       )
+    end
+
+    let(:params) do
+      { SAMLResponse: saml_response, RelayState: "/path/to/return" }
     end
 
     let(:expected_session) do
@@ -65,8 +70,20 @@ RSpec.describe "Receiving a SSO assertion" do
       expect(response.status).to eq 302
     end
 
-    it "redirects to path provided by RelayState" do
-      expect(response.location).to eq "/path/to/return"
+    context "when RelayState is provided by IdP" do
+      it "redirects to path provided by RelayState" do
+        expect(response.location).to eq "/path/to/return"
+      end
+    end
+
+    context "when RelaySrtate is not provided by IdP" do
+      let(:params) do
+        { SAMLResponse: saml_response }
+      end
+
+      it "redirects to default relay state path" do
+        expect(response.location).to eq "/default/relay/state/path"
+      end
     end
 
     it "sets the session with spid data" do
