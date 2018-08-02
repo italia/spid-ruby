@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Handled Relay State in sso/slo responses
+- session["spid"] initialized
 
 ### Changed
 - Signature in url instead of in SAMLRequest body

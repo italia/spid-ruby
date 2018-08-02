@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rack/builder"
+require "spid/rack/session"
 require "spid/rack/login"
 require "spid/rack/logout"
 require "spid/rack/sso"
@@ -13,6 +14,7 @@ module Spid
 
     def initialize(app)
       @app = ::Rack::Builder.new do
+        use Spid::Rack::Session
         use Spid::Rack::Metadata
         use Spid::Rack::Login
         use Spid::Rack::Logout

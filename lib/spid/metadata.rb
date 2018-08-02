@@ -17,7 +17,9 @@ module Spid
         private_key: private_key_content,
         certificate: certificate_content,
         assertion_consumer_service_url: assertion_consumer_service_url,
+        assertion_consumer_service_binding: Spid.configuration.acs_binding,
         single_logout_service_url: single_logout_service_url,
+        single_logout_service_binding: Spid.configuration.slo_binding,
         security: {
           authn_requests_signed:     true,
           logout_requests_signed:    false,

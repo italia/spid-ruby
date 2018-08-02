@@ -23,6 +23,9 @@ module Spid # :nodoc:
   BETTER_COMPARISON = :better
   MAXIMUM_COMPARISON = :maximum
 
+  BINDINGS_HTTP_POST = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+  BINDINGS_HTTP_REDIRECT = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+
   COMPARISON_METHODS = [
     EXACT_COMPARISON,
     MINIMUM_COMPARISON,

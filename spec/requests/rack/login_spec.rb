@@ -61,8 +61,8 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
         let(:uri) { URI.parse(location) }
 
         it "redirects to the sso path of the identity provider" do
-          host = "#{uri.scheme}://#{uri.host}"
-          expect(host).to eq "https://identity.provider"
+          host = "#{uri.scheme}://#{uri.host}#{uri.path}"
+          expect(host).to eq "https://identity.provider/sso"
         end
 
         describe "params" do

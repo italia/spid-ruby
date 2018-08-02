@@ -83,6 +83,18 @@ RSpec.describe Spid::Configuration do
     end
   end
 
+  describe "#acs_binding" do
+    it "has a default value" do
+      expect(config.acs_binding).to eq Spid::BINDINGS_HTTP_POST
+    end
+  end
+
+  describe "#slo_binding" do
+    it "has a default value" do
+      expect(config.slo_binding).to eq Spid::BINDINGS_HTTP_REDIRECT
+    end
+  end
+
   describe "#service_provider" do
     it "returns a service provider" do
       expect(config.service_provider).to be_a Spid::ServiceProvider
