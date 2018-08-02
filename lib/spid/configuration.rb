@@ -15,6 +15,8 @@ module Spid
     attr_accessor :certificate
     attr_accessor :attribute_service_name
     attr_accessor :default_relay_state_path
+    attr_accessor :acs_binding
+    attr_accessor :slo_binding
 
     # rubocop:disable Metrics/MethodLength
     def initialize
@@ -31,6 +33,8 @@ module Spid
       @private_key              = nil
       @certificate              = nil
       @default_relay_state_path = "/"
+      @acs_binding              = Spid::BINDINGS_HTTP_POST
+      @slo_binding              = Spid::BINDINGS_HTTP_REDIRECT
     end
     # rubocop:enable Metrics/MethodLength
 
