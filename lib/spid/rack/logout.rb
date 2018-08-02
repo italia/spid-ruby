@@ -37,6 +37,7 @@ module Spid
         def slo_url
           Spid::Slo::Request.new(
             idp_name: idp_name,
+            relay_state: relay_state,
             session_index: spid_session["session-index"]
           ).to_saml
         end
@@ -52,12 +53,11 @@ module Spid
         end
 
         def spid_session
-          rack_session["spid"] unless rack_session.nil?
+          request.session["spid"]
         end
 
-        def rack_session
-          return if request.has_header?("rack.session").nil?
-          request.get_header("rack.session")
+        def relay_state
+          request.params["relay_state"]
         end
 
         def idp_name

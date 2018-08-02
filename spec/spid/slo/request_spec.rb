@@ -6,11 +6,13 @@ RSpec.describe Spid::Slo::Request do
   subject(:slo_request) do
     described_class.new(
       idp_name: idp_name,
-      session_index: session_index
+      session_index: session_index,
+      relay_state: relay_state
     )
   end
 
   let(:idp_name) { "idp-name" }
+  let(:relay_state) { "/path/to/return" }
   let(:session_index) { "session-index" }
 
   it { is_expected.to be_a described_class }
@@ -64,7 +66,8 @@ RSpec.describe Spid::Slo::Request do
       allow(slo_request).to receive(:saml_settings).and_return(saml_settings)
 
       allow(logout_request).
-        to receive(:create).with(saml_settings).and_return(saml_object)
+        to receive(:create).with(saml_settings, "RelayState" => relay_state).
+        and_return(saml_object)
     end
 
     it "returns the saml object" do

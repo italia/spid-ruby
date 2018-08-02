@@ -153,8 +153,8 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
           end
         end
 
-        it "exists" do
-          expect(signature_node).not_to eq nil
+        it "doesn't exist" do
+          expect(signature_node).to eq nil
         end
       end
     end

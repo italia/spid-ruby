@@ -24,6 +24,7 @@ RSpec.describe "Receiving a SLO assertion" do
       config.idp_metadata_dir_path = metadata_dir_path
       config.hostname = hostname
       config.slo_path = slo_path
+      config.default_relay_state_path = "/default/relay/state/path"
     end
   end
 
@@ -47,24 +48,40 @@ RSpec.describe "Receiving a SLO assertion" do
     let(:response) do
       request.post(
         path,
-        params: { SAMLResponse: saml_response },
+        params: params,
         "rack.session" => rack_session
       )
     end
 
-    before { response }
-
-    it "responds with 200" do
-      expect(response).to be_ok
+    let(:params) do
+      { SAMLResponse: saml_response, RelayState: "/path/to/return" }
     end
 
-    it "responds with the app body" do
-      expect(response.body).to eq "OK"
+    before { response }
+
+    it "responds with 302" do
+      expect(response.status).to eq 302
+    end
+
+    context "when RelayState is provided by IdP" do
+      it "redirects to path provided by RelayState" do
+        expect(response.location).to eq "/path/to/return"
+      end
+    end
+
+    context "when RelaySrtate is not provided by IdP" do
+      let(:params) do
+        { SAMLResponse: saml_response }
+      end
+
+      it "redirects to default relay state path" do
+        expect(response.location).to eq "/default/relay/state/path"
+      end
     end
 
     it "remove all spid data from the session" do
       spid_data = rack_session["spid"]
-      expect(spid_data).to eq nil
+      expect(spid_data).to eq({})
     end
   end
 end

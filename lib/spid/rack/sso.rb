@@ -12,8 +12,11 @@ module Spid
       def call(env)
         @sso = SsoEnv.new(env)
 
-        @sso.store_session if @sso.valid_request?
-        app.call(env)
+        if @sso.valid_request?
+          @sso.response
+        else
+          app.call(env)
+        end
       end
 
       class SsoEnv # :nodoc:
@@ -32,8 +35,26 @@ module Spid
           }
         end
 
+        def response
+          store_session
+          [
+            302,
+            { "Location" => relay_state },
+            []
+          ]
+        end
+
         def saml_response
           request.params["SAMLResponse"]
+        end
+
+        def relay_state
+          if !request.params["RelayState"].nil? &&
+             request.params["RelayState"] != ""
+            request.params["RelayState"]
+          else
+            Spid.configuration.default_relay_state_path
+          end
         end
 
         def valid_request?

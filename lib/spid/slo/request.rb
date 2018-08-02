@@ -8,14 +8,22 @@ module Spid
     class Request # :nodoc:
       attr_reader :idp_name
       attr_reader :session_index
+      attr_reader :relay_state
 
-      def initialize(idp_name:, session_index:)
+      def initialize(idp_name:, session_index:, relay_state: nil)
         @idp_name = idp_name
         @session_index = session_index
+        @relay_state =
+          begin
+            relay_state || Spid.configuration.default_relay_state_path
+          end
       end
 
       def to_saml
-        logout_request.create(saml_settings)
+        logout_request.create(
+          saml_settings,
+          "RelayState" => relay_state
+        )
       end
 
       def saml_settings

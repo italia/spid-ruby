@@ -34,11 +34,24 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
     generate_fixture_path("config/idp_metadata")
   end
 
+  let(:certificate) do
+    File.read(generate_fixture_path("certificate.pem"))
+  end
+
+  let(:private_key) do
+    File.read(generate_fixture_path("private-key.pem"))
+  end
+
+  let(:default_relay_state_path) { "/path/to/return" }
+
   before do
     Spid.configure do |config|
       config.idp_metadata_dir_path = metadata_dir_path
       config.hostname = hostname
       config.start_slo_path = slo_path
+      config.private_key = private_key
+      config.certificate = certificate
+      config.default_relay_state_path = default_relay_state_path
     end
   end
 
@@ -66,9 +79,29 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
         expect(response.status).to eq 301
       end
 
-      it "redirects to the slo path of the identity provider" do
-        expect(response.location).
-          to match %r{https://identity.provider/slo\?SAMLRequest}
+      describe "Location header url" do
+        let(:location) { response.location }
+        let(:uri) { URI.parse(location) }
+
+        it "redirects to the slo path of the identity provider" do
+          host = "#{uri.scheme}://#{uri.host}#{uri.path}"
+          expect(host).to eq "https://identity.provider/slo"
+        end
+
+        describe "params" do
+          let(:url_params) { CGI.parse(uri.query) }
+
+          [
+            "SAMLRequest",
+            "SigAlg",
+            "RelayState",
+            "Signature"
+          ].each do |param|
+            it "contains #{param}" do
+              expect(url_params.keys).to include param
+            end
+          end
+        end
       end
     end
 

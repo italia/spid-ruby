@@ -11,8 +11,11 @@ module Spid
 
       def call(env)
         @slo = SloEnv.new(env)
-        env["rack.session"].delete("spid") if @slo.valid_request?
-        app.call(env)
+        if @slo.valid_request?
+          @slo.response
+        else
+          app.call(env)
+        end
       end
 
       class SloEnv # :nodoc:
@@ -22,6 +25,28 @@ module Spid
         def initialize(env)
           @env = env
           @request = ::Rack::Request.new(env)
+        end
+
+        def clear_session
+          request.session["spid"] = {}
+        end
+
+        def response
+          clear_session
+          [
+            302,
+            { "Location" => relay_state },
+            []
+          ]
+        end
+
+        def relay_state
+          if !request.params["RelayState"].nil? &&
+             request.params["RelayState"] != ""
+            request.params["RelayState"]
+          else
+            Spid.configuration.default_relay_state_path
+          end
         end
 
         def valid_request?
