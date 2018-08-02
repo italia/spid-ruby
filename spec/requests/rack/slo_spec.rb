@@ -47,24 +47,24 @@ RSpec.describe "Receiving a SLO assertion" do
     let(:response) do
       request.post(
         path,
-        params: { SAMLResponse: saml_response },
+        params: { SAMLResponse: saml_response, RelayState: "/path/to/return" },
         "rack.session" => rack_session
       )
     end
 
     before { response }
 
-    it "responds with 200" do
-      expect(response).to be_ok
+    it "responds with 302" do
+      expect(response.status).to eq 302
     end
 
-    it "responds with the app body" do
-      expect(response.body).to eq "OK"
+    it "redirects to path provided by RelayState" do
+      expect(response.location).to eq "/path/to/return"
     end
 
     it "remove all spid data from the session" do
       spid_data = rack_session["spid"]
-      expect(spid_data).to eq nil
+      expect(spid_data).to eq({})
     end
   end
 end
