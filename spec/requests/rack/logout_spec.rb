@@ -76,7 +76,7 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
       end
 
       it "responds with a redirect" do
-        expect(response.status).to eq 301
+        expect(response.status).to eq 302
       end
 
       describe "Location header url" do

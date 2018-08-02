@@ -28,7 +28,7 @@ module Spid
 
         def response
           [
-            301,
+            302,
             { "Location" => sso_url },
             []
           ]

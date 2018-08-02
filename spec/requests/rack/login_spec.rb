@@ -53,7 +53,7 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
       end
 
       it "responds with a redirect" do
-        expect(response).to be_moved_permanently
+        expect(response.status).to eq 302
       end
 
       describe "Location header url" do
