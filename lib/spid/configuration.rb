@@ -26,7 +26,7 @@ module Spid
       @slo_path                 = "/spid/slo"
       @digest_method            = Spid::SHA256
       @signature_method         = Spid::RSA_SHA256
-      @attribute_service_name   = attribute_service_name
+      @attribute_service_name   = nil
       @hostname                 = nil
       @private_key              = nil
       @certificate              = nil
