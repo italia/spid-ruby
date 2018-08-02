@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.10.0] - 2018-08-02
 ### Added
 - Handled Relay State in sso/slo responses
 - session["spid"] initialized
@@ -15,7 +17,7 @@
 - AllowCreate is not expected in NameIDPolicy element
 - Redirects to idp will not cached anymore
 
-## [0.9.0] - 2017-07-31
+## [0.9.0] - 2018-07-31
 ### Added
 - Rack middleware that handles spid login requests
 - Rack middleware that handles spid logout requests
@@ -87,7 +89,8 @@
 - Coveralls Integration
 - Rubygems version badge in README
 
-[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/italia/spid-ruby/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/italia/spid-ruby/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/italia/spid-ruby/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/italia/spid-ruby/compare/v0.6.0...v0.7.0
