@@ -44,7 +44,7 @@ RSpec.describe "Receiving a SSO assertion" do
     let(:response) do
       request.post(
         path,
-        params: { SAMLResponse: saml_response },
+        params: { SAMLResponse: saml_response, RelayState: "/path/to/return" },
         "rack.session" => rack_session
       )
     end
@@ -61,12 +61,12 @@ RSpec.describe "Receiving a SSO assertion" do
 
     before { response }
 
-    it "responds with 200" do
-      expect(response).to be_ok
+    it "responds with 302" do
+      expect(response.status).to eq 302
     end
 
-    it "responds with the app body" do
-      expect(response.body).to eq "OK"
+    it "redirects to path provided by RelayState" do
+      expect(response.location).to eq "/path/to/return"
     end
 
     it "sets the session with spid data" do
