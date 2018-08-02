@@ -9,4 +9,4 @@ gemspec
 
 gem "ruby-saml",
     github: "davidlibrera/ruby-saml",
-    ref: "4204afc2439f712db8909bccfd8d6e15f9320c34"
+    branch: :master
