@@ -18,43 +18,51 @@ module Spid
     attr_accessor :acs_binding
     attr_accessor :slo_binding
 
-    # rubocop:disable Metrics/MethodLength
     def initialize
       @idp_metadata_dir_path    = "idp_metadata"
+      @attribute_service_name   = nil
+      init_endpoint
+      init_bindings
+      init_dig_sig_methods
+      init_openssl_keys
+    end
+
+    def init_endpoint
+      @hostname                 = nil
       @metadata_path            = "/spid/metadata"
       @start_sso_path           = "/spid/login"
       @start_slo_path           = "/spid/logout"
       @acs_path                 = "/spid/sso"
       @slo_path                 = "/spid/slo"
-      @digest_method            = Spid::SHA256
-      @signature_method         = Spid::RSA_SHA256
-      @attribute_service_name   = nil
-      @hostname                 = nil
-      @private_key              = nil
-      @certificate              = nil
       @default_relay_state_path = "/"
+    end
+
+    def init_bindings
       @acs_binding              = Spid::BINDINGS_HTTP_POST
       @slo_binding              = Spid::BINDINGS_HTTP_REDIRECT
     end
-    # rubocop:enable Metrics/MethodLength
 
-    # rubocop:disable Metrics/MethodLength
+    def init_dig_sig_methods
+      @digest_method            = Spid::SHA256
+      @signature_method         = Spid::RSA_SHA256
+    end
+
+    def init_openssl_keys
+      @private_key              = nil
+      @certificate              = nil
+    end
+
     def service_provider
       @service_provider ||=
         begin
           Spid::ServiceProvider.new(
-            host: hostname,
-            acs_path: acs_path,
-            slo_path: slo_path,
-            metadata_path: metadata_path,
-            private_key: private_key,
-            certificate: certificate,
-            digest_method: digest_method,
+            host: hostname, acs_path: acs_path, slo_path: slo_path,
+            metadata_path: metadata_path, private_key: private_key,
+            certificate: certificate, digest_method: digest_method,
             signature_method: signature_method,
             attribute_service_name: attribute_service_name
           )
         end
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end
