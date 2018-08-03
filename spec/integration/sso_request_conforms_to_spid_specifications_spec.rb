@@ -42,8 +42,8 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
     Spid.reset_configuration!
   end
 
-  describe "#to_saml" do
-    let(:saml_url) { sso_request.to_saml }
+  describe "#url" do
+    let(:saml_url) { sso_request.url }
 
     let(:xml_document) { parse_saml_request_from_url(saml_url) }
 

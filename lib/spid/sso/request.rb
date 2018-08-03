@@ -25,7 +25,7 @@ module Spid
           end
       end
 
-      def to_saml
+      def url
         authn_request.create(
           saml_settings,
           "RelayState" => relay_state

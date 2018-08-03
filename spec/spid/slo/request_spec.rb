@@ -51,7 +51,7 @@ RSpec.describe Spid::Slo::Request do
     end
   end
 
-  describe "#to_saml" do
+  describe "#url" do
     let(:logout_request) do
       instance_double("Spid::LogoutRequest")
     end
@@ -71,7 +71,7 @@ RSpec.describe Spid::Slo::Request do
     end
 
     it "returns the saml object" do
-      expect(slo_request.to_saml).to eq saml_object
+      expect(slo_request.url).to eq saml_object
     end
   end
 

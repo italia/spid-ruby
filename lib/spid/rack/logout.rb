@@ -39,7 +39,7 @@ module Spid
             idp_name: idp_name,
             relay_state: relay_state,
             session_index: spid_session["session-index"]
-          ).to_saml
+          ).url
         end
 
         def valid_request?

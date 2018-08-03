@@ -51,7 +51,7 @@ RSpec.describe Spid::Sso::Request do
     end
   end
 
-  describe "#to_saml" do
+  describe "#url" do
     let(:authn_request) do
       instance_double("Spid::AuthnRequest")
     end
@@ -73,7 +73,7 @@ RSpec.describe Spid::Sso::Request do
     end
 
     it "returns the saml object" do
-      expect(sso_request.to_saml).to eq saml_object
+      expect(sso_request.url).to eq saml_object
     end
   end
 

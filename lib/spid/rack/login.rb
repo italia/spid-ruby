@@ -38,7 +38,7 @@ module Spid
           Spid::Sso::Request.new(
             idp_name: idp_name,
             relay_state: relay_state
-          ).to_saml
+          ).url
         end
 
         def valid_request?

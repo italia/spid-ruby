@@ -19,7 +19,7 @@ module Spid
           end
       end
 
-      def to_saml
+      def url
         logout_request.create(
           saml_settings,
           "RelayState" => relay_state

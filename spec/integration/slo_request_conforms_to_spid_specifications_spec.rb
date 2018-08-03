@@ -35,8 +35,8 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
     Timecop.return
   end
 
-  describe "#to_saml" do
-    let(:saml_url) { slo_request.to_saml }
+  describe "#url" do
+    let(:saml_url) { slo_request.url }
 
     let(:xml_document) { parse_saml_request_from_url(saml_url) }
 
