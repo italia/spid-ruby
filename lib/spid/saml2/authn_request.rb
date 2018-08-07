@@ -16,7 +16,7 @@ module Spid
       end
 
       def to_saml
-        document.add_element authn_request
+        document.add_element(authn_request)
         document
       end
 
@@ -25,7 +25,7 @@ module Spid
           begin
             element = REXML::Element.new("samlp:AuthnRequest")
             element.add_attributes(authn_request_attributes)
-            element.add_element issuer
+            element.add_element(issuer)
             element
           end
       end
