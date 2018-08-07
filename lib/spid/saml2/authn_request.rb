@@ -26,6 +26,7 @@ module Spid
             element = REXML::Element.new("samlp:AuthnRequest")
             element.add_attributes(authn_request_attributes)
             element.add_element(issuer)
+            element.add_element(name_id_policy)
             element
           end
       end
@@ -57,6 +58,17 @@ module Spid
           "Format" => "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
           "NameQualifier" => settings.sp_entity_id
         }
+      end
+
+      def name_id_policy
+        @name_id_policy ||=
+          begin
+            element = REXML::Element.new("samlp:NameIDPolicy")
+            element.add_attributes(
+              "Format" => "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+            )
+            element
+          end
       end
 
       def issue_instant

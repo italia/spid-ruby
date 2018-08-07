@@ -93,6 +93,28 @@ RSpec.describe Spid::Saml2::AuthnRequest do
 
       xdescribe "contains 'Subject' element"
 
+      describe "samlp:NameIDPolicy" do
+        let(:xpath) { super() + "/samlp:NameIDPolicy" }
+
+        it "exists" do
+          expect(node).not_to be_nil
+        end
+
+        it "doens't contain 'AllowCreate' attribute" do
+          attribute = node.attribute("AllowCreate")
+
+          expect(attribute).to be_nil
+        end
+
+        it "contains 'Format' attribute" do
+          attribute = node.attribute("Format")
+
+          expect(attribute).not_to be_nil
+          expect(attribute.value).
+            to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+        end
+      end
+
       describe "saml:Issuer element" do
         let(:xpath) { super() + "/saml:Issuer" }
 
