@@ -170,6 +170,10 @@ RSpec.describe Spid::Saml2::AuthnRequest do
           end
         end
       end
+
+      pending "contains 'Signature' element"
+      pending "contains 'Scoping' element"
+      pending "contains 'RequesterID' element"
     end
   end
 end
