@@ -25,6 +25,7 @@ module Spid
           begin
             element = REXML::Element.new("samlp:AuthnRequest")
             element.add_attributes(authn_request_attributes)
+            element.add_element issuer
             element
           end
       end
@@ -39,6 +40,14 @@ module Spid
           "Destination" => settings.idp_entity_id,
           "AssertionConsumerServiceIndex" => settings.acs_index
         }
+      end
+
+      def issuer
+        @issuer ||=
+          begin
+            element = REXML::Element.new("saml:Issuer")
+            element
+          end
       end
 
       def issue_instant

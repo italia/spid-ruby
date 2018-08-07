@@ -89,6 +89,23 @@ RSpec.describe Spid::Saml2::AuthnRequest do
       end
 
       xit "contains 'Subject' element"
+
+      it "contains 'Issuer' element" do
+        xpath = "#{node.xpath}/saml:Issuer"
+        element = xml_document.elements[xpath]
+
+        expect(element).not_to be_nil
+      end
+    end
+
+    describe "saml:Issuer node" do
+      let(:node) do
+        xml_document.elements["//saml:Issuer"]
+      end
+
+      it "exists" do
+        expect(node).not_to be_nil
+      end
     end
   end
 end
