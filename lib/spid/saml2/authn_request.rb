@@ -15,10 +15,22 @@ module Spid
         @settings = settings
       end
 
-      # rubocop:disable Metrics/MethodLength
       def to_saml
-        document.add_element(
-          "samlp:AuthnRequest",
+        document.add_element authn_request
+        document
+      end
+
+      def authn_request
+        @authn_request ||=
+          begin
+            element = REXML::Element.new("samlp:AuthnRequest")
+            element.add_attributes(authn_request_attributes)
+            element
+          end
+      end
+
+      def authn_request_attributes
+        @authn_request_attributes ||= {
           "xmlns:samlp" => "urn:oasis:names:tc:SAML:2.0:protocol",
           "xmlns:saml" => "urn:oasis:names:tc:SAML:2.0:assertion",
           "ID" => "_#{uuid}",
@@ -26,10 +38,8 @@ module Spid
           "IssueInstant" => issue_instant,
           "Destination" => settings.idp_entity_id,
           "AssertionConsumerServiceIndex" => settings.acs_index
-        )
-        document
+        }
       end
-      # rubocop:enable Metrics/MethodLength
 
       def issue_instant
         @issue_instant ||= Time.now.utc.iso8601
