@@ -38,37 +38,37 @@ RSpec.describe Spid::Saml2::AuthnRequest do
     end
 
     describe "samlp:AuthnRequest node" do
-      let(:authn_request_node) do
+      let(:node) do
         xml_document.elements["/samlp:AuthnRequest"]
       end
 
       it "exists" do
-        expect(authn_request_node).not_to be_nil
+        expect(node).not_to be_nil
       end
 
       it "has 'ID' attribute" do
-        attribute = authn_request_node.attribute("ID")
+        attribute = node.attribute("ID")
 
         expect(attribute).not_to be_nil
         expect(attribute.value).to eq "_unique-uuid"
       end
 
       it "contains 'Version' attribute" do
-        attribute = authn_request_node.attribute("Version")
+        attribute = node.attribute("Version")
 
         expect(attribute).not_to be_nil
         expect(attribute.value).to eq "2.0"
       end
 
       it "contains 'IssueInstant' attribute" do
-        attribute = authn_request_node.attribute("IssueInstant")
+        attribute = node.attribute("IssueInstant")
 
         expect(attribute).not_to be_nil
         expect(attribute.value).to eq "2018-08-04T00:00:00Z"
       end
 
       it "contains 'Destination' attribute" do
-        attribute = authn_request_node.attribute("Destination")
+        attribute = node.attribute("Destination")
 
         expect(attribute).not_to be_nil
         expect(attribute.value).to eq "https://identity.provider"
@@ -76,7 +76,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
 
       it "contains 'AssertionConsumerServiceIndex' attribute" do
         attr_name = "AssertionConsumerServiceIndex"
-        attribute = authn_request_node.attribute(attr_name)
+        attribute = node.attribute(attr_name)
 
         expect(attribute).not_to be_nil
         expect(attribute.value).to eq "0"
