@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::IdentityProvider do
+RSpec.describe Spid::Saml2::IdentityProvider do
   subject(:idp_configuration) do
     described_class.new identity_provider_attributes
   end

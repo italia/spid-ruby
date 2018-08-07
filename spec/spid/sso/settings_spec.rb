@@ -18,7 +18,7 @@ RSpec.describe Spid::Sso::Settings do
 
   let(:identity_provider) do
     instance_double(
-      "Spid::IdentityProvider",
+      "Spid::Saml2::IdentityProvider",
       sso_attributes: {
         idp_sso_target_url: "https://identity.provider/sso",
         idp_cert_fingerprint: "certificate-fingerprint"

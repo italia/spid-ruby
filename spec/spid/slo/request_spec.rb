@@ -37,7 +37,7 @@ RSpec.describe Spid::Slo::Request do
   end
 
   describe "#identity_provider" do
-    let(:identity_provider) { instance_double("Spid::IdentityProvider") }
+    let(:identity_provider) { instance_double("Spid::Saml2::IdentityProvider") }
 
     before do
       allow(Spid::IdentityProviderManager).
@@ -76,7 +76,7 @@ RSpec.describe Spid::Slo::Request do
   end
 
   describe "#slo_settings" do
-    let(:identity_provider) { instance_double("Spid::IdentityProvider") }
+    let(:identity_provider) { instance_double("Spid::Saml2::IdentityProvider") }
     let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }
     let(:expected_params) do
       {

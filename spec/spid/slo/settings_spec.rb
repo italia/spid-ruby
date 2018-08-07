@@ -19,7 +19,7 @@ RSpec.describe Spid::Slo::Settings do
 
   let(:identity_provider) do
     instance_double(
-      "Spid::IdentityProvider",
+      "Spid::Saml2::IdentityProvider",
       slo_attributes: {
         idp_slo_target_url: "https://identity.provider/slo",
         idp_name_qualifier: "https://identity.provider",

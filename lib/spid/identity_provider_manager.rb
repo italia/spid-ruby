@@ -34,7 +34,7 @@ module Spid
     def generate_identity_provider_from_file(metadata_filepath)
       idp_name = File.basename(metadata_filepath, "-metadata.xml")
       metadata = File.read(metadata_filepath)
-      IdentityProvider.parse_from_xml(
+      ::Spid::Saml2::IdentityProvider.parse_from_xml(
         metadata: metadata,
         name: idp_name
       )
