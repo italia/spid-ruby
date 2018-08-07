@@ -47,17 +47,13 @@ module Spid
         @issuer ||=
           begin
             element = REXML::Element.new("saml:Issuer")
-            element.add_attributes(issuer_attributes)
+            element.add_attributes(
+              "Format" => "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
+              "NameQualifier" => settings.sp_entity_id
+            )
             element.text = settings.sp_entity_id
             element
           end
-      end
-
-      def issuer_attributes
-        @issuer_attributes ||= {
-          "Format" => "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
-          "NameQualifier" => settings.sp_entity_id
-        }
       end
 
       def name_id_policy
