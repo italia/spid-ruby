@@ -81,6 +81,8 @@ RSpec.describe Spid::Saml2::AuthnRequest do
         expect(attribute).not_to be_nil
         expect(attribute.value).to eq "0"
       end
+
+      xit "contains 'Subject' element"
     end
   end
 end
