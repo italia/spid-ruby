@@ -22,6 +22,8 @@ RSpec/FilePath:
   Exclude:
     - spec/integration/**/*.rb
     - spec/requests/**/*.rb
+RSpec/MultipleExpectations:
+  Max: 2
 RSpec/NestedGroups:
   Enabled: false
 RSpec/SubjectStub:
