@@ -95,8 +95,6 @@ RSpec.describe Spid::Saml2::AuthnRequest do
         expect(attribute).to be_nil
       end
 
-      pending "contains 'Subject' element"
-
       describe "samlp:NameIDPolicy" do
         let(:xpath) { super() + "/samlp:NameIDPolicy" }
 
@@ -146,8 +144,6 @@ RSpec.describe Spid::Saml2::AuthnRequest do
         end
       end
 
-      pending "contains 'Conditions' elements"
-
       describe "samlp:RequestedAuthnContext element" do
         let(:xpath) { super() + "/samlp:RequestedAuthnContext" }
 
@@ -171,8 +167,14 @@ RSpec.describe Spid::Saml2::AuthnRequest do
         end
       end
 
+      pending "contains 'Subject' element"
+
+      pending "contains 'Conditions' elements"
+
       pending "contains 'Signature' element"
+
       pending "contains 'Scoping' element"
+
       pending "contains 'RequesterID' element"
     end
   end
