@@ -57,6 +57,29 @@ RSpec.describe Spid::Saml2::Settings do
     end
   end
 
+  describe "#force_authn?" do
+    context "when authn_context is '#{Spid::L1}'" do
+      let(:authn_context) { Spid::L1 }
+
+      it "returns true" do
+        expect(settings).not_to be_force_authn
+      end
+    end
+
+    [
+      Spid::L2,
+      Spid::L3
+    ].each do |valid_authn_context|
+      context "when authn_context is '#{valid_authn_context}'" do
+        let(:authn_context) { valid_authn_context }
+
+        it "returns true" do
+          expect(settings).to be_force_authn
+        end
+      end
+    end
+  end
+
   describe "#authn_context" do
     context "when attribute is not provided" do
       it "returns the default authn_context" do

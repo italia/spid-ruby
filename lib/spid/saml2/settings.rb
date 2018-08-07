@@ -30,6 +30,10 @@ module Spid
       def acs_index
         "0"
       end
+
+      def force_authn?
+        authn_context > Spid::L1
+      end
     end
   end
 end

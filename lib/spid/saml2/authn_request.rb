@@ -25,6 +25,7 @@ module Spid
           begin
             element = REXML::Element.new("samlp:AuthnRequest")
             element.add_attributes(authn_request_attributes)
+            element.attribute["ForceAuthn"] = true if settings.force_authn?
             element.add_element(issuer)
             element.add_element(name_id_policy)
             element.add_element(requested_authn_context)

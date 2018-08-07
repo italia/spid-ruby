@@ -19,9 +19,12 @@ RSpec.describe Spid::Saml2::AuthnRequest do
       idp_entity_id: "https://identity.provider",
       sp_entity_id: "https://service.provider",
       authn_context: Spid::L1,
-      acs_index: "0"
+      acs_index: "0",
+      force_authn?: force_authn?
     )
   end
+
+  let(:force_authn?) { false }
 
   it { is_expected.to be_a described_class }
 
