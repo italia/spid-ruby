@@ -45,18 +45,6 @@ module Spid
             }
           end
       end
-
-      def self.parse_from_xml(name:, metadata:)
-        idp_metadata_parser = ::OneLogin::RubySaml::IdpMetadataParser.new
-        idp_settings = idp_metadata_parser.parse_to_hash(metadata)
-        new(
-          name: name,
-          entity_id: idp_settings[:idp_entity_id],
-          sso_target_url: idp_settings[:idp_sso_target_url],
-          slo_target_url: idp_settings[:idp_slo_target_url],
-          cert_fingerprint: idp_settings[:idp_cert_fingerprint]
-        )
-      end
     end
   end
 end
