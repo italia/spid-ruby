@@ -38,9 +38,9 @@ RSpec.describe Spid::Saml2::AuthnRequest do
   end
 
   describe "#to_saml" do
-    let(:xml_document) do
-      authn_request.to_saml
-    end
+    let(:saml_message) { authn_request.to_saml }
+
+    let(:xml_document) { REXML::Document.new(saml_message) }
 
     let(:node) do
       xml_document.elements[xpath]

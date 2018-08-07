@@ -17,7 +17,7 @@ module Spid
 
       def to_saml
         document.add_element(authn_request)
-        document
+        document.to_s
       end
 
       def authn_request
