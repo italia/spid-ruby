@@ -27,6 +27,7 @@ module Spid
             element.add_attributes(authn_request_attributes)
             element.add_element(issuer)
             element.add_element(name_id_policy)
+            element.add_element(requested_authn_context)
             element
           end
       end
@@ -63,6 +64,27 @@ module Spid
             element.add_attributes(
               "Format" => "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
             )
+            element
+          end
+      end
+
+      def requested_authn_context
+        @requested_authn_context ||=
+          begin
+            element = REXML::Element.new("samlp:RequestedAuthnContext")
+            element.add_attributes(
+              "Comparison" => Spid::MINIMUM_COMPARISON
+            )
+            element.add_element(authn_context_class_ref)
+            element
+          end
+      end
+
+      def authn_context_class_ref
+        @authn_context_class_ref ||=
+          begin
+            element = REXML::Element.new("saml:AuthnContextClassRef")
+            element.text = settings.authn_context
             element
           end
       end

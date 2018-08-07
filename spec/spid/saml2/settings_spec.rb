@@ -5,6 +5,7 @@ require "spec_helper"
 RSpec.describe Spid::Saml2::Settings do
   subject(:settings) do
     described_class.new(
+      authn_context: authn_context,
       identity_provider: identity_provider,
       service_provider: service_provider
     )
@@ -24,6 +25,8 @@ RSpec.describe Spid::Saml2::Settings do
     )
   end
 
+  let(:authn_context) { nil }
+
   it { is_expected.to be_a described_class }
 
   describe "#idp_entity_id" do
@@ -41,6 +44,22 @@ RSpec.describe Spid::Saml2::Settings do
   describe "#sp_entity_id" do
     it "returns the service provider entity id" do
       expect(settings.sp_entity_id).to eq "https://service.provider"
+    end
+  end
+
+  describe "#authn_context" do
+    context "when attribute is not provided" do
+      it "returns the default authn_context" do
+        expect(settings.authn_context).to eq Spid::L1
+      end
+    end
+
+    context "when attribute is provided" do
+      let(:authn_context) { Spid::L3 }
+
+      it "returns provider authn_context" do
+        expect(settings.authn_context).to eq Spid::L3
+      end
     end
   end
 end

@@ -5,10 +5,12 @@ module Spid
     class Settings # :nodoc:
       attr_reader :identity_provider
       attr_reader :service_provider
+      attr_reader :authn_context
 
-      def initialize(identity_provider:, service_provider:)
+      def initialize(identity_provider:, service_provider:, authn_context: nil)
         @identity_provider = identity_provider
         @service_provider = service_provider
+        @authn_context = authn_context || Spid::L1
       end
 
       def idp_entity_id

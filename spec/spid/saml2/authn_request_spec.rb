@@ -18,6 +18,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
       "Spid::Saml2::Settings",
       idp_entity_id: "https://identity.provider",
       sp_entity_id: "https://service.provider",
+      authn_context: Spid::L1,
       acs_index: "0"
     )
   end
@@ -143,6 +144,29 @@ RSpec.describe Spid::Saml2::AuthnRequest do
       end
 
       pending "contains 'Conditions' elements"
+
+      describe "samlp:RequestedAuthnContext element" do
+        let(:xpath) { super() + "/samlp:RequestedAuthnContext" }
+
+        it "exists" do
+          expect(node).not_to be_nil
+        end
+
+        it "contains 'Comparison' attribute" do
+          attribute = node.attribute("Comparison")
+
+          expect(attribute).not_to be_nil
+          expect(attribute.value).to eq Spid::MINIMUM_COMPARISON.to_s
+        end
+
+        describe "saml:AuthnContextClassRef element" do
+          let(:xpath) { super() + "/saml:AuthnContextClassRef" }
+
+          it "exists" do
+            expect(node).not_to be_nil
+          end
+        end
+      end
     end
   end
 end
