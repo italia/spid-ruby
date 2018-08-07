@@ -82,6 +82,12 @@ RSpec.describe Spid::Saml2::AuthnRequest do
         expect(attribute.value).to eq "0"
       end
 
+      it "doens't contain 'IsPassive' attribute" do
+        attribute = node.attribute("IsPassive")
+
+        expect(attribute).to be_nil
+      end
+
       xit "contains 'Subject' element"
     end
   end
