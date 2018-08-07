@@ -27,7 +27,17 @@ RSpec.describe Spid::Saml2::Settings do
 
   let(:authn_context) { nil }
 
-  it { is_expected.to be_a described_class }
+  context "when valid attributes are provided" do
+    it { is_expected.to be_a described_class }
+  end
+
+  context "when auth_context value is not valid" do
+    let(:authn_context) { "not-valid-attribute" }
+
+    it do
+      expect { settings }.to raise_error Spid::UnknownAuthnContextError
+    end
+  end
 
   describe "#idp_entity_id" do
     it "returns the identity provider entity id" do
@@ -54,11 +64,17 @@ RSpec.describe Spid::Saml2::Settings do
       end
     end
 
-    context "when attribute is provided" do
-      let(:authn_context) { Spid::L3 }
+    [
+      Spid::L1,
+      Spid::L2,
+      Spid::L3
+    ].each do |valid_authn_context|
+      context "when attribute '#{valid_authn_context}' is provided" do
+        let(:authn_context) { valid_authn_context }
 
-      it "returns provider authn_context" do
-        expect(settings.authn_context).to eq Spid::L3
+        it "returns provider authn_context" do
+          expect(settings.authn_context).to eq valid_authn_context
+        end
       end
     end
   end
