@@ -23,4 +23,10 @@ RSpec.describe Spid::Saml2::Settings do
       expect(settings.idp_entity_id).to eq "https://identity.provider"
     end
   end
+
+  describe "#acs_index" do
+    it "returns '0'" do
+      expect(settings.acs_index).to eq "0"
+    end
+  end
 end

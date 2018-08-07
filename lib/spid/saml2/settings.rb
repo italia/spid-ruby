@@ -12,6 +12,10 @@ module Spid
       def idp_entity_id
         identity_provider.entity_id
       end
+
+      def acs_index
+        "0"
+      end
     end
   end
 end

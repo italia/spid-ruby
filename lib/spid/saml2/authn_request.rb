@@ -15,6 +15,7 @@ module Spid
         @settings = settings
       end
 
+      # rubocop:disable Metrics/MethodLength
       def to_saml
         document.add_element(
           "samlp:AuthnRequest",
@@ -23,10 +24,12 @@ module Spid
           "ID" => "_#{uuid}",
           "Version" => "2.0",
           "IssueInstant" => issue_instant,
-          "Destination" => settings.idp_entity_id
+          "Destination" => settings.idp_entity_id,
+          "AssertionConsumerServiceIndex" => settings.acs_index
         )
         document
       end
+      # rubocop:enable Metrics/MethodLength
 
       def issue_instant
         @issue_instant ||= Time.now.utc.iso8601

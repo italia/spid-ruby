@@ -16,7 +16,8 @@ RSpec.describe Spid::Saml2::AuthnRequest do
   let(:settings) do
     instance_double(
       "Spid::Saml2::Settings",
-      idp_entity_id: "https://identity.provider"
+      idp_entity_id: "https://identity.provider",
+      acs_index: "0"
     )
   end
 
@@ -71,6 +72,14 @@ RSpec.describe Spid::Saml2::AuthnRequest do
 
         expect(attribute).not_to be_nil
         expect(attribute.value).to eq "https://identity.provider"
+      end
+
+      it "contains 'AssertionConsumerServiceIndex' attribute" do
+        attr_name = "AssertionConsumerServiceIndex"
+        attribute = authn_request_node.attribute(attr_name)
+
+        expect(attribute).not_to be_nil
+        expect(attribute.value).to eq "0"
       end
     end
   end
