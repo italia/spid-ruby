@@ -7,7 +7,17 @@ RSpec.describe Spid::Saml2::AuthnRequest do
   end
 
   subject(:authn_request) do
-    described_class.new(uuid: "unique-uuid")
+    described_class.new(
+      uuid: "unique-uuid",
+      settings: settings
+    )
+  end
+
+  let(:settings) do
+    instance_double(
+      "Spid::Saml2::Settings",
+      idp_entity_id: "https://identity.provider"
+    )
   end
 
   it { is_expected.to be_a described_class }
@@ -54,6 +64,13 @@ RSpec.describe Spid::Saml2::AuthnRequest do
 
         expect(attribute).not_to be_nil
         expect(attribute.value).to eq "2018-08-04T00:00:00Z"
+      end
+
+      it "contains 'Destination' attribute" do
+        attribute = authn_request_node.attribute("Destination")
+
+        expect(attribute).not_to be_nil
+        expect(attribute.value).to eq "https://identity.provider"
       end
     end
   end

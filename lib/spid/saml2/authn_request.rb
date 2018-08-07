@@ -7,10 +7,12 @@ module Spid
     class AuthnRequest # :nodoc:
       attr_reader :document
       attr_reader :uuid
+      attr_reader :settings
 
-      def initialize(uuid: nil)
+      def initialize(uuid: nil, settings:)
         @document = REXML::Document.new
         @uuid = uuid || SecureRandom.uuid
+        @settings = settings
       end
 
       def to_saml
@@ -20,7 +22,8 @@ module Spid
           "xmlns:saml" => "urn:oasis:names:tc:SAML:2.0:assertion",
           "ID" => "_#{uuid}",
           "Version" => "2.0",
-          "IssueInstant" => issue_instant
+          "IssueInstant" => issue_instant,
+          "Destination" => settings.idp_entity_id
         )
         document
       end
