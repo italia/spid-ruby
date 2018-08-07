@@ -17,6 +17,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
     instance_double(
       "Spid::Saml2::Settings",
       idp_entity_id: "https://identity.provider",
+      sp_entity_id: "https://service.provider",
       acs_index: "0"
     )
   end
@@ -105,6 +106,25 @@ RSpec.describe Spid::Saml2::AuthnRequest do
 
       it "exists" do
         expect(node).not_to be_nil
+      end
+
+      it "contains the service provider entity id value" do
+        expect(node.text).to eq "https://service.provider"
+      end
+
+      it "contains 'Format' attribute" do
+        attribute = node.attribute("Format")
+
+        expect(attribute).not_to be_nil
+        expect(attribute.value).
+          to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
+      end
+
+      it "contains 'NameQualifier' attribute" do
+        attribute = node.attribute("NameQualifier")
+
+        expect(attribute).not_to be_nil
+        expect(attribute.value).to eq "https://service.provider"
       end
     end
   end
