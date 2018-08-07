@@ -91,7 +91,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
         expect(attribute).to be_nil
       end
 
-      xdescribe "contains 'Subject' element"
+      pending "contains 'Subject' element"
 
       describe "samlp:NameIDPolicy" do
         let(:xpath) { super() + "/samlp:NameIDPolicy" }
@@ -141,6 +141,8 @@ RSpec.describe Spid::Saml2::AuthnRequest do
           expect(attribute.value).to eq "https://service.provider"
         end
       end
+
+      pending "contains 'Conditions' elements"
     end
   end
 end
