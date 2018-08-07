@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::ServiceProvider do
+RSpec.describe Spid::Saml2::ServiceProvider do
   subject(:service_provider) { described_class.new service_provider_attributes }
 
   let(:service_provider_attributes) do
@@ -100,7 +100,8 @@ RSpec.describe Spid::ServiceProvider do
 
   describe "#metadata_url" do
     it "generates the metadata url" do
-      expect(service_provider.metadata_url).to eq "https://service.provider/metadata"
+      expect(service_provider.metadata_url).
+        to eq "https://service.provider/metadata"
     end
   end
 end

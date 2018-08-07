@@ -30,7 +30,7 @@ RSpec.describe Spid::Slo::Settings do
 
   let(:service_provider) do
     instance_double(
-      "Spid::ServiceProvider",
+      "Spid::Saml2::ServiceProvider",
       slo_attributes: {
         issuer: "https://service.provider",
         private_key: "a-private-key",

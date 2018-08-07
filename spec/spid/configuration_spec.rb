@@ -97,7 +97,7 @@ RSpec.describe Spid::Configuration do
 
   describe "#service_provider" do
     it "returns a service provider" do
-      expect(config.service_provider).to be_a Spid::ServiceProvider
+      expect(config.service_provider).to be_a Spid::Saml2::ServiceProvider
     end
   end
 end

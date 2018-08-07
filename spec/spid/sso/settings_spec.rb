@@ -28,7 +28,7 @@ RSpec.describe Spid::Sso::Settings do
 
   let(:service_provider) do
     instance_double(
-      "Spid::ServiceProvider",
+      "Spid::Saml2::ServiceProvider",
       sso_attributes: {
         assertion_consumer_service_url: "https://service.provider/sso",
         issuer: "https://service.provider",

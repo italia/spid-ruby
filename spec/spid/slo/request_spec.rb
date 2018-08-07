@@ -18,7 +18,7 @@ RSpec.describe Spid::Slo::Request do
   it { is_expected.to be_a described_class }
 
   describe "#service_provider" do
-    let(:service_provider) { instance_double("Spid::ServiceProvider") }
+    let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }
 
     let(:spid_configuration) do
       instance_double(
@@ -77,7 +77,7 @@ RSpec.describe Spid::Slo::Request do
 
   describe "#slo_settings" do
     let(:identity_provider) { instance_double("Spid::IdentityProvider") }
-    let(:service_provider) { instance_double("Spid::ServiceProvider") }
+    let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }
     let(:expected_params) do
       {
         service_provider: service_provider,

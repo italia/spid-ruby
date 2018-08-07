@@ -55,7 +55,7 @@ module Spid
     def service_provider
       @service_provider ||=
         begin
-          Spid::ServiceProvider.new(
+          Spid::Saml2::ServiceProvider.new(
             host: hostname, acs_path: acs_path, slo_path: slo_path,
             metadata_path: metadata_path, private_key: private_key,
             certificate: certificate, digest_method: digest_method,

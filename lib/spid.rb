@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "spid/saml2"
 require "spid/authn_request"
 require "spid/logout_request"
 require "spid/sso"
@@ -9,7 +10,6 @@ require "spid/metadata"
 require "spid/version"
 require "spid/configuration"
 require "spid/identity_provider"
-require "spid/service_provider"
 require "spid/identity_provider_manager"
 
 module Spid # :nodoc:

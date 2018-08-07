@@ -10,7 +10,7 @@ RSpec.describe Spid::Sso::Response do
   let(:response_body) { "SAMLResponse" }
 
   describe "#service_provider" do
-    let(:service_provider) { instance_double("Spid::ServiceProvider") }
+    let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }
 
     let(:spid_configuration) do
       instance_double(
