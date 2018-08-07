@@ -38,10 +38,12 @@ RSpec.describe Spid::Saml2::AuthnRequest do
       authn_request.to_saml
     end
 
+    let(:node) do
+      xml_document.elements[xpath]
+    end
+
     describe "samlp:AuthnRequest node" do
-      let(:node) do
-        xml_document.elements["/samlp:AuthnRequest"]
-      end
+      let(:xpath) { "/samlp:AuthnRequest" }
 
       it "exists" do
         expect(node).not_to be_nil
@@ -89,42 +91,33 @@ RSpec.describe Spid::Saml2::AuthnRequest do
         expect(attribute).to be_nil
       end
 
-      xit "contains 'Subject' element"
+      xdescribe "contains 'Subject' element"
 
-      it "contains 'Issuer' element" do
-        xpath = "#{node.xpath}/saml:Issuer"
-        element = xml_document.elements[xpath]
+      describe "saml:Issuer element" do
+        let(:xpath) { super() + "/saml:Issuer" }
 
-        expect(element).not_to be_nil
-      end
-    end
+        it "exists" do
+          expect(node).not_to be_nil
+        end
 
-    describe "saml:Issuer node" do
-      let(:node) do
-        xml_document.elements["//saml:Issuer"]
-      end
+        it "contains the service provider entity id value" do
+          expect(node.text).to eq "https://service.provider"
+        end
 
-      it "exists" do
-        expect(node).not_to be_nil
-      end
+        it "contains 'Format' attribute" do
+          attribute = node.attribute("Format")
 
-      it "contains the service provider entity id value" do
-        expect(node.text).to eq "https://service.provider"
-      end
+          expect(attribute).not_to be_nil
+          expect(attribute.value).
+            to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
+        end
 
-      it "contains 'Format' attribute" do
-        attribute = node.attribute("Format")
+        it "contains 'NameQualifier' attribute" do
+          attribute = node.attribute("NameQualifier")
 
-        expect(attribute).not_to be_nil
-        expect(attribute.value).
-          to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
-      end
-
-      it "contains 'NameQualifier' attribute" do
-        attribute = node.attribute("NameQualifier")
-
-        expect(attribute).not_to be_nil
-        expect(attribute.value).to eq "https://service.provider"
+          expect(attribute).not_to be_nil
+          expect(attribute.value).to eq "https://service.provider"
+        end
       end
     end
   end
