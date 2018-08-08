@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "spid/saml2/utils/query_params_signer"
 require "spid/saml2/utils/deflated_encode"
 
 module Spid
