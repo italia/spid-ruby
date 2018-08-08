@@ -4,17 +4,25 @@ require "base64"
 
 module Spid
   module Saml2
-    class Utils
+    module Utils
       class QueryParamsSigner # :nodoc:
-        attr_reader :query_params
+        include Spid::Saml2::Utils
+
+        attr_reader :saml_message
         attr_reader :private_key
         attr_reader :signature_method
+        attr_reader :relay_state
 
-        def initialize(query_params:, private_key:, signature_method:)
-          @query_params = query_params
-          @query_params["SigAlg"] = signature_method
+        def initialize(
+              saml_message:,
+              private_key:,
+              signature_method:,
+              relay_state: nil
+            )
+          @saml_message = saml_message.delete("\n")
           @private_key = OpenSSL::PKey::RSA.new(private_key)
           @signature_method = signature_method
+          @relay_state = relay_state
         end
 
         def signature_algorithm
@@ -29,18 +37,30 @@ module Spid
         def signature
           @signature ||=
             begin
-              Base64.encode64(
-                private_key.sign(signature_algorithm, escaped_query_string)
+              encode(raw_signature)
+            end
+        end
+
+        def raw_signature
+          @raw_signature ||=
+            begin
+              private_key.sign(
+                signature_algorithm,
+                escaped_query_string(params_for_signature)
               )
             end
         end
 
-        def escaped_query_string
-          @escaped_query_string ||=
+        def params_for_signature
+          @params_for_signature ||=
             begin
-              query_params.map do |param_name, param_value|
-                "#{param_name}=#{CGI.escape(param_value)}"
-              end.join("&")
+              params = {
+                "SAMLRequest" => deflate_and_encode(saml_message),
+                "RelayState" => relay_state,
+                "SigAlg" => signature_method
+              }
+              params.delete("RelayState") if params["RelayState"].nil?
+              params
             end
         end
       end

@@ -5,17 +5,11 @@ require "spec_helper"
 RSpec.describe Spid::Saml2::Utils::QueryParamsSigner do
   subject(:signer) do
     described_class.new(
-      query_params: query_params,
+      saml_message: "<samlp:AuthnRequest />",
+      relay_state: "/path/to/return",
       private_key: private_key,
       signature_method: signature_method
     )
-  end
-
-  let(:query_params) do
-    {
-      "SAMLRequest" => "sylOzM0psHIsLcnIC0otLE0tLlHQtwMA",
-      "RelayState" => "/path/to/return"
-    }
   end
 
   let(:private_key) { File.read(generate_fixture_path("private-key.pem")) }
