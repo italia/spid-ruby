@@ -3,7 +3,21 @@
 require "spec_helper"
 
 RSpec.describe Spid::Saml2::AuthnRequest do
-  shared_examples "has attributes" do |attributes|
+  shared_examples "has attribute" do |name, value|
+    it "contains '#{name}' attribute" do
+      attribute = node.attribute(name)
+
+      expect(attribute).not_to be_nil
+      expect(attribute.value).to eq value
+    end
+  end
+
+  shared_examples "hasn't attribute" do |name|
+    it "doens't contain '#{name}' attribute" do
+      attribute = node.attribute(name)
+
+      expect(attribute).to be_nil
+    end
   end
 
   subject(:authn_request) do
@@ -53,47 +67,17 @@ RSpec.describe Spid::Saml2::AuthnRequest do
         expect(node).not_to be_nil
       end
 
-      it "has 'ID' attribute" do
-        attribute = node.attribute("ID")
-
-        expect(attribute).not_to be_nil
-        expect(attribute.value).to eq "_unique-uuid"
+      {
+        "ID" => "_unique-uuid",
+        "Version" => "2.0",
+        "IssueInstant" => "2018-08-04T00:00:00Z",
+        "Destination" => "https://identity.provider",
+        "AssertionConsumerServiceIndex" => "0"
+      }.each do |name, value|
+        include_examples "has attribute", name, value
       end
 
-      it "contains 'Version' attribute" do
-        attribute = node.attribute("Version")
-
-        expect(attribute).not_to be_nil
-        expect(attribute.value).to eq "2.0"
-      end
-
-      it "contains 'IssueInstant' attribute" do
-        attribute = node.attribute("IssueInstant")
-
-        expect(attribute).not_to be_nil
-        expect(attribute.value).to eq "2018-08-04T00:00:00Z"
-      end
-
-      it "contains 'Destination' attribute" do
-        attribute = node.attribute("Destination")
-
-        expect(attribute).not_to be_nil
-        expect(attribute.value).to eq "https://identity.provider"
-      end
-
-      it "contains 'AssertionConsumerServiceIndex' attribute" do
-        attr_name = "AssertionConsumerServiceIndex"
-        attribute = node.attribute(attr_name)
-
-        expect(attribute).not_to be_nil
-        expect(attribute.value).to eq "0"
-      end
-
-      it "doens't contain 'IsPassive' attribute" do
-        attribute = node.attribute("IsPassive")
-
-        expect(attribute).to be_nil
-      end
+      include_examples "hasn't attribute", "isPassive"
 
       describe "samlp:NameIDPolicy" do
         let(:xpath) { super() + "/samlp:NameIDPolicy" }
@@ -102,19 +86,11 @@ RSpec.describe Spid::Saml2::AuthnRequest do
           expect(node).not_to be_nil
         end
 
-        it "doens't contain 'AllowCreate' attribute" do
-          attribute = node.attribute("AllowCreate")
+        include_examples "hasn't attribute", "AllowCreate"
 
-          expect(attribute).to be_nil
-        end
-
-        it "contains 'Format' attribute" do
-          attribute = node.attribute("Format")
-
-          expect(attribute).not_to be_nil
-          expect(attribute.value).
-            to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-        end
+        include_examples "has attribute",
+                         "Format",
+                         "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
       end
 
       describe "saml:Issuer element" do
@@ -128,19 +104,11 @@ RSpec.describe Spid::Saml2::AuthnRequest do
           expect(node.text).to eq "https://service.provider"
         end
 
-        it "contains 'Format' attribute" do
-          attribute = node.attribute("Format")
-
-          expect(attribute).not_to be_nil
-          expect(attribute.value).
-            to eq "urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
-        end
-
-        it "contains 'NameQualifier' attribute" do
-          attribute = node.attribute("NameQualifier")
-
-          expect(attribute).not_to be_nil
-          expect(attribute.value).to eq "https://service.provider"
+        {
+          "Format" => "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
+          "NameQualifier" => "https://service.provider"
+        }.each do |name, value|
+          include_examples "has attribute", name, value
         end
       end
 
@@ -151,12 +119,9 @@ RSpec.describe Spid::Saml2::AuthnRequest do
           expect(node).not_to be_nil
         end
 
-        it "contains 'Comparison' attribute" do
-          attribute = node.attribute("Comparison")
-
-          expect(attribute).not_to be_nil
-          expect(attribute.value).to eq Spid::MINIMUM_COMPARISON.to_s
-        end
+        include_examples "has attribute",
+                         "Comparison",
+                         Spid::MINIMUM_COMPARISON.to_s
 
         describe "saml:AuthnContextClassRef element" do
           let(:xpath) { super() + "/saml:AuthnContextClassRef" }
