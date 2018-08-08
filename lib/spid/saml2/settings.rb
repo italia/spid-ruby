@@ -23,8 +23,20 @@ module Spid
         identity_provider.entity_id
       end
 
+      def idp_sso_target_url
+        identity_provider.sso_target_url
+      end
+
       def sp_entity_id
         service_provider.host
+      end
+
+      def private_key
+        service_provider.private_key
+      end
+
+      def signature_method
+        service_provider.signature_method
       end
 
       def acs_index

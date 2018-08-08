@@ -26,20 +26,36 @@ module Spid
       end
 
       def url
-        authn_request.create(
-          saml_settings,
-          "RelayState" => relay_state
-        )
+        [
+          settings.idp_sso_target_url,
+          query_params_signer.escaped_signed_query_string
+        ].join("?")
       end
 
-      def saml_settings
-        sso_settings.saml_settings
+      def query_params_signer
+        @query_params_signer ||=
+          begin
+            Spid::Saml2::Utils::QueryParamsSigner.new(
+              saml_message: saml_message,
+              relay_state: relay_state,
+              private_key: settings.private_key,
+              signature_method: settings.signature_method
+            )
+          end
       end
 
-      def sso_settings
-        Settings.new(
-          service_provider: service_provider,
+      def saml_message
+        @saml_message ||= authn_request.to_saml
+      end
+
+      def authn_request
+        @authn_request ||= Spid::Saml2::AuthnRequest.new(settings: settings)
+      end
+
+      def settings
+        Spid::Saml2::Settings.new(
           identity_provider: identity_provider,
+          service_provider: service_provider,
           authn_context: authn_context
         )
       end
@@ -52,12 +68,6 @@ module Spid
       def service_provider
         @service_provider ||=
           Spid.configuration.service_provider
-      end
-
-      private
-
-      def authn_request
-        AuthnRequest.new
       end
     end
   end

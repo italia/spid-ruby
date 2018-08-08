@@ -14,15 +14,22 @@ RSpec.describe Spid::Saml2::Settings do
   let(:identity_provider) do
     instance_double(
       "Spid::Saml2::IdentityProvider",
-      entity_id: "https://identity.provider"
+      entity_id: "https://identity.provider",
+      sso_target_url: "https://identity.provider/sso"
     )
   end
 
   let(:service_provider) do
     instance_double(
       "Spid::Saml2::ServiceProvider",
-      host: "https://service.provider"
+      host: "https://service.provider",
+      signature_method: Spid::RSA_SHA256,
+      private_key: private_key
     )
+  end
+
+  let(:private_key) do
+    File.read(generate_fixture_path("private-key.pem"))
   end
 
   let(:authn_context) { nil }
@@ -42,6 +49,24 @@ RSpec.describe Spid::Saml2::Settings do
   describe "#idp_entity_id" do
     it "returns the identity provider entity id" do
       expect(settings.idp_entity_id).to eq "https://identity.provider"
+    end
+  end
+
+  describe "#idp_sso_target_url" do
+    it "returns the identity provider sso url" do
+      expect(settings.idp_sso_target_url).to eq "https://identity.provider/sso"
+    end
+  end
+
+  describe "#private_key" do
+    it "returns the service provider private_key" do
+      expect(settings.private_key).to eq private_key
+    end
+  end
+
+  describe "#signature_method" do
+    it "returns the service provider signature_method" do
+      expect(settings.signature_method).to eq Spid::RSA_SHA256
     end
   end
 

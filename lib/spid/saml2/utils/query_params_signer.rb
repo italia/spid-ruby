@@ -42,6 +42,11 @@ module Spid
           )
         end
 
+        def escaped_signed_query_string
+          @escaped_signed_query_string ||=
+            escaped_query_string(signed_query_params)
+        end
+
         def raw_signature
           @raw_signature ||=
             begin
