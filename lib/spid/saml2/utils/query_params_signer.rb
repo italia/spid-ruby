@@ -4,7 +4,7 @@ require "base64"
 
 module Spid
   module Saml2
-    module Utils
+    class Utils
       class QueryParamsSigner # :nodoc:
         attr_reader :query_params
         attr_reader :private_key
