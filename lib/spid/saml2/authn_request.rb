@@ -25,7 +25,6 @@ module Spid
           begin
             element = REXML::Element.new("samlp:AuthnRequest")
             element.add_attributes(authn_request_attributes)
-            element.attribute["ForceAuthn"] = true if settings.force_authn?
             element.add_element(issuer)
             element.add_element(name_id_policy)
             element.add_element(requested_authn_context)
@@ -33,17 +32,24 @@ module Spid
           end
       end
 
+      # rubocop:disable Metrics/MethodLength
       def authn_request_attributes
-        @authn_request_attributes ||= {
-          "xmlns:samlp" => "urn:oasis:names:tc:SAML:2.0:protocol",
-          "xmlns:saml" => "urn:oasis:names:tc:SAML:2.0:assertion",
-          "ID" => "_#{uuid}",
-          "Version" => "2.0",
-          "IssueInstant" => issue_instant,
-          "Destination" => settings.idp_entity_id,
-          "AssertionConsumerServiceIndex" => settings.acs_index
-        }
+        @authn_request_attributes ||=
+          begin
+            attributes = {
+              "xmlns:samlp" => "urn:oasis:names:tc:SAML:2.0:protocol",
+              "xmlns:saml" => "urn:oasis:names:tc:SAML:2.0:assertion",
+              "ID" => "_#{uuid}",
+              "Version" => "2.0",
+              "IssueInstant" => issue_instant,
+              "Destination" => settings.idp_entity_id,
+              "AssertionConsumerServiceIndex" => settings.acs_index
+            }
+            attributes["ForceAuthn"] = true if settings.force_authn?
+            attributes
+          end
       end
+      # rubocop:enable Metrics/MethodLength
 
       def issuer
         @issuer ||=

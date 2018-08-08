@@ -17,16 +17,19 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
 
   let(:idp_metadata_dir_path) { generate_fixture_path("config/idp_metadata") }
 
+  let(:idp_entity_id) { "https://identity.provider" }
   let(:idp_sso_target_url) { "https://identity.provider/sso" }
   let(:protocol_binding) { "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" }
   let(:sp_sso_target_url) { "#{sp_entity_id}/spid/sso" }
   let(:sp_entity_id) { "https://service.provider" }
   let(:relay_state) { "/path/to/return" }
+  let(:private_key) { File.read(generate_fixture_path("private-key.pem")) }
 
   before do
     Spid.configure do |config|
       config.hostname = "https://service.provider"
       config.idp_metadata_dir_path = idp_metadata_dir_path
+      config.private_key = private_key
     end
     Timecop.freeze
   end
@@ -74,7 +77,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
       end
 
       it "contains attribute Destination" do
-        expect(attributes["Destination"].value).to eq idp_sso_target_url
+        expect(attributes["Destination"].value).to eq idp_entity_id
       end
 
       describe "Signature node" do
@@ -112,14 +115,9 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
         end
       end
 
-      it "contains attribute AssertionConsumerServiceURL" do
-        attribute = attributes["AssertionConsumerServiceURL"].value
-        expect(attribute).to eq sp_sso_target_url
-      end
-
-      it "contains attribute ProtocolBinding" do
-        attribute = attributes["ProtocolBinding"].value
-        expect(attribute).to eq protocol_binding
+      it "contains attribute AssertionConsumerServiceIndex" do
+        attribute = attributes["AssertionConsumerServiceIndex"].value
+        expect(attribute).to eq "0"
       end
 
       xit "contains attribute AttributeConsumingServiceIndex"
