@@ -39,4 +39,23 @@ RSpec.describe Spid::Saml2::Utils::QueryParamsSigner do
       expect(signer.signature).to eq signature
     end
   end
+
+  describe "#signed_query_params" do
+    before do
+      allow(signer).to receive(:signature).and_return("a-signature")
+    end
+
+    let(:expected_params) do
+      a_hash_including(
+        "SAMLRequest",
+        "RelayState",
+        "SigAlg",
+        "Signature" => "a-signature"
+      )
+    end
+
+    it "returns query params with signature" do
+      expect(signer.signed_query_params).to match expected_params
+    end
+  end
 end

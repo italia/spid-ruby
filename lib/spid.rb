@@ -52,6 +52,12 @@ module Spid # :nodoc:
     RSA_SHA512
   ].freeze
 
+  SIGNATURE_ALGORITHMS = {
+    RSA_SHA256 => OpenSSL::Digest::SHA256.new,
+    RSA_SHA384 => OpenSSL::Digest::SHA384.new,
+    RSA_SHA512 => OpenSSL::Digest::SHA512.new
+  }.freeze
+
   L1 = "https://www.spid.gov.it/SpidL1"
   L2 = "https://www.spid.gov.it/SpidL2"
   L3 = "https://www.spid.gov.it/SpidL3"

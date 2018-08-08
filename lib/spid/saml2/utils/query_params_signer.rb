@@ -26,12 +26,7 @@ module Spid
         end
 
         def signature_algorithm
-          @signature_algorithm ||=
-            case signature_method
-            when Spid::RSA_SHA256 then OpenSSL::Digest::SHA256.new
-            when Spid::RSA_SHA384 then OpenSSL::Digest::SHA384.new
-            when Spid::RSA_SHA512 then OpenSSL::Digest::SHA512.new
-            end
+          @signature_algorithm ||= Spid::SIGNATURE_ALGORITHMS[signature_method]
         end
 
         def signature
@@ -39,6 +34,12 @@ module Spid
             begin
               encode(raw_signature)
             end
+        end
+
+        def signed_query_params
+          params_for_signature.merge(
+            "Signature" => signature
+          )
         end
 
         def raw_signature
