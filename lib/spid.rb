@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spid/saml2"
-require "spid/authn_request"
 require "spid/logout_request"
 require "spid/sso"
 require "spid/slo"

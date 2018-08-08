@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "spid/authn_request"
-require "onelogin/ruby-saml/settings"
-
 module Spid
   module Sso
     class Request # :nodoc:
