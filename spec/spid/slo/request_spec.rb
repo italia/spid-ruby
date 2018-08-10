@@ -14,8 +14,123 @@ RSpec.describe Spid::Slo::Request do
   let(:idp_name) { "idp-name" }
   let(:relay_state) { "/path/to/return" }
   let(:session_index) { "session-index" }
+  let(:signature_method) { Spid::RSA_SHA256 }
+  let(:private_key) { File.read(generate_fixture_path("private-key.pem")) }
 
   it { is_expected.to be_a described_class }
+
+  describe "#url" do
+    let(:settings) do
+      instance_double(
+        "Spid::Saml2::Settings",
+        idp_slo_target_url: "https://identity.provider/slo"
+      )
+    end
+
+    let(:query_params_signer) do
+      instance_double(
+        "Spid::Saml2::Utils::QueryParamsSigner",
+        escaped_signed_query_string: "params=value"
+      )
+    end
+
+    before do
+      allow(slo_request).
+        to receive(:query_params_signer).and_return(query_params_signer)
+
+      allow(slo_request).to receive(:settings).and_return(settings)
+    end
+
+    it "returns the slo authentication url for idp" do
+      expect(slo_request.url).to eq "https://identity.provider/slo?params=value"
+    end
+  end
+
+  describe "#query_params_signer" do
+    let(:settings) do
+      instance_double(
+        "Spid::Saml2::Settings",
+        signature_method: signature_method,
+        private_key: private_key
+      )
+    end
+
+    let(:saml_message) { double }
+
+    let(:expected_params) do
+      {
+        saml_message: saml_message,
+        relay_state: relay_state,
+        signature_method: signature_method,
+        private_key: private_key
+      }
+    end
+
+    before do
+      allow(slo_request).to receive(:saml_message).and_return(saml_message)
+      allow(slo_request).to receive(:settings).and_return(settings)
+
+      allow(Spid::Saml2::Utils::QueryParamsSigner).to receive(:new)
+    end
+
+    it "create a query params signer with attributes" do
+      slo_request.query_params_signer
+
+      expect(Spid::Saml2::Utils::QueryParamsSigner).
+        to have_received(:new).
+        with(expected_params)
+    end
+  end
+
+  describe "#settings" do
+    let(:identity_provider) { double }
+    let(:service_provider) { double }
+
+    let(:expected_params) do
+      {
+        service_provider: service_provider,
+        identity_provider: identity_provider
+      }
+    end
+
+    before do
+      allow(slo_request).
+        to receive(:identity_provider).and_return(identity_provider)
+
+      allow(slo_request).
+        to receive(:service_provider).and_return(service_provider)
+
+      allow(Spid::Saml2::Settings).to receive(:new)
+    end
+
+    it "provide attributes to settings object" do
+      slo_request.settings
+
+      expect(Spid::Saml2::Settings).
+        to have_received(:new).
+        with(expected_params)
+    end
+  end
+
+  describe "#logout_request" do
+    let(:settings) { double }
+    let(:session_index) { "a-session-index" }
+
+    before do
+      allow(slo_request).to receive(:settings).and_return(settings)
+      allow(slo_request).to receive(:session_index).and_return(session_index)
+
+      allow(Spid::Saml2::LogoutRequest).to receive(:new)
+    end
+
+    it "creates a LogoutRequest with settings" do
+      slo_request.logout_request
+
+      expect(Spid::Saml2::LogoutRequest).
+        to have_received(:new).
+        with(settings: settings, session_index: session_index)
+    end
+  end
 
   describe "#service_provider" do
     let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }
@@ -48,58 +163,6 @@ RSpec.describe Spid::Slo::Request do
 
     it "returns the identity_provider with provided name" do
       expect(slo_request.identity_provider).to eq identity_provider
-    end
-  end
-
-  describe "#url" do
-    let(:logout_request) do
-      instance_double("Spid::LogoutRequest")
-    end
-
-    let(:saml_settings) { instance_double("::OneLogin::RubySaml::Settings") }
-
-    let(:saml_object) { "<saml></saml>" }
-
-    before do
-      allow(slo_request).to receive(:logout_request).and_return(logout_request)
-
-      allow(slo_request).to receive(:saml_settings).and_return(saml_settings)
-
-      allow(logout_request).
-        to receive(:create).with(saml_settings, "RelayState" => relay_state).
-        and_return(saml_object)
-    end
-
-    it "returns the saml object" do
-      expect(slo_request.url).to eq saml_object
-    end
-  end
-
-  describe "#slo_settings" do
-    let(:identity_provider) { instance_double("Spid::Saml2::IdentityProvider") }
-    let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }
-    let(:expected_params) do
-      {
-        service_provider: service_provider,
-        identity_provider: identity_provider,
-        session_index: session_index
-      }
-    end
-
-    before do
-      allow(slo_request).
-        to receive(:identity_provider).and_return(identity_provider)
-
-      allow(slo_request).
-        to receive(:service_provider).and_return(service_provider)
-
-      allow(Spid::Slo::Settings).to receive(:new)
-    end
-
-    it "returns a new Spid::Slo::Settings instance with specific values" do
-      slo_request.slo_settings
-
-      expect(Spid::Slo::Settings).to have_received(:new).with(expected_params)
     end
   end
 end
