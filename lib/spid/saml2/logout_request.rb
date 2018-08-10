@@ -65,11 +65,12 @@ module Spid
       def name_id
         @name_id ||=
           begin
-            element = REXML::Element.new("saml:nameID")
+            element = REXML::Element.new("saml:NameID")
             element.add_attributes(
               "Format" => "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
               "NameQualifier" => settings.idp_entity_id
             )
+            element.text = "a-name-identifier-value"
             element
           end
       end

@@ -72,11 +72,15 @@ RSpec.describe Spid::Saml2::LogoutRequest do
         end
       end
 
-      describe "saml:nameID" do
-        let(:xpath) { super() + "/saml:nameID" }
+      describe "saml:NameID" do
+        let(:xpath) { super() + "/saml:NameID" }
 
         it "exists" do
           expect(node).not_to be_nil
+        end
+
+        xit "contains the name identifier value" do
+          expect(node.text).to eq "a-name-identifier-value"
         end
 
         {
