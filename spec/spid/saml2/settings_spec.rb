@@ -15,7 +15,8 @@ RSpec.describe Spid::Saml2::Settings do
     instance_double(
       "Spid::Saml2::IdentityProvider",
       entity_id: "https://identity.provider",
-      sso_target_url: "https://identity.provider/sso"
+      sso_target_url: "https://identity.provider/sso",
+      slo_target_url: "https://identity.provider/slo"
     )
   end
 
@@ -55,6 +56,12 @@ RSpec.describe Spid::Saml2::Settings do
   describe "#idp_sso_target_url" do
     it "returns the identity provider sso url" do
       expect(settings.idp_sso_target_url).to eq "https://identity.provider/sso"
+    end
+  end
+
+  describe "#idp_slo_target_url" do
+    it "returns the identity provider slo url" do
+      expect(settings.idp_slo_target_url).to eq "https://identity.provider/slo"
     end
   end
 

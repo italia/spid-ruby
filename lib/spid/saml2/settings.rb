@@ -27,6 +27,10 @@ module Spid
         identity_provider.sso_target_url
       end
 
+      def idp_slo_target_url
+        identity_provider.slo_target_url
+      end
+
       def sp_entity_id
         service_provider.host
       end
