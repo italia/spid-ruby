@@ -32,22 +32,16 @@ module Spid
           end
       end
 
-      # rubocop:disable Metrics/MethodLength
       def logout_request_attributes
-        @logout_request_attributes ||=
-          begin
-            attributes = {
-              "xmlns:samlp" => "urn:oasis:names:tc:SAML:2.0:protocol",
-              "xmlns:saml" => "urn:oasis:names:tc:SAML:2.0:assertion",
-              "ID" => "_#{uuid}",
-              "Version" => "2.0",
-              "IssueInstant" => issue_instant,
-              "Destination" => settings.idp_entity_id
-            }
-            attributes
-          end
+        @logout_request_attributes ||= {
+          "xmlns:samlp" => "urn:oasis:names:tc:SAML:2.0:protocol",
+          "xmlns:saml" => "urn:oasis:names:tc:SAML:2.0:assertion",
+          "ID" => "_#{uuid}",
+          "Version" => "2.0",
+          "IssueInstant" => issue_instant,
+          "Destination" => settings.idp_entity_id
+        }
       end
-      # rubocop:enable Metrics/MethodLength
 
       def issuer
         @issuer ||=
