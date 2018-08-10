@@ -50,7 +50,7 @@ module Spid
       end
 
       def settings
-        Spid::Saml2::Settings.new(
+        @settings ||= Spid::Saml2::Settings.new(
           identity_provider: identity_provider,
           service_provider: service_provider,
           authn_context: authn_context
