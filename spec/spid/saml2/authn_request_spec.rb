@@ -62,6 +62,8 @@ RSpec.describe Spid::Saml2::AuthnRequest do
 
       include_examples "hasn't attribute", "isPassive"
 
+      pending "contains 'AttributeConsumingServiceIndex' attribute"
+
       describe "samlp:NameIDPolicy" do
         let(:xpath) { super() + "/samlp:NameIDPolicy" }
 
