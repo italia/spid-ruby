@@ -32,7 +32,7 @@ module Spid
         @entity_descriptor_attributes ||= {
           "xmlns:ds" => "http://www.w3.org/2000/09/xmldsig#",
           "xmlns:md" => "urn:oasis:names:tc:SAML:2.0:metadata",
-          "EntityID" => settings.sp_entity_id,
+          "entityID" => settings.sp_entity_id,
           "ID" => "_#{uuid}"
         }
       end
