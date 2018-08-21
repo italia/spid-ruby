@@ -8,6 +8,7 @@ module Spid
       attr_reader :host
       attr_reader :acs_path
       attr_reader :slo_path
+      attr_reader :slo_binding
       attr_reader :metadata_path
       attr_reader :private_key
       attr_reader :certificate
@@ -16,10 +17,12 @@ module Spid
       attr_reader :attribute_service_name
 
       # rubocop:disable Metrics/ParameterLists
+      # rubocop:disable Metrics/MethodLength
       def initialize(
             host:,
             acs_path:,
             slo_path:,
+            slo_binding:,
             metadata_path:,
             private_key:,
             certificate:,
@@ -30,6 +33,7 @@ module Spid
         @host = host
         @acs_path               = acs_path
         @slo_path               = slo_path
+        @slo_binding            = slo_binding
         @metadata_path          = metadata_path
         @private_key            = private_key
         @certificate            = certificate
@@ -38,6 +42,7 @@ module Spid
         @attribute_service_name = attribute_service_name
         validate_attributes
       end
+      # rubocop:enable Metrics/MethodLength
       # rubocop:enable Metrics/ParameterLists
 
       def acs_url

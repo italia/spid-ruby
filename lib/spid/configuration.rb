@@ -57,9 +57,9 @@ module Spid
         begin
           Spid::Saml2::ServiceProvider.new(
             host: hostname, acs_path: acs_path, slo_path: slo_path,
-            metadata_path: metadata_path, private_key: private_key,
-            certificate: certificate, digest_method: digest_method,
-            signature_method: signature_method,
+            slo_binding: slo_binding, metadata_path: metadata_path,
+            private_key: private_key, certificate: certificate,
+            digest_method: digest_method, signature_method: signature_method,
             attribute_service_name: attribute_service_name
           )
         end

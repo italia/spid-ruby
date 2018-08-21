@@ -60,6 +60,9 @@ module Spid
         @slo_service ||=
           begin
             element = REXML::Element.new("md:SingleLogoutService")
+            element.add_attributes(
+              "Binding" => settings.sp_slo_service_binding
+            )
             element
           end
       end

@@ -26,7 +26,8 @@ RSpec.describe Spid::Saml2::Settings do
       host: "https://service.provider",
       signature_method: Spid::RSA_SHA256,
       private_key: private_key,
-      certificate: certificate
+      certificate: certificate,
+      slo_binding: "slo-binding-method"
     )
   end
 
@@ -95,6 +96,12 @@ RSpec.describe Spid::Saml2::Settings do
   describe "#sp_entity_id" do
     it "returns the service provider entity id" do
       expect(settings.sp_entity_id).to eq "https://service.provider"
+    end
+  end
+
+  describe "#sp_slo_service_binding" do
+    it "returns the service provider slo binding method" do
+      expect(settings.sp_slo_service_binding).to eq "slo-binding-method"
     end
   end
 

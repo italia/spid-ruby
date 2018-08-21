@@ -14,6 +14,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
     instance_double(
       "Spid::Saml2::Settings",
       sp_entity_id: "https://service.provider",
+      sp_slo_service_binding: "slo-binding-method",
       x509_certificate_der: "certificate-der"
     )
   end
@@ -63,6 +64,12 @@ RSpec.describe Spid::Saml2::SPMetadata do
 
           it "exists" do
             expect(node).not_to be_nil
+          end
+
+          {
+            "Binding" => "slo-binding-method"
+          }.each do |name, value|
+            include_examples "has attribute", name, value
           end
         end
 
