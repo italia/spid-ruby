@@ -4,13 +4,17 @@ require "spec_helper"
 
 RSpec.describe Spid::Saml2::SPMetadata do
   subject(:sp_metadata) do
-    described_class.new(settings: settings)
+    described_class.new(
+      settings: settings,
+      uuid: "unique-uuid"
+    )
   end
 
   let(:settings) do
     instance_double(
       "Spid::Saml2::Settings",
-      sp_entity_id: "https://service.provider"
+      sp_entity_id: "https://service.provider",
+      x509_certificate_der: "certificate-der"
     )
   end
 
@@ -32,7 +36,74 @@ RSpec.describe Spid::Saml2::SPMetadata do
         expect(node).not_to be_nil
       end
 
-      include_examples "has attribute", "EntityID", "https://service.provider"
+      {
+        "EntityID" => "https://service.provider",
+        "ID" => "_unique-uuid"
+      }.each do |name, value|
+        include_examples "has attribute", name, value
+      end
+
+      describe "md:SPSSODescriptor node" do
+        let(:xpath) { super() + "/md:SPSSODescriptor" }
+
+        it "exists" do
+          expect(node).not_to be_nil
+        end
+
+        {
+          "protocolSupportEnumeration" =>
+            "urn:oasis:names:tc:SAML:2.0:protocol",
+          "AuthnRequestsSigned" => "true"
+        }.each do |name, value|
+          include_examples "has attribute", name, value
+        end
+
+        describe "md:SingleLogoutService" do
+          let(:xpath) { super() + "/md:SingleLogoutService" }
+
+          it "exists" do
+            expect(node).not_to be_nil
+          end
+        end
+
+        describe "md:KeyDescriptor node" do
+          let(:xpath) { super() + "/md:KeyDescriptor" }
+
+          it "exists" do
+            expect(node).not_to be_nil
+          end
+
+          include_examples "has attribute", "use", "signing"
+
+          describe "ds:KeyInfo node" do
+            let(:xpath) { super() + "/ds:KeyInfo" }
+
+            it "exists" do
+              expect(node).not_to be_nil
+            end
+
+            describe "ds:X509Data" do
+              let(:xpath) { super() + "/ds:X509Data" }
+
+              it "exists" do
+                expect(node).not_to be_nil
+              end
+
+              describe "ds:X509Certificate" do
+                let(:xpath) { super() + "/ds:X509Certificate" }
+
+                it "exists" do
+                  expect(node).not_to be_nil
+                end
+
+                it "contains the certificate" do
+                  expect(node.text).to eq "certificate-der"
+                end
+              end
+            end
+          end
+        end
+      end
     end
   end
 end

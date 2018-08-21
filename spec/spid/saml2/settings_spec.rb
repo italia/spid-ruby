@@ -25,12 +25,21 @@ RSpec.describe Spid::Saml2::Settings do
       "Spid::Saml2::ServiceProvider",
       host: "https://service.provider",
       signature_method: Spid::RSA_SHA256,
-      private_key: private_key
+      private_key: private_key,
+      certificate: certificate
     )
   end
 
   let(:private_key) do
     File.read(generate_fixture_path("private-key.pem"))
+  end
+
+  let(:certificate) do
+    File.read(generate_fixture_path("certificate.pem"))
+  end
+
+  let(:der_certificate) do
+    File.read(generate_fixture_path("certificate.der.base64"))
   end
 
   let(:authn_context) { nil }
@@ -86,6 +95,13 @@ RSpec.describe Spid::Saml2::Settings do
   describe "#sp_entity_id" do
     it "returns the service provider entity id" do
       expect(settings.sp_entity_id).to eq "https://service.provider"
+    end
+  end
+
+  describe "x509_certificate_der" do
+    it "returns the certificate in der format in base64 encoding" do
+      expect(settings.x509_certificate_der).
+        to eq der_certificate
     end
   end
 

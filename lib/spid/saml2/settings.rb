@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "base64"
+
 module Spid
   module Saml2
     class Settings # :nodoc:
@@ -39,6 +41,10 @@ module Spid
         service_provider.private_key
       end
 
+      def certificate
+        service_provider.certificate
+      end
+
       def signature_method
         service_provider.signature_method
       end
@@ -49,6 +55,14 @@ module Spid
 
       def force_authn?
         authn_context > Spid::L1
+      end
+
+      def x509_certificate_der
+        @x509_certificate_der ||=
+          begin
+            cert = OpenSSL::X509::Certificate.new(certificate)
+            Base64.encode64(cert.to_der).delete("\n")
+          end
       end
     end
   end
