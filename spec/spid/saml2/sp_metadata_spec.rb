@@ -14,6 +14,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
     instance_double(
       "Spid::Saml2::Settings",
       sp_entity_id: "https://service.provider",
+      sp_slo_service_url: "https://service.provider/slo",
       sp_slo_service_binding: "slo-binding-method",
       x509_certificate_der: "certificate-der"
     )
@@ -67,7 +68,8 @@ RSpec.describe Spid::Saml2::SPMetadata do
           end
 
           {
-            "Binding" => "slo-binding-method"
+            "Binding" => "slo-binding-method",
+            "Location" => "https://service.provider/slo"
           }.each do |name, value|
             include_examples "has attribute", name, value
           end
