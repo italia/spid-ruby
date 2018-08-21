@@ -43,6 +43,7 @@ module Spid
             element = REXML::Element.new("md:SPSSODescriptor")
             element.add_attributes(sp_sso_descriptor_attributes)
             element.add_element key_descriptor
+            element.add_element ac_service
             element.add_element slo_service
             element
           end
@@ -53,6 +54,24 @@ module Spid
           "protocolSupportEnumeration" =>
             "urn:oasis:names:tc:SAML:2.0:protocol",
           "AuthnRequestsSigned" => true
+        }
+      end
+
+      def ac_service
+        @ac_service ||=
+          begin
+            element = REXML::Element.new("md:AssertionConsumerService")
+            element.add_attributes(ac_service_attributes)
+            element
+          end
+      end
+
+      def ac_service_attributes
+        @ac_service_attributes ||= {
+          "Binding" => settings.sp_acs_binding,
+          "Location" => settings.sp_acs_url,
+          "index" => 0,
+          "isDefault" => true
         }
       end
 

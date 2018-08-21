@@ -37,6 +37,14 @@ module Spid
         service_provider.host
       end
 
+      def sp_acs_url
+        service_provider.acs_url
+      end
+
+      def sp_acs_binding
+        service_provider.acs_binding
+      end
+
       def sp_slo_service_url
         service_provider.slo_url
       end

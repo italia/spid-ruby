@@ -9,6 +9,7 @@ RSpec.describe Spid::Saml2::ServiceProvider do
     {
       host: host,
       acs_path: acs_path,
+      acs_binding: acs_binding,
       slo_path: slo_path,
       slo_binding: slo_binding,
       metadata_path: metadata_path,
@@ -23,6 +24,7 @@ RSpec.describe Spid::Saml2::ServiceProvider do
   let(:host) { "https://service.provider" }
   let(:attribute_service_name) { "attribute-service-name" }
   let(:acs_path) { "/sso" }
+  let(:acs_binding) { "acs-binding-method" }
   let(:slo_path) { "/slo" }
   let(:slo_binding) { "slo-binding-method" }
   let(:metadata_path) { "/metadata" }

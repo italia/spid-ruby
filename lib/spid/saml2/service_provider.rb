@@ -7,6 +7,7 @@ module Spid
     class ServiceProvider # :nodoc:
       attr_reader :host
       attr_reader :acs_path
+      attr_reader :acs_binding
       attr_reader :slo_path
       attr_reader :slo_binding
       attr_reader :metadata_path
@@ -21,6 +22,7 @@ module Spid
       def initialize(
             host:,
             acs_path:,
+            acs_binding:,
             slo_path:,
             slo_binding:,
             metadata_path:,
@@ -32,6 +34,7 @@ module Spid
           )
         @host = host
         @acs_path               = acs_path
+        @acs_binding            = acs_binding
         @slo_path               = slo_path
         @slo_binding            = slo_binding
         @metadata_path          = metadata_path

@@ -56,11 +56,11 @@ module Spid
       @service_provider ||=
         begin
           Spid::Saml2::ServiceProvider.new(
-            host: hostname, acs_path: acs_path, slo_path: slo_path,
+            acs_binding: acs_binding, acs_path: acs_path, slo_path: slo_path,
             slo_binding: slo_binding, metadata_path: metadata_path,
             private_key: private_key, certificate: certificate,
             digest_method: digest_method, signature_method: signature_method,
-            attribute_service_name: attribute_service_name
+            attribute_service_name: attribute_service_name, host: hostname
           )
         end
     end

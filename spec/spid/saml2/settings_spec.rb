@@ -27,6 +27,8 @@ RSpec.describe Spid::Saml2::Settings do
       signature_method: Spid::RSA_SHA256,
       private_key: private_key,
       certificate: certificate,
+      acs_url: "acs-url",
+      acs_binding: "acs-binding-method",
       slo_url: "slo-url",
       slo_binding: "slo-binding-method"
     )
@@ -97,6 +99,18 @@ RSpec.describe Spid::Saml2::Settings do
   describe "#sp_entity_id" do
     it "returns the service provider entity id" do
       expect(settings.sp_entity_id).to eq "https://service.provider"
+    end
+  end
+
+  describe "#sp_acs_url" do
+    it "returns the service provider acs url" do
+      expect(settings.sp_acs_url).to eq "acs-url"
+    end
+  end
+
+  describe "#sp_acs_binding" do
+    it "returns the service provider acs binding method" do
+      expect(settings.sp_acs_binding).to eq "acs-binding-method"
     end
   end
 

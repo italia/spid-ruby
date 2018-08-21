@@ -14,6 +14,8 @@ RSpec.describe Spid::Saml2::SPMetadata do
     instance_double(
       "Spid::Saml2::Settings",
       sp_entity_id: "https://service.provider",
+      sp_acs_binding: "acs-binding-method",
+      sp_acs_url: "https://service.provider/sso",
       sp_slo_service_url: "https://service.provider/slo",
       sp_slo_service_binding: "slo-binding-method",
       x509_certificate_der: "certificate-der"
@@ -58,6 +60,23 @@ RSpec.describe Spid::Saml2::SPMetadata do
           "AuthnRequestsSigned" => "true"
         }.each do |name, value|
           include_examples "has attribute", name, value
+        end
+
+        describe "md:AssertionConsumerService" do
+          let(:xpath) { super() + "/md:AssertionConsumerService" }
+
+          it "exists" do
+            expect(node).not_to be_nil
+          end
+
+          {
+            "Binding" => "acs-binding-method",
+            "Location" => "https://service.provider/sso",
+            "index" => "0",
+            "isDefault" => "true"
+          }.each do |name, value|
+            include_examples "has attribute", name, value
+          end
         end
 
         describe "md:SingleLogoutService" do
