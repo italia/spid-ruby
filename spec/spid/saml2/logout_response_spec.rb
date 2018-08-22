@@ -18,4 +18,11 @@ RSpec.describe Spid::Saml2::LogoutResponse do
       expect(logout_response.issuer).to eq "https://identity.provider"
     end
   end
+
+  describe "#in_response_to" do
+    it "returns the associated request id of the response" do
+      expect(logout_response.in_response_to).
+        to eq "_21df91a89767879fc0f7df6a1490c6000c81644d"
+    end
+  end
 end

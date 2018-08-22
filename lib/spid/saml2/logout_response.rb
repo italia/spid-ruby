@@ -17,13 +17,15 @@ module Spid
         @document = REXML::Document.new(@saml_message)
       end
 
-      def valid?
-        true
-      end
-
       def issuer
         document.elements[
           "/samlp:LogoutResponse/saml:Issuer/text()"
+        ]&.value&.strip
+      end
+
+      def in_response_to
+        document.elements[
+          "/samlp:LogoutResponse/@InResponseTo"
         ]&.value&.strip
       end
     end
