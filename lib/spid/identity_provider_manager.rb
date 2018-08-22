@@ -30,7 +30,7 @@ module Spid
     end
 
     def self.parse_from_xml(name:, metadata:)
-      idp_metadata_parser = ::OneLogin::RubySaml::IdpMetadataParser.new
+      idp_metadata_parser = ::Spid::Saml2::IdpMetadataParser.new
       idp_settings = idp_metadata_parser.parse_to_hash(metadata)
       ::Spid::Saml2::IdentityProvider.new(
         name: name,

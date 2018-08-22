@@ -9,6 +9,7 @@ require "spid/saml2/logout_request"
 require "spid/saml2/logout_response"
 require "spid/saml2/sp_metadata"
 require "spid/saml2/utils"
+require "spid/saml2/idp_metadata_parser"
 
 module Spid
   module Saml2 # :nodoc:

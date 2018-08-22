@@ -52,6 +52,9 @@ module Spid # :nodoc:
   ].freeze
 
   SIGNATURE_ALGORITHMS = {
+    SHA256 => OpenSSL::Digest::SHA256.new,
+    SHA384 => OpenSSL::Digest::SHA384.new,
+    SHA512 => OpenSSL::Digest::SHA512.new,
     RSA_SHA256 => OpenSSL::Digest::SHA256.new,
     RSA_SHA384 => OpenSSL::Digest::SHA384.new,
     RSA_SHA512 => OpenSSL::Digest::SHA512.new

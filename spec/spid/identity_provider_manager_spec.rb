@@ -77,7 +77,8 @@ RSpec.describe Spid::IdentityProviderManager do
     let(:sso_target_url) { "https://identity.provider/sso" }
     let(:slo_target_url) { "https://identity.provider/slo" }
     let(:cert_fingerprint) do
-      "C6:82:11:E5:44:22:53:58:05:B2:3F:2D:24:52:8B:17:95:C3:62:89"
+      "4A:03:91:AB:BB:2E:BB:1B:27:5C:BC:B9:1F:BB:7D:AC:" \
+      "0A:95:70:77:47:9C:2D:AE:6C:67:4E:4C:53:81:9A:F8"
     end
 
     let(:expected_param) do
