@@ -24,44 +24,6 @@ module Spid
       attr_reader :response
       attr_reader :options
 
-      # Parse the Identity Provider metadata and update the settings with the
-      # IdP values
-      #
-      # @param url [String] Url where the XML of the Identity Provider Metadata is published.
-      # @param validate_cert [Boolean] If true and the URL is HTTPs, the cert of the domain is checked.
-      #
-      # @param options [Hash] options used for parsing the metadata and the returned Settings instance
-      # @option options [OneLogin::RubySaml::Settings, Hash] :settings the OneLogin::RubySaml::Settings object which gets the parsed metadata merged into or an hash for Settings overrides.
-      # @option options [Array<String>, nil] :sso_binding an ordered list of bindings to detect the single signon URL. The first binding in the list that is included in the metadata will be used.
-      # @option options [Array<String>, nil] :slo_binding an ordered list of bindings to detect the single logout URL. The first binding in the list that is included in the metadata will be used.
-      # @option options [String, nil] :entity_id when this is given, the entity descriptor for this ID is used. When ommitted, the first entity descriptor is used.
-      #
-      # @return [OneLogin::RubySaml::Settings]
-      #
-      # @raise [HttpError] Failure to fetch remote IdP metadata
-      def parse_remote(url, validate_cert = true, options = {})
-        idp_metadata = get_idp_metadata(url, validate_cert)
-        parse(idp_metadata, options)
-      end
-
-      # Parse the Identity Provider metadata and return the results as Hash
-      #
-      # @param url [String] Url where the XML of the Identity Provider Metadata is published.
-      # @param validate_cert [Boolean] If true and the URL is HTTPs, the cert of the domain is checked.
-      #
-      # @param options [Hash] options used for parsing the metadata
-      # @option options [Array<String>, nil] :sso_binding an ordered list of bindings to detect the single signon URL. The first binding in the list that is included in the metadata will be used.
-      # @option options [Array<String>, nil] :slo_binding an ordered list of bindings to detect the single logout URL. The first binding in the list that is included in the metadata will be used.
-      # @option options [String, nil] :entity_id when this is given, the entity descriptor for this ID is used. When ommitted, the first entity descriptor is used.
-      #
-      # @return [Hash]
-      #
-      # @raise [HttpError] Failure to fetch remote IdP metadata
-      def parse_remote_to_hash(url, validate_cert = true, options = {})
-        idp_metadata = get_idp_metadata(url, validate_cert)
-        parse_to_hash(idp_metadata, options)
-      end
-
       # Parse the Identity Provider metadata and return the results as Hash
       #
       # @param idp_metadata [String]
