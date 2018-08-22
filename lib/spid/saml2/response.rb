@@ -4,7 +4,7 @@ require "spid/saml2/utils"
 
 module Spid
   module Saml2
-    class AuthnAssertion # :nodoc:
+    class Response # :nodoc:
       include Spid::Saml2::Utils
 
       attr_reader :body

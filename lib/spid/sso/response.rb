@@ -45,7 +45,7 @@ module Spid
       end
 
       def saml_response
-        @saml_response ||= Spid::Saml2::AuthnAssertion.new(body: body)
+        @saml_response ||= Spid::Saml2::Response.new(body: body)
       end
 
       private
