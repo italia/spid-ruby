@@ -33,6 +33,12 @@ module Spid
         ]&.value
       end
 
+      def destination
+        document.elements[
+          "/samlp:Response/@Destination"
+        ]&.value
+      end
+
       def attributes
         main_xpath = "/samlp:Response/saml:Assertion/saml:AttributeStatement"
         main_xpath = "#{main_xpath}/saml:Attribute"
