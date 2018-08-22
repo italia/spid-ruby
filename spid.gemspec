@@ -26,7 +26,6 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "activesupport", ">= 3.0.0", "< 5.3"
   spec.add_runtime_dependency "rack", ">= 1", "< 3"
-  spec.add_runtime_dependency "ruby-saml", "~> 1.8", ">= 1.8.0"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "bundler-audit", "~> 0"

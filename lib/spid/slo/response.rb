@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "onelogin/ruby-saml/logoutresponse"
-
 module Spid
   module Slo
     class Response # :nodoc:
@@ -40,16 +38,6 @@ module Spid
       def saml_response
         @saml_response ||= Spid::Saml2::LogoutResponse.new(
           body: body
-        )
-      end
-
-      private
-
-      def saml_responseold
-        ::OneLogin::RubySaml::Logoutresponse.new(
-          body,
-          nil,
-          matches_request_id: matches_request_id
         )
       end
     end

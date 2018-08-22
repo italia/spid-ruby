@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spid/saml2"
-require "spid/logout_request"
 require "spid/sso"
 require "spid/slo"
 require "spid/rack"
@@ -31,9 +30,9 @@ module Spid # :nodoc:
     MAXIMUM_COMPARISON
   ].freeze
 
-  SHA256 = XMLSecurity::Document::SHA256
-  SHA384 = XMLSecurity::Document::SHA384
-  SHA512 = XMLSecurity::Document::SHA512
+  SHA256 = "http://www.w3.org/2001/04/xmlenc#sha256"
+  SHA384 = "http://www.w3.org/2001/04/xmldsig-more#sha384"
+  SHA512 = "http://www.w3.org/2001/04/xmlenc#sha512"
 
   DIGEST_METHODS = [
     SHA256,
@@ -41,9 +40,9 @@ module Spid # :nodoc:
     SHA512
   ].freeze
 
-  RSA_SHA256 = XMLSecurity::Document::RSA_SHA256
-  RSA_SHA384 = XMLSecurity::Document::RSA_SHA384
-  RSA_SHA512 = XMLSecurity::Document::RSA_SHA512
+  RSA_SHA256 = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"
+  RSA_SHA384 = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"
+  RSA_SHA512 = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"
 
   SIGNATURE_METHODS = [
     RSA_SHA256,

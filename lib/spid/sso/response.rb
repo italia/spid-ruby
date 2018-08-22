@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "onelogin/ruby-saml/response"
 require "active_support/inflector/methods"
 
 module Spid
