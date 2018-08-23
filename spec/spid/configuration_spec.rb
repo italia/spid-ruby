@@ -23,7 +23,7 @@ RSpec.describe Spid::Configuration do
     end
   end
 
-  describe "#default_relay_state_url" do
+  describe "#default_relay_state_path" do
     it "has a default value" do
       expect(config.default_relay_state_path).to eq "/"
     end
