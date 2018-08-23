@@ -2,14 +2,16 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::ServiceProvider do
+RSpec.describe Spid::Saml2::ServiceProvider do
   subject(:service_provider) { described_class.new service_provider_attributes }
 
   let(:service_provider_attributes) do
     {
       host: host,
       acs_path: acs_path,
+      acs_binding: acs_binding,
       slo_path: slo_path,
+      slo_binding: slo_binding,
       metadata_path: metadata_path,
       private_key: private_key,
       certificate: certificate,
@@ -22,7 +24,9 @@ RSpec.describe Spid::ServiceProvider do
   let(:host) { "https://service.provider" }
   let(:attribute_service_name) { "attribute-service-name" }
   let(:acs_path) { "/sso" }
+  let(:acs_binding) { "acs-binding-method" }
   let(:slo_path) { "/slo" }
+  let(:slo_binding) { "slo-binding-method" }
   let(:metadata_path) { "/metadata" }
   let(:private_key) { "private_key" }
   let(:certificate) { "certificate" }
@@ -41,6 +45,10 @@ RSpec.describe Spid::ServiceProvider do
 
   it "requires a slo path" do
     expect(service_provider.slo_path).to eq slo_path
+  end
+
+  it "requires a slo binding" do
+    expect(service_provider.slo_binding).to eq slo_binding
   end
 
   it "requires a metadata path" do
@@ -100,7 +108,8 @@ RSpec.describe Spid::ServiceProvider do
 
   describe "#metadata_url" do
     it "generates the metadata url" do
-      expect(service_provider.metadata_url).to eq "https://service.provider/metadata"
+      expect(service_provider.metadata_url).
+        to eq "https://service.provider/metadata"
     end
   end
 end

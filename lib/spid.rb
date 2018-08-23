@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
-require "spid/authn_request"
-require "spid/logout_request"
+require "spid/saml2"
 require "spid/sso"
 require "spid/slo"
 require "spid/rack"
 require "spid/metadata"
 require "spid/version"
 require "spid/configuration"
-require "spid/identity_provider"
-require "spid/service_provider"
 require "spid/identity_provider_manager"
 
 module Spid # :nodoc:
@@ -33,9 +30,9 @@ module Spid # :nodoc:
     MAXIMUM_COMPARISON
   ].freeze
 
-  SHA256 = XMLSecurity::Document::SHA256
-  SHA384 = XMLSecurity::Document::SHA384
-  SHA512 = XMLSecurity::Document::SHA512
+  SHA256 = "http://www.w3.org/2001/04/xmlenc#sha256"
+  SHA384 = "http://www.w3.org/2001/04/xmldsig-more#sha384"
+  SHA512 = "http://www.w3.org/2001/04/xmlenc#sha512"
 
   DIGEST_METHODS = [
     SHA256,
@@ -43,15 +40,24 @@ module Spid # :nodoc:
     SHA512
   ].freeze
 
-  RSA_SHA256 = XMLSecurity::Document::RSA_SHA256
-  RSA_SHA384 = XMLSecurity::Document::RSA_SHA384
-  RSA_SHA512 = XMLSecurity::Document::RSA_SHA512
+  RSA_SHA256 = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"
+  RSA_SHA384 = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"
+  RSA_SHA512 = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"
 
   SIGNATURE_METHODS = [
     RSA_SHA256,
     RSA_SHA384,
     RSA_SHA512
   ].freeze
+
+  SIGNATURE_ALGORITHMS = {
+    SHA256 => OpenSSL::Digest::SHA256.new,
+    SHA384 => OpenSSL::Digest::SHA384.new,
+    SHA512 => OpenSSL::Digest::SHA512.new,
+    RSA_SHA256 => OpenSSL::Digest::SHA256.new,
+    RSA_SHA384 => OpenSSL::Digest::SHA384.new,
+    RSA_SHA512 => OpenSSL::Digest::SHA512.new
+  }.freeze
 
   L1 = "https://www.spid.gov.it/SpidL1"
   L2 = "https://www.spid.gov.it/SpidL2"

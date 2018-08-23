@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "spid/logout_request"
-require "onelogin/ruby-saml/settings"
-
 module Spid
   module Slo
     class Request # :nodoc:
@@ -20,21 +17,39 @@ module Spid
       end
 
       def url
-        logout_request.create(
-          saml_settings,
-          "RelayState" => relay_state
+        [
+          settings.idp_slo_target_url,
+          query_params_signer.escaped_signed_query_string
+        ].join("?")
+      end
+
+      def query_params_signer
+        @query_params_signer ||=
+          begin
+            Spid::Saml2::Utils::QueryParamsSigner.new(
+              saml_message: saml_message,
+              relay_state: relay_state,
+              private_key: settings.private_key,
+              signature_method: settings.signature_method
+            )
+          end
+      end
+
+      def saml_message
+        @saml_message ||= logout_request.to_saml
+      end
+
+      def logout_request
+        @logout_request ||= Spid::Saml2::LogoutRequest.new(
+          settings: settings,
+          session_index: session_index
         )
       end
 
-      def saml_settings
-        slo_settings.saml_settings
-      end
-
-      def slo_settings
-        Settings.new(
+      def settings
+        @settings ||= Spid::Saml2::Settings.new(
           service_provider: service_provider,
-          identity_provider: identity_provider,
-          session_index: session_index
+          identity_provider: identity_provider
         )
       end
 
@@ -46,12 +61,6 @@ module Spid
       def service_provider
         @service_provider ||=
           Spid.configuration.service_provider
-      end
-
-      private
-
-      def logout_request
-        LogoutRequest.new
       end
     end
   end

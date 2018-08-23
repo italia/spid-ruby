@@ -58,8 +58,8 @@ RSpec.describe "Receiving a SSO assertion" do
       a_hash_including(
         "session_index" => "_be9967abd904ddcae3c0eb4189adbe3f71e327cf93",
         "attributes" => a_hash_including(
-          "family_name" => ["Rossi"],
-          "spid_code" => ["ABCDEFGHILMNOPQ"]
+          "family_name" => "Rossi",
+          "spid_code" => "ABCDEFGHILMNOPQ"
         )
       )
     end

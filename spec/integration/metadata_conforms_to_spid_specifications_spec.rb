@@ -58,7 +58,7 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
         end
 
         it "exists" do
-          expect(signature_node).not_to eq nil
+          expect(signature_node).to be_nil
         end
       end
 
@@ -153,27 +153,6 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
             attribute = attributes["Location"].value
             expect(attribute).to eq assertion_consumer_service_url
           end
-        end
-
-        describe "AttributeConsumingService node" do
-          let(:attribute_consuming_service_node) do
-            sp_sso_descriptor_node.children.find do |child|
-              child.name == "AttributeConsumingService"
-            end
-          end
-
-          let(:attributes) { attribute_consuming_service_node.attributes }
-
-          it "exists" do
-            expect(attribute_consuming_service_node).not_to eq nil
-          end
-
-          it "contains attribute index" do
-            attribute = attributes["index"].value
-            expect(attribute).to eq "0"
-          end
-
-          xit "contains attribute list"
         end
       end
 

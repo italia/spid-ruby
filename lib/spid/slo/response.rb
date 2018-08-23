@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "onelogin/ruby-saml/logoutresponse"
-
 module Spid
   module Slo
     class Response # :nodoc:
@@ -16,23 +14,11 @@ module Spid
       end
 
       def valid?
-        validated_saml_response.validate
+        saml_response.in_response_to == matches_request_id
       end
 
       def errors
-        validated_saml_response.errors
-      end
-
-      def saml_settings
-        slo_settings.saml_settings
-      end
-
-      def slo_settings
-        Settings.new(
-          service_provider: service_provider,
-          identity_provider: identity_provider,
-          session_index: session_index
-        )
+        []
       end
 
       def identity_provider
@@ -46,26 +32,13 @@ module Spid
       end
 
       def issuer
-        saml_response.issuer.strip
+        saml_response.issuer
       end
-
-      private
 
       def saml_response
-        ::OneLogin::RubySaml::Logoutresponse.new(
-          body,
-          nil,
-          matches_request_id: matches_request_id
+        @saml_response ||= Spid::Saml2::LogoutResponse.new(
+          body: body
         )
-      end
-
-      def validated_saml_response
-        @validated_saml_response ||=
-          begin
-            response = saml_response
-            response.settings = saml_settings
-            response
-          end
       end
     end
   end

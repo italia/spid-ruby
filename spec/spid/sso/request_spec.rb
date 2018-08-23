@@ -14,72 +14,77 @@ RSpec.describe Spid::Sso::Request do
   let(:idp_name) { "idp-name" }
   let(:relay_state) { "/path/to/return" }
   let(:authn_context) { Spid::L1 }
+  let(:signature_method) { Spid::RSA_SHA256 }
+  let(:private_key) { File.read(generate_fixture_path("private-key.pem")) }
 
   it { is_expected.to be_a described_class }
 
-  describe "#service_provider" do
-    let(:service_provider) { instance_double("Spid::ServiceProvider") }
-
-    let(:spid_configuration) do
+  describe "#url" do
+    let(:settings) do
       instance_double(
-        "Spid::Configuration",
-        service_provider: service_provider
+        "Spid::Saml2::Settings",
+        idp_sso_target_url: "https://identity.provider/sso"
+      )
+    end
+
+    let(:query_params_signer) do
+      instance_double(
+        "Spid::Saml2::Utils::QueryParamsSigner",
+        escaped_signed_query_string: "params=value"
       )
     end
 
     before do
-      allow(Spid).to receive(:configuration).and_return(spid_configuration)
+      allow(sso_request).
+        to receive(:query_params_signer).and_return(query_params_signer)
+
+      allow(sso_request).to receive(:settings).and_return(settings)
     end
 
-    it "returns a service provider configuration" do
-      expect(sso_request.service_provider).to eq service_provider
+    it "returns the sso authentication url for idp" do
+      expect(sso_request.url).to eq "https://identity.provider/sso?params=value"
     end
   end
 
-  describe "#identity_provider" do
-    let(:identity_provider) { instance_double("Spid::IdentityProvider") }
+  describe "#query_params_signer" do
+    let(:settings) do
+      instance_double(
+        "Spid::Saml2::Settings",
+        signature_method: signature_method,
+        private_key: private_key
+      )
+    end
+
+    let(:saml_message) { double }
+
+    let(:expected_params) do
+      {
+        saml_message: saml_message,
+        relay_state: relay_state,
+        signature_method: signature_method,
+        private_key: private_key
+      }
+    end
 
     before do
-      allow(Spid::IdentityProviderManager).
-        to receive(:find_by_name).
-        with(idp_name).
-        and_return(identity_provider)
+      allow(sso_request).to receive(:saml_message).and_return(saml_message)
+      allow(sso_request).to receive(:settings).and_return(settings)
+
+      allow(Spid::Saml2::Utils::QueryParamsSigner).to receive(:new)
     end
 
-    it "returns the identity_provider with provided name" do
-      expect(sso_request.identity_provider).to eq identity_provider
-    end
-  end
+    it "create a query params signer with attributes" do
+      sso_request.query_params_signer
 
-  describe "#url" do
-    let(:authn_request) do
-      instance_double("Spid::AuthnRequest")
-    end
-
-    let(:saml_settings) { instance_double("::OneLogin::RubySaml::Settings") }
-
-    let(:saml_object) { "<saml></saml>" }
-
-    let(:antani) { sso_request }
-
-    before do
-      allow(sso_request).to receive(:authn_request).and_return(authn_request)
-
-      allow(sso_request).to receive(:saml_settings).and_return(saml_settings)
-
-      allow(authn_request).
-        to receive(:create).with(saml_settings, "RelayState" => relay_state).
-        and_return(saml_object)
-    end
-
-    it "returns the saml object" do
-      expect(sso_request.url).to eq saml_object
+      expect(Spid::Saml2::Utils::QueryParamsSigner).
+        to have_received(:new).
+        with(expected_params)
     end
   end
 
-  describe "#sso_settings" do
-    let(:identity_provider) { instance_double("Spid::IdentityProvider") }
-    let(:service_provider) { instance_double("Spid::ServiceProvider") }
+  describe "#settings" do
+    let(:identity_provider) { double }
+    let(:service_provider) { double }
 
     let(:expected_params) do
       {
@@ -96,13 +101,67 @@ RSpec.describe Spid::Sso::Request do
       allow(sso_request).
         to receive(:service_provider).and_return(service_provider)
 
-      allow(Spid::Sso::Settings).to receive(:new)
+      allow(Spid::Saml2::Settings).to receive(:new)
     end
 
-    it "returns a new Spid::Sso::Settings instance with specific values" do
-      sso_request.sso_settings
+    it "provide attributes to settings object" do
+      sso_request.settings
 
-      expect(Spid::Sso::Settings).to have_received(:new).with(expected_params)
+      expect(Spid::Saml2::Settings).
+        to have_received(:new).
+        with(expected_params)
+    end
+  end
+
+  describe "#authn_request" do
+    let(:settings) { double }
+
+    before do
+      allow(sso_request).to receive(:settings).and_return(settings)
+
+      allow(Spid::Saml2::AuthnRequest).to receive(:new)
+    end
+
+    it "creates a AuthnRequest with settings" do
+      sso_request.authn_request
+
+      expect(Spid::Saml2::AuthnRequest).
+        to have_received(:new).
+        with(settings: settings)
+    end
+  end
+
+  describe "#identity_provider" do
+    let(:identity_provider) { double }
+
+    before do
+      allow(Spid::IdentityProviderManager).
+        to receive(:find_by_name).
+        with(idp_name).
+        and_return(identity_provider)
+    end
+
+    it "returns the identity_provider with provided name" do
+      expect(sso_request.identity_provider).to eq identity_provider
+    end
+  end
+
+  describe "#service_provider" do
+    let(:service_provider) { double }
+
+    let(:spid_configuration) do
+      instance_double(
+        "Spid::Configuration",
+        service_provider: service_provider
+      )
+    end
+
+    before do
+      allow(Spid).to receive(:configuration).and_return(spid_configuration)
+    end
+
+    it "returns a service provider configuration" do
+      expect(sso_request.service_provider).to eq service_provider
     end
   end
 end

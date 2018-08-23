@@ -3,6 +3,7 @@ require: rubocop-rspec
 AllCops:
   Exclude:
     - bin/stubs/*
+    - lib/spid/saml2/idp_metadata_parser.rb
   TargetRubyVersion: 2.3
 
 Layout/DotPosition:
@@ -22,6 +23,8 @@ RSpec/FilePath:
   Exclude:
     - spec/integration/**/*.rb
     - spec/requests/**/*.rb
+RSpec/MultipleExpectations:
+  Max: 2
 RSpec/NestedGroups:
   Enabled: false
 RSpec/SubjectStub:

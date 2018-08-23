@@ -16,7 +16,7 @@ RSpec.describe Spid::Slo::Response do
   let(:request_id) { "a-request-id" }
 
   describe "#service_provider" do
-    let(:service_provider) { instance_double("Spid::ServiceProvider") }
+    let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }
 
     let(:spid_configuration) do
       instance_double(
@@ -35,7 +35,7 @@ RSpec.describe Spid::Slo::Response do
   end
 
   describe "#identity_provider" do
-    let(:identity_provider) { instance_double("Spid::IdentityProvider") }
+    let(:identity_provider) { instance_double("Spid::Saml2::IdentityProvider") }
     let(:issuer) { "https://identity.provider" }
 
     before do
