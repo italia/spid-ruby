@@ -15,6 +15,7 @@ RSpec.describe Spid::Saml2::LogoutRequest do
     instance_double(
       "Spid::Saml2::Settings",
       idp_entity_id: "https://identity.provider",
+      idp_slo_target_url: "https://identity.provider/slo",
       sp_entity_id: "https://service.provider"
     )
   end
@@ -48,7 +49,7 @@ RSpec.describe Spid::Saml2::LogoutRequest do
         "ID" => "_unique-uuid",
         "Version" => "2.0",
         "IssueInstant" => "2018-08-04T00:00:00Z",
-        "Destination" => "https://identity.provider"
+        "Destination" => "https://identity.provider/slo"
       }.each do |name, value|
         include_examples "has attribute", name, value
       end

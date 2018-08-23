@@ -73,7 +73,7 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
       end
 
       it "contains attribute Destination" do
-        expect(attributes["Destination"].value).to eq idp_entity_id
+        expect(attributes["Destination"].value).to eq idp_slo_target_url
       end
 
       describe "Issuer node" do

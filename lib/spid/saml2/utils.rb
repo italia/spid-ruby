@@ -22,6 +22,8 @@ module Spid
 
       def inflate(message)
         Zlib::Inflate.new(-Zlib::MAX_WBITS).inflate(message)
+      rescue Zlib::DataError => _e
+        message
       end
 
       def deflate_and_encode(message)

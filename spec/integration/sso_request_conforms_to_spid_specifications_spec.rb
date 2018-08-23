@@ -77,7 +77,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
       end
 
       it "contains attribute Destination" do
-        expect(attributes["Destination"].value).to eq idp_entity_id
+        expect(attributes["Destination"].value).to eq idp_sso_target_url
       end
 
       describe "Signature node" do

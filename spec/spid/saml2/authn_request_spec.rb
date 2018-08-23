@@ -14,6 +14,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
     instance_double(
       "Spid::Saml2::Settings",
       idp_entity_id: "https://identity.provider",
+      idp_sso_target_url: "https://identity.provider/sso",
       sp_entity_id: "https://service.provider",
       authn_context: Spid::L1,
       acs_index: "0",
@@ -54,7 +55,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
         "ID" => "_unique-uuid",
         "Version" => "2.0",
         "IssueInstant" => "2018-08-04T00:00:00Z",
-        "Destination" => "https://identity.provider",
+        "Destination" => "https://identity.provider/sso",
         "AssertionConsumerServiceIndex" => "0"
       }.each do |name, value|
         include_examples "has attribute", name, value
