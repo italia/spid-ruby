@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Use custom Saml2 library instead of ruby-saml gem
 
 ## [0.10.0] - 2018-08-02
 ### Added
