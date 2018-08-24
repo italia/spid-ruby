@@ -15,7 +15,7 @@ module Spid
       attr_reader :certificate
       attr_reader :digest_method
       attr_reader :signature_method
-      attr_reader :attribute_service_name
+      attr_reader :attribute_services
 
       # rubocop:disable Metrics/ParameterLists
       # rubocop:disable Metrics/MethodLength
@@ -30,7 +30,7 @@ module Spid
             certificate:,
             digest_method:,
             signature_method:,
-            attribute_service_name:
+            attribute_services:
           )
         @host = host
         @acs_path               = acs_path
@@ -42,7 +42,8 @@ module Spid
         @certificate            = certificate
         @digest_method          = digest_method
         @signature_method       = signature_method
-        @attribute_service_name = attribute_service_name
+        @attribute_services     = attribute_services
+        validate_digest_methods
         validate_attributes
       end
       # rubocop:enable Metrics/MethodLength
@@ -63,6 +64,22 @@ module Spid
       private
 
       def validate_attributes
+        if attribute_services.all? { |as| validate_attribute_service(as) }
+          return
+        end
+        raise UnknownAttributeFieldError,
+              "Provided attribute in services are not valid:" \
+              " use only fields in #{ATTRIBUTES.join(', ')}"
+      end
+
+      def validate_attribute_service(attribute_service)
+        return false unless attribute_service.key?(:name)
+        return false unless attribute_service.key?(:fields)
+        not_valid_fields = attribute_service[:fields] - ATTRIBUTES
+        not_valid_fields.empty?
+      end
+
+      def validate_digest_methods
         if !DIGEST_METHODS.include?(digest_method)
           raise UnknownDigestMethodError,
                 "Provided digest method is not valid:" \

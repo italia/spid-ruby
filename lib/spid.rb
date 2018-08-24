@@ -14,6 +14,8 @@ module Spid # :nodoc:
   class UnknownAuthnContextError < StandardError; end
   class UnknownDigestMethodError < StandardError; end
   class UnknownSignatureMethodError < StandardError; end
+  class UnknownAttributeFieldError < StandardError; end
+  class MissingAttributeServicesError < StandardError; end
 
   EXACT_COMPARISON = :exact
   MINIMUM_COMPARISON = :minimum
@@ -67,6 +69,24 @@ module Spid # :nodoc:
     L1,
     L2,
     L3
+  ].freeze
+
+  ATTRIBUTES = %i[
+    spid_code
+    name
+    family_name
+    place_of_birth
+    date_of_birth
+    gender
+    company_name
+    registered_office
+    fiscal_number
+    iva_code
+    id_card
+    mobile_phone
+    email
+    address
+    digital_address
   ].freeze
 
   class << self

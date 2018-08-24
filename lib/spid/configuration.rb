@@ -13,14 +13,14 @@ module Spid
     attr_accessor :signature_method
     attr_accessor :private_key
     attr_accessor :certificate
-    attr_accessor :attribute_service_name
     attr_accessor :default_relay_state_path
     attr_accessor :acs_binding
     attr_accessor :slo_binding
+    attr_accessor :attribute_services
 
     def initialize
       @idp_metadata_dir_path    = "idp_metadata"
-      @attribute_service_name   = nil
+      @attribute_services       = []
       init_endpoint
       init_bindings
       init_dig_sig_methods
@@ -60,7 +60,7 @@ module Spid
             slo_binding: slo_binding, metadata_path: metadata_path,
             private_key: private_key, certificate: certificate,
             digest_method: digest_method, signature_method: signature_method,
-            attribute_service_name: attribute_service_name, host: hostname
+            attribute_services: attribute_services, host: hostname
           )
         end
     end

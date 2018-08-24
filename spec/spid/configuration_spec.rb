@@ -17,12 +17,6 @@ RSpec.describe Spid::Configuration do
     end
   end
 
-  describe "#attribute_service_name" do
-    it "has not a default value" do
-      expect(config.attribute_service_name).to eq nil
-    end
-  end
-
   describe "#default_relay_state_path" do
     it "has a default value" do
       expect(config.default_relay_state_path).to eq "/"

@@ -16,6 +16,10 @@ RSpec.describe "Spid configuration" do
       config.signature_method = Spid::RSA_SHA512
       config.acs_binding = Spid::BINDINGS_HTTP_REDIRECT
       config.slo_binding = Spid::BINDINGS_HTTP_POST
+      config.attribute_services = [
+        { name: "Service 1 Name", fields: [:fiscal_number] },
+        { name: "Service 2 Name", fields: [:email] }
+      ]
     end
   end
 
@@ -38,7 +42,11 @@ RSpec.describe "Spid configuration" do
     digest_method: Spid::SHA512,
     signature_method: Spid::RSA_SHA512,
     acs_binding: Spid::BINDINGS_HTTP_REDIRECT,
-    slo_binding: Spid::BINDINGS_HTTP_POST
+    slo_binding: Spid::BINDINGS_HTTP_POST,
+    attribute_services: [
+      { name: "Service 1 Name", fields: [:fiscal_number] },
+      { name: "Service 2 Name", fields: [:email] }
+    ]
   }.each do |config_name, value|
     it "configure '#{config_name}" do
       expect(configuration.send(config_name)).to eq value
