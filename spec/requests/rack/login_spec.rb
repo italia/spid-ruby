@@ -102,5 +102,5 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
     end
   end
 
-  xdescribe "GET another path"
+  pending "GET another path"
 end

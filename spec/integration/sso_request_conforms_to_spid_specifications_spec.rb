@@ -123,7 +123,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
         expect(attribute).to eq "0"
       end
 
-      xit "contains attribute AttributeConsumingServiceIndex"
+      pending "contains attribute AttributeConsumingServiceIndex"
 
       describe "Issuer node" do
         let(:issuer_node) do
@@ -186,7 +186,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
           end
         end
 
-        xit "exists"
+        pending "exists"
       end
 
       describe "RequestedAuthnContext node" do

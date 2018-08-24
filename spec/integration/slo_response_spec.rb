@@ -58,7 +58,7 @@ RSpec.describe "Validation of Spid::Slo::Response" do
 
     it { is_expected.not_to be_valid }
 
-    xdescribe "#errors" do
+    pending "#errors" do
       it "contains an error" do
         slo_response.valid?
 

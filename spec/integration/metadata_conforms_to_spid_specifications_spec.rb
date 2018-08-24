@@ -120,7 +120,7 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
             expect(attribute).to eq single_logout_service_url
           end
 
-          xdescribe "Provide HTTP-POST binding"
+          pending "Provide HTTP-POST binding"
         end
 
         describe "AssertionConsumerService node" do
@@ -159,7 +159,7 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
         end
       end
 
-      xdescribe "Could contain Organization node"
+      pending "Could contain Organization node"
     end
   end
 end
