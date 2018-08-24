@@ -30,6 +30,9 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
       config.hostname = "https://service.provider"
       config.idp_metadata_dir_path = idp_metadata_dir_path
       config.private_key = private_key
+      config.attribute_services = [
+        { name: "Service 1", fields: [:email] }
+      ]
     end
     Timecop.freeze
   end

@@ -23,12 +23,19 @@ RSpec.describe "Using the Spid::Rack::Metadata middleware" do
     generate_fixture_path("config/idp_metadata")
   end
 
+  let(:attribute_services) do
+    [
+      { name: "Service 1", fields: [:email] }
+    ]
+  end
+
   before do
     Spid.configure do |config|
       config.idp_metadata_dir_path = metadata_dir_path
       config.certificate = certificate
       config.hostname = hostname
       config.metadata_path = metadata_path
+      config.attribute_services = attribute_services
     end
   end
 

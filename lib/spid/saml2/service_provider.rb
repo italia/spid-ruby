@@ -64,12 +64,14 @@ module Spid
       private
 
       def validate_attributes
-        if attribute_services.all? { |as| validate_attribute_service(as) }
-          return
+        if attribute_services.empty?
+          raise MissingAttributeServicesError,
+                "Provide at least one attribute service"
+        elsif attribute_services.any? { |as| !validate_attribute_service(as) }
+          raise UnknownAttributeFieldError,
+                "Provided attribute in services are not valid:" \
+                " use only fields in #{ATTRIBUTES.join(', ')}"
         end
-        raise UnknownAttributeFieldError,
-              "Provided attribute in services are not valid:" \
-              " use only fields in #{ATTRIBUTES.join(', ')}"
       end
 
       def validate_attribute_service(attribute_service)

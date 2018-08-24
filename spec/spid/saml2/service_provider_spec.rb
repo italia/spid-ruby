@@ -22,7 +22,7 @@ RSpec.describe Spid::Saml2::ServiceProvider do
   end
 
   let(:host) { "https://service.provider" }
-  let(:attribute_services) { [] }
+  let(:attribute_services) { [{ name: "Service 1", fields: [:email] }] }
   let(:acs_path) { "/sso" }
   let(:acs_binding) { "acs-binding-method" }
   let(:slo_path) { "/slo" }
