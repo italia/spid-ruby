@@ -11,20 +11,22 @@ RSpec.describe Spid::Saml2::ResponseValidator do
   let(:response) do
     instance_double(
       "Spid::Saml2::Response",
-      assertion_issuer: assertion_issuer
+      assertion_issuer: assertion_issuer,
+      destination: destination
     )
   end
 
   let(:settings) do
     instance_double(
       "Spid::Saml2::Settings",
-      idp_entity_id: "https://identity.provider"
+      idp_entity_id: "https://identity.provider",
+      sp_entity_id: "https://service.provider"
     )
   end
 
-  let(:assertion_issuer) do
-    "https://identity.provider"
-  end
+  let(:assertion_issuer) { "https://identity.provider" }
+
+  let(:destination) { "https://service.provider" }
 
   it { is_expected.to be_a described_class }
 
@@ -36,12 +38,26 @@ RSpec.describe Spid::Saml2::ResponseValidator do
     end
 
     context "when response issuer doesn't match setted issuer" do
-      let(:assertion_issuer) do
-        "https://another-identity.provider"
-      end
+      let(:assertion_issuer) { "https://another-identity.provider" }
 
       it "returns false" do
         expect(validator.issuer).to be_falsey
+      end
+    end
+  end
+
+  describe "#destination" do
+    context "when destination match the service provider entity id" do
+      it "returns true" do
+        expect(validator.destination).to be_truthy
+      end
+    end
+
+    context "when destination doesn't match the service provider entity id" do
+      let(:destination) { "https://another-service.provider" }
+
+      it "returns false" do
+        expect(validator.destination).to be_falsey
       end
     end
   end

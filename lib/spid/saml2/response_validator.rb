@@ -14,6 +14,10 @@ module Spid
       def issuer
         response.assertion_issuer == settings.idp_entity_id
       end
+
+      def destination
+        response.destination == settings.sp_entity_id
+      end
     end
   end
 end
