@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- AttributeConsumingService management
 
 ## [0.11.0] - 2018-08-23
 ### Changed
