@@ -29,6 +29,20 @@ RSpec.describe Spid::Saml2::Response do
     end
   end
 
+  describe "#conditions_not_before" do
+    it "returns the not before attribute of conditions node" do
+      expect(response.conditions_not_before).
+        to eq "2014-07-17T01:01:18Z"
+    end
+  end
+
+  describe "#conditions_not_on_or_after" do
+    it "returns the not on or after attribute of conditions node" do
+      expect(response.conditions_not_on_or_after).
+        to eq "2024-01-18T06:21:48Z"
+    end
+  end
+
   describe "#session_index" do
     it "returns the session index" do
       expect(response.session_index).

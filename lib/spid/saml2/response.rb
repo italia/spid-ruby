@@ -45,6 +45,18 @@ module Spid
         ]&.value
       end
 
+      def conditions_not_before
+        document.elements[
+          "/samlp:Response/saml:Assertion/saml:Conditions/@NotBefore"
+        ]&.value
+      end
+
+      def conditions_not_on_or_after
+        document.elements[
+          "/samlp:Response/saml:Assertion/saml:Conditions/@NotOnOrAfter"
+        ]&.value
+      end
+
       def attributes
         main_xpath = "/samlp:Response/saml:Assertion/saml:AttributeStatement"
         main_xpath = "#{main_xpath}/saml:Attribute"
