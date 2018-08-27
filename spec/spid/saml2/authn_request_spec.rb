@@ -16,6 +16,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
       idp_entity_id: "https://identity.provider",
       idp_sso_target_url: "https://identity.provider/sso",
       sp_entity_id: "https://service.provider",
+      attribute_index: "0",
       authn_context: Spid::L1,
       acs_index: "0",
       force_authn?: force_authn?
@@ -56,14 +57,13 @@ RSpec.describe Spid::Saml2::AuthnRequest do
         "Version" => "2.0",
         "IssueInstant" => "2018-08-04T00:00:00Z",
         "Destination" => "https://identity.provider/sso",
-        "AssertionConsumerServiceIndex" => "0"
+        "AssertionConsumerServiceIndex" => "0",
+        "AttributeConsumingServiceIndex" => "0"
       }.each do |name, value|
         include_examples "has attribute", name, value
       end
 
       include_examples "hasn't attribute", "isPassive"
-
-      pending "contains 'AttributeConsumingServiceIndex' attribute"
 
       describe "samlp:NameIDPolicy" do
         let(:xpath) { super() + "/samlp:NameIDPolicy" }
