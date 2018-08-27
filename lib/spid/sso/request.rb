@@ -5,17 +5,20 @@ module Spid
     class Request # :nodoc:
       attr_reader :idp_name
       attr_reader :relay_state
+      attr_reader :attribute_index
       attr_reader :authn_context
       attr_reader :authn_context_comparison
 
       def initialize(
             idp_name:,
+            attribute_index:,
             relay_state: nil,
             authn_context: nil
           )
         @idp_name = idp_name
         @relay_state = relay_state
         @authn_context = authn_context || Spid::L1
+        @attribute_index = attribute_index
         @relay_state =
           begin
             relay_state || Spid.configuration.default_relay_state_path
@@ -53,7 +56,8 @@ module Spid
         @settings ||= Spid::Saml2::Settings.new(
           identity_provider: identity_provider,
           service_provider: service_provider,
-          authn_context: authn_context
+          authn_context: authn_context,
+          attribute_index: attribute_index
         )
       end
 

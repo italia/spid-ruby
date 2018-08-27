@@ -7,6 +7,7 @@ RSpec.describe Spid::Sso::Request do
     described_class.new(
       idp_name: idp_name,
       relay_state: relay_state,
+      attribute_index: attribute_index,
       authn_context: authn_context
     )
   end
@@ -16,6 +17,7 @@ RSpec.describe Spid::Sso::Request do
   let(:authn_context) { Spid::L1 }
   let(:signature_method) { Spid::RSA_SHA256 }
   let(:private_key) { File.read(generate_fixture_path("private-key.pem")) }
+  let(:attribute_index) { "0" }
 
   it { is_expected.to be_a described_class }
 
@@ -90,6 +92,7 @@ RSpec.describe Spid::Sso::Request do
       {
         service_provider: service_provider,
         identity_provider: identity_provider,
+        attribute_index: attribute_index,
         authn_context: authn_context
       }
     end
