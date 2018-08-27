@@ -21,6 +21,12 @@ module Spid
         document.elements["/samlp:Response/saml:Issuer/text()"]&.value
       end
 
+      def name_id
+        document.elements[
+          "/samlp:Response/saml:Assertion/saml:Subject/saml:NameID/text()"
+        ]&.value
+      end
+
       def assertion_issuer
         document.elements[
           "/samlp:Response/saml:Assertion/saml:Issuer/text()"
