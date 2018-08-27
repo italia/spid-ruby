@@ -53,6 +53,10 @@ module Spid
         service_provider.slo_binding
       end
 
+      def sp_attribute_services
+        service_provider.attribute_services
+      end
+
       def private_key
         service_provider.private_key
       end

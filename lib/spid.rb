@@ -71,23 +71,25 @@ module Spid # :nodoc:
     L3
   ].freeze
 
-  ATTRIBUTES = %i[
-    spid_code
-    name
-    family_name
-    place_of_birth
-    date_of_birth
-    gender
-    company_name
-    registered_office
-    fiscal_number
-    iva_code
-    id_card
-    mobile_phone
-    email
-    address
-    digital_address
-  ].freeze
+  ATTRIBUTES_MAP = {
+    spid_code: "spidCode",
+    name: "name",
+    family_name: "familyName",
+    place_of_birth: "placeOfBirth",
+    date_of_birth: "dateOfBirth",
+    gender: "gender",
+    company_name: "companyName",
+    registered_office: "registeredOffice",
+    fiscal_number: "fiscalNumber",
+    iva_code: "ivaCode",
+    id_card: "idCard",
+    mobile_phone: "mobilePhone",
+    email: "email",
+    address: "address",
+    digital_address: "digitalAddress"
+  }.freeze
+
+  ATTRIBUTES = ATTRIBUTES_MAP.keys.freeze
 
   class << self
     attr_writer :configuration
