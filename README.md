@@ -35,7 +35,7 @@ gem "spid"
 |HTTP-POST binding||
 |`AssertionConsumerServiceURL` customization|✓|
 |`AssertionConsumerServiceIndex` customization||
-|`AttributeConsumingServiceIndex` customization||
+|`AttributeConsumingServiceIndex` customization|✓|
 |`AuthnContextClassRef` (SPID level) customization|✓|
 |`RequestedAuthnContext/@Comparison` customization||
 |`RelayState` customization (1.2.2)|✓|
