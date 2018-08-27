@@ -16,7 +16,7 @@ module Spid
       end
 
       def issuer
-        saml_response.issuer
+        saml_response.assertion_issuer
       end
 
       def attributes
