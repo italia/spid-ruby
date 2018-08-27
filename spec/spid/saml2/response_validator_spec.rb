@@ -12,7 +12,9 @@ RSpec.describe Spid::Saml2::ResponseValidator do
     instance_double(
       "Spid::Saml2::Response",
       assertion_issuer: assertion_issuer,
-      destination: destination
+      destination: destination,
+      conditions_not_before: "2018-01-01T00:00:00Z",
+      conditions_not_on_or_after: "2018-02-01T00:00:00Z"
     )
   end
 
@@ -58,6 +60,40 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
       it "returns false" do
         expect(validator.destination).to be_falsey
+      end
+    end
+  end
+
+  describe "#conditions" do
+    before do
+      Timecop.freeze(local_time)
+    end
+
+    after do
+      Timecop.return
+    end
+
+    context "when response is received in the right time window" do
+      let(:local_time) { Time.gm(2018, 1, 10) }
+
+      it "returns true" do
+        expect(validator.conditions).to be_truthy
+      end
+    end
+
+    context "when response is received after the time window" do
+      let(:local_time) { Time.gm(2017, 12, 31) }
+
+      it "returns false" do
+        expect(validator.conditions).to be_falsey
+      end
+    end
+
+    context "when response is received before the time window" do
+      let(:local_time) { Time.gm(2018, 2, 1) }
+
+      it "returns false" do
+        expect(validator.conditions).to be_falsey
       end
     end
   end

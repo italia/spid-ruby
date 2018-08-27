@@ -18,6 +18,13 @@ module Spid
       def destination
         response.destination == settings.sp_entity_id
       end
+
+      def conditions
+        time = Time.now.iso8601
+
+        response.conditions_not_before <= time &&
+          response.conditions_not_on_or_after > time
+      end
     end
   end
 end
