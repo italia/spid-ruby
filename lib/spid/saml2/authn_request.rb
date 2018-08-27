@@ -43,7 +43,8 @@ module Spid
               "Version" => "2.0",
               "IssueInstant" => issue_instant,
               "Destination" => settings.idp_sso_target_url,
-              "AssertionConsumerServiceIndex" => settings.acs_index
+              "AssertionConsumerServiceIndex" => settings.acs_index,
+              "AttributeConsumingServiceIndex" => settings.attribute_index
             }
             attributes["ForceAuthn"] = true if settings.force_authn?
             attributes

@@ -26,6 +26,9 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
       config.idp_metadata_dir_path = idp_metadata_dir_path
       config.private_key = File.read(private_key_path)
       config.certificate = File.read(certificate_path)
+      config.attribute_services = [
+        { name: "Service 1", fields: [:email] }
+      ]
     end
     Timecop.freeze
   end

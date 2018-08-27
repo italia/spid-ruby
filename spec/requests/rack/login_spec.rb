@@ -29,6 +29,12 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
 
   let(:default_relay_state_path) { "/path/to/return" }
 
+  let(:attribute_services) do
+    [
+      { name: "Service 1", fields: [:email] }
+    ]
+  end
+
   before do
     Spid.configure do |config|
       config.idp_metadata_dir_path = metadata_dir_path
@@ -37,6 +43,7 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
       config.private_key = private_key
       config.certificate = certificate
       config.default_relay_state_path = default_relay_state_path
+      config.attribute_services = attribute_services
     end
   end
 
@@ -95,5 +102,5 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
     end
   end
 
-  xdescribe "GET another path"
+  pending "GET another path"
 end

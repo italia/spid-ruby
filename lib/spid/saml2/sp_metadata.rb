@@ -2,6 +2,7 @@
 
 module Spid
   module Saml2
+    # rubocop:disable Metrics/ClassLength
     class SPMetadata # :nodoc:
       attr_reader :document
       attr_reader :settings
@@ -37,6 +38,8 @@ module Spid
         }
       end
 
+      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/AbcSize
       def sp_sso_descriptor
         @sp_sso_descriptor ||=
           begin
@@ -45,8 +48,40 @@ module Spid
             element.add_element key_descriptor
             element.add_element ac_service
             element.add_element slo_service
+            settings.sp_attribute_services.each.with_index do |service, index|
+              name = service[:name]
+              fields = service[:fields]
+              element.add_element attribute_consuming_service(
+                index, name, fields
+              )
+            end
             element
           end
+      end
+      # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/MethodLength
+
+      def attribute_consuming_service(index, name, fields)
+        element = REXML::Element.new("md:AttributeConsumingService")
+        element.add_attributes("index" => index)
+        element.add_element service_name(name)
+        fields.each do |field|
+          element.add_element requested_attribute(field)
+        end
+        element
+      end
+
+      def service_name(name)
+        element = REXML::Element.new("md:ServiceName")
+        element.add_attributes("xml:lang" => "it")
+        element.text = name
+        element
+      end
+
+      def requested_attribute(name)
+        element = REXML::Element.new("md:RequestedAttribute")
+        element.add_attributes("Name" => ATTRIBUTES_MAP[name])
+        element
       end
 
       def sp_sso_descriptor_attributes
@@ -100,5 +135,6 @@ module Spid
           end
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end

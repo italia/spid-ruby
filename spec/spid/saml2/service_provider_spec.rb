@@ -17,12 +17,12 @@ RSpec.describe Spid::Saml2::ServiceProvider do
       certificate: certificate,
       digest_method: digest_method,
       signature_method: signature_method,
-      attribute_service_name: attribute_service_name
+      attribute_services: attribute_services
     }
   end
 
   let(:host) { "https://service.provider" }
-  let(:attribute_service_name) { "attribute-service-name" }
+  let(:attribute_services) { [{ name: "Service 1", fields: [:email] }] }
   let(:acs_path) { "/sso" }
   let(:acs_binding) { "acs-binding-method" }
   let(:slo_path) { "/slo" }
@@ -71,9 +71,8 @@ RSpec.describe Spid::Saml2::ServiceProvider do
     expect(service_provider.signature_method).to eq signature_method
   end
 
-  it "requires an attribute_service_name" do
-    expect(service_provider.attribute_service_name).
-      to eq attribute_service_name
+  it "requires a attribute_services" do
+    expect(service_provider.attribute_services).to eq attribute_services
   end
 
   context "with invalid digest methods" do
@@ -91,6 +90,20 @@ RSpec.describe Spid::Saml2::ServiceProvider do
     it "raises a Spid::UnknownSignatureMethodError" do
       expect { service_provider }.
         to raise_error Spid::UnknownSignatureMethodError
+    end
+  end
+
+  context "with wrong attribute in attribute services" do
+    let(:attribute_services) do
+      [
+        { name: "Service 1", fields: [:fiscal_number] },
+        { name: "Service 2", fields: [:wrong_attribute] }
+      ]
+    end
+
+    it "raises a Spid::UknownAttributeFieldError" do
+      expect { service_provider }.
+        to raise_error Spid::UnknownAttributeFieldError
     end
   end
 

@@ -37,7 +37,8 @@ module Spid
         def sso_url
           Spid::Sso::Request.new(
             idp_name: idp_name,
-            relay_state: relay_state
+            relay_state: relay_state,
+            attribute_index: attribute_consuming_service_index
           ).url
         end
 
@@ -56,6 +57,10 @@ module Spid
 
         def idp_name
           request.params["idp_name"]
+        end
+
+        def attribute_consuming_service_index
+          request.params["attribute_index"] || "0"
         end
       end
     end

@@ -8,9 +8,16 @@ module Spid
       attr_reader :identity_provider
       attr_reader :service_provider
       attr_reader :authn_context
+      attr_reader :attribute_index
 
-      def initialize(identity_provider:, service_provider:, authn_context: nil)
+      def initialize(
+            identity_provider:,
+            service_provider:,
+            attribute_index: nil,
+            authn_context: nil
+          )
         @authn_context = authn_context || Spid::L1
+        @attribute_index = attribute_index
         unless AUTHN_CONTEXTS.include?(@authn_context)
           raise Spid::UnknownAuthnContextError,
                 "Provided authn_context '#{@authn_context}' is not valid:" \
@@ -51,6 +58,10 @@ module Spid
 
       def sp_slo_service_binding
         service_provider.slo_binding
+      end
+
+      def sp_attribute_services
+        service_provider.attribute_services
       end
 
       def private_key

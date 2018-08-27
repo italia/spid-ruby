@@ -18,7 +18,11 @@ RSpec.describe Spid::Saml2::SPMetadata do
       sp_acs_url: "https://service.provider/sso",
       sp_slo_service_url: "https://service.provider/slo",
       sp_slo_service_binding: "slo-binding-method",
-      x509_certificate_der: "certificate-der"
+      x509_certificate_der: "certificate-der",
+      sp_attribute_services: [
+        { name: "Service 1", fields: [:email] },
+        { name: "Service 2", fields: %i[iva_code digital_address] }
+      ]
     )
   end
 
@@ -60,6 +64,28 @@ RSpec.describe Spid::Saml2::SPMetadata do
           "AuthnRequestsSigned" => "true"
         }.each do |name, value|
           include_examples "has attribute", name, value
+        end
+
+        describe "md:AttributeConsumingService" do
+          let(:xpath) { super() + "/md:AttributeConsumingService" }
+
+          it "contains 2 elements" do
+            elements = REXML::XPath.match(xml_document, xpath)
+
+            expect(elements.size).to eq 2
+          end
+
+          [0, 1].each do |element_index|
+            describe "element #{element_index}" do
+              let(:xpath) { super() + "[#{element_index + 1}]" }
+
+              it "exists" do
+                expect(node).not_to be_nil
+              end
+
+              include_examples "has attribute", "index", element_index.to_s
+            end
+          end
         end
 
         describe "md:AssertionConsumerService" do

@@ -14,6 +14,8 @@ module Spid # :nodoc:
   class UnknownAuthnContextError < StandardError; end
   class UnknownDigestMethodError < StandardError; end
   class UnknownSignatureMethodError < StandardError; end
+  class UnknownAttributeFieldError < StandardError; end
+  class MissingAttributeServicesError < StandardError; end
 
   EXACT_COMPARISON = :exact
   MINIMUM_COMPARISON = :minimum
@@ -68,6 +70,26 @@ module Spid # :nodoc:
     L2,
     L3
   ].freeze
+
+  ATTRIBUTES_MAP = {
+    spid_code: "spidCode",
+    name: "name",
+    family_name: "familyName",
+    place_of_birth: "placeOfBirth",
+    date_of_birth: "dateOfBirth",
+    gender: "gender",
+    company_name: "companyName",
+    registered_office: "registeredOffice",
+    fiscal_number: "fiscalNumber",
+    iva_code: "ivaCode",
+    id_card: "idCard",
+    mobile_phone: "mobilePhone",
+    email: "email",
+    address: "address",
+    digital_address: "digitalAddress"
+  }.freeze
+
+  ATTRIBUTES = ATTRIBUTES_MAP.keys.freeze
 
   class << self
     attr_writer :configuration

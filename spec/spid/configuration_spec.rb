@@ -17,13 +17,7 @@ RSpec.describe Spid::Configuration do
     end
   end
 
-  describe "#attribute_service_name" do
-    it "has not a default value" do
-      expect(config.attribute_service_name).to eq nil
-    end
-  end
-
-  describe "#default_relay_state_url" do
+  describe "#default_relay_state_path" do
     it "has a default value" do
       expect(config.default_relay_state_path).to eq "/"
     end
@@ -96,8 +90,16 @@ RSpec.describe Spid::Configuration do
   end
 
   describe "#service_provider" do
-    it "returns a service provider" do
-      expect(config.service_provider).to be_a Spid::Saml2::ServiceProvider
+    context "with valid configuration" do
+      before do
+        config.attribute_services = [
+          { name: "Service 1", fields: [:email] }
+        ]
+      end
+
+      it "returns a service provider" do
+        expect(config.service_provider).to be_a Spid::Saml2::ServiceProvider
+      end
     end
   end
 end
