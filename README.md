@@ -47,11 +47,11 @@ gem "spid"
 |verification of `SubjectConfirmationData/@Recipient`||
 |verification of `SubjectConfirmationData/@NotOnOrAfter`||
 |verification of `SubjectConfirmationData/@InResponseTo`||
-|verification of `Issuer`||
-|verification of `Destination`||
-|verification of `Conditions/@NotBefore`||
-|verification of `Conditions/@NotOnOrAfter`||
-|verification of `Audience`||
+|verification of `Issuer`|✓|
+|verification of `Destination`|✓|
+|verification of `Conditions/@NotBefore`|✓|
+|verification of `Conditions/@NotOnOrAfter`|✓|
+|verification of `Audience`|✓|
 |parsing of Response with no `Assertion` (authentication/query failure)||
 |parsing of failure `StatusCode` (Requester/Responder)||
 |**Response/Assertion parsing for SSO (1.2.1, 1.2.2.2, 1.3.1):**||
