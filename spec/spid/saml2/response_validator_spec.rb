@@ -14,7 +14,8 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       assertion_issuer: assertion_issuer,
       destination: destination,
       conditions_not_before: "2018-01-01T00:00:00Z",
-      conditions_not_on_or_after: "2018-02-01T00:00:00Z"
+      conditions_not_on_or_after: "2018-02-01T00:00:00Z",
+      audience: audience
     )
   end
 
@@ -29,6 +30,8 @@ RSpec.describe Spid::Saml2::ResponseValidator do
   let(:assertion_issuer) { "https://identity.provider" }
 
   let(:destination) { "https://service.provider" }
+
+  let(:audience) { "https://service.provider" }
 
   it { is_expected.to be_a described_class }
 
@@ -94,6 +97,22 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
       it "returns false" do
         expect(validator.conditions).to be_falsey
+      end
+    end
+  end
+
+  describe "#audience" do
+    context "when conditions audience is the service provider entity id" do
+      it "returns true" do
+        expect(validator.audience).to be_truthy
+      end
+    end
+
+    context "when conditions audience is not the service provider entity id" do
+      let(:audience) { "https://another-service.provider" }
+
+      it "returns false" do
+        expect(validator.audience).to be_falsey
       end
     end
   end

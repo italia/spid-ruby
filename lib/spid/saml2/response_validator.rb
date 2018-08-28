@@ -25,6 +25,10 @@ module Spid
         response.conditions_not_before <= time &&
           response.conditions_not_on_or_after > time
       end
+
+      def audience
+        response.audience == settings.sp_entity_id
+      end
     end
   end
 end
