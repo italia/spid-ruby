@@ -60,7 +60,7 @@ module Spid
 
       def certificate_from_encoded_der(der_encoded)
         der = Base64.decode64(der_encoded)
-        OpenSSL::X509::Certificate.new(der).to_pem
+        OpenSSL::X509::Certificate.new(der)
       end
     end
   end

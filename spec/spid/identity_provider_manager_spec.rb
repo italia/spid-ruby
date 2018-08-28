@@ -23,9 +23,11 @@ RSpec.describe Spid::IdentityProviderManager do
     )
   end
 
-  let(:certificate) do
+  let(:certificate_pem) do
     File.read(generate_fixture_path("idp-certificate.pem"))
   end
+
+  let(:certificate) { OpenSSL::X509::Certificate.new(certificate_pem) }
 
   after do
     Spid.reset_configuration!

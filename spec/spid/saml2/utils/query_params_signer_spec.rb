@@ -12,7 +12,8 @@ RSpec.describe Spid::Saml2::Utils::QueryParamsSigner do
     )
   end
 
-  let(:private_key) { File.read(generate_fixture_path("private-key.pem")) }
+  let(:private_key_str) { File.read(generate_fixture_path("private-key.pem")) }
+  let(:private_key) { OpenSSL::PKey::RSA.new(private_key_str) }
   let(:signature_method) { Spid::RSA_SHA256 }
 
   it { is_expected.to be_a described_class }
