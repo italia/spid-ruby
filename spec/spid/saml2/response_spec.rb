@@ -43,6 +43,12 @@ RSpec.describe Spid::Saml2::Response do
     end
   end
 
+  describe "#audience" do
+    it "returns the response audience" do
+      expect(response.audience).to eq "https://service.provider"
+    end
+  end
+
   describe "#session_index" do
     it "returns the session index" do
       expect(response.session_index).

@@ -57,6 +57,12 @@ module Spid
         ]&.value
       end
 
+      def audience
+        xpath = "/samlp:Response/saml:Assertion/saml:Conditions"
+        xpath = "#{xpath}/saml:AudienceRestriction/saml:Audience/text()"
+        document.elements[xpath]&.value
+      end
+
       def attributes
         main_xpath = "/samlp:Response/saml:Assertion/saml:AttributeStatement"
         main_xpath = "#{main_xpath}/saml:Attribute"
