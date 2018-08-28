@@ -13,7 +13,8 @@ RSpec.describe Spid::Saml2::IdentityProvider do
       entity_id: entity_id,
       sso_target_url: sso_target_url,
       slo_target_url: slo_target_url,
-      cert_fingerprint: cert_fingerprint
+      cert_fingerprint: cert_fingerprint,
+      cert: certificate
     }
   end
 
@@ -22,6 +23,7 @@ RSpec.describe Spid::Saml2::IdentityProvider do
   let(:sso_target_url) { "#{entity_id}/sso-path" }
   let(:slo_target_url) { "#{entity_id}/slo-path" }
   let(:cert_fingerprint) { "a-certificate-fingerprint" }
+  let(:certificate) { File.read(generate_fixture_path("certificate.pem")) }
 
   it { is_expected.to be_a described_class }
 

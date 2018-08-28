@@ -23,6 +23,10 @@ RSpec.describe Spid::IdentityProviderManager do
     )
   end
 
+  let(:certificate) do
+    File.read(generate_fixture_path("idp-certificate.pem"))
+  end
+
   after do
     Spid.reset_configuration!
   end
@@ -87,6 +91,7 @@ RSpec.describe Spid::IdentityProviderManager do
         entity_id: entity_id,
         sso_target_url: sso_target_url,
         slo_target_url: slo_target_url,
+        cert: certificate,
         cert_fingerprint: cert_fingerprint
       }
     end
