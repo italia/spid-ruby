@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require "spid/saml2/utils"
+
 module Spid
   module Saml2
     class Response # :nodoc:
+      include Spid::Saml2::Utils
+
       attr_reader :saml_message
       attr_reader :document
 
@@ -19,6 +23,16 @@ module Spid
         document.elements[
           "/samlp:Response/saml:Assertion/saml:Subject/saml:NameID/text()"
         ]&.value
+      end
+
+      def raw_certificate
+        xpath = "/samlp:Response/ds:Signature/ds:KeyInfo"
+        xpath = "#{xpath}/ds:X509Data/ds:X509Certificate/text()"
+        document.elements[xpath]&.value
+      end
+
+      def certificate
+        certificate_from_encoded_der(raw_certificate)
       end
 
       def assertion_issuer

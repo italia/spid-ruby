@@ -11,6 +11,14 @@ RSpec.describe Spid::Saml2::Response do
     File.read(generate_fixture_path("sso-response-signed.xml"))
   end
 
+  let(:certificate_pem) do
+    File.read(generate_fixture_path("idp-certificate.pem"))
+  end
+
+  let(:certificate) do
+    OpenSSL::X509::Certificate.new(certificate_pem)
+  end
+
   it { is_expected.to be_a described_class }
 
   it "requires a saml_message" do
@@ -20,6 +28,12 @@ RSpec.describe Spid::Saml2::Response do
   describe "#issuer" do
     it "returns the issuer of the response" do
       expect(response.issuer).to eq "https://identity.provider"
+    end
+  end
+
+  describe "#certificate" do
+    it "returns the certificate of the response" do
+      expect(response.certificate).to eq certificate
     end
   end
 
