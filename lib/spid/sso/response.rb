@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
+require "spid/saml2/utils"
 require "active_support/inflector/methods"
 
 module Spid
   module Sso
     class Response # :nodoc:
+      include Spid::Saml2::Utils
+
       attr_reader :body
+      attr_reader :saml_message
 
       def initialize(body:)
         @body = body
+        @saml_message = decode_and_inflate(body)
       end
 
       def valid?
@@ -44,7 +49,7 @@ module Spid
       end
 
       def saml_response
-        @saml_response ||= Spid::Saml2::Response.new(body: body)
+        @saml_response ||= Spid::Saml2::Response.new(saml_message: saml_message)
       end
 
       private

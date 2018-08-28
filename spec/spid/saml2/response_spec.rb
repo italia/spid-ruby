@@ -4,17 +4,17 @@ require "spec_helper"
 
 RSpec.describe Spid::Saml2::Response do
   subject(:response) do
-    described_class.new(body: response_body)
+    described_class.new(saml_message: saml_message)
   end
 
-  let(:response_body) do
-    File.read(generate_fixture_path("sso-response.base64"))
+  let(:saml_message) do
+    File.read(generate_fixture_path("sso-response-signed.xml"))
   end
 
   it { is_expected.to be_a described_class }
 
-  it "requires a body" do
-    expect(response.body).to eq response_body
+  it "requires a saml_message" do
+    expect(response.saml_message).to eq saml_message
   end
 
   describe "#issuer" do
