@@ -42,8 +42,8 @@ gem "spid"
 |**Response/Assertion parsing**||
 |verification of `Response/Signature` value (if any)||
 |verification of `Response/Signature` certificate (if any) against IdP/AA metadata||
-|verification of `Assertion/Signature` value||
-|verification of `Assertion/Signature` certificate against IdP/AA metadata||
+|verification of `Assertion/Signature` value|✓|
+|verification of `Assertion/Signature` certificate against IdP/AA metadata|✓|
 |verification of `SubjectConfirmationData/@Recipient`||
 |verification of `SubjectConfirmationData/@NotOnOrAfter`||
 |verification of `SubjectConfirmationData/@InResponseTo`||
