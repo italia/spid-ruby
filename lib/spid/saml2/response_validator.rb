@@ -33,7 +33,7 @@ module Spid
       end
 
       def destination
-        response.destination == settings.sp_entity_id
+        response.destination == settings.sp_acs_url
       end
 
       def conditions

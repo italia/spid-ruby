@@ -38,6 +38,7 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       "Spid::Saml2::Settings",
       idp_entity_id: "https://identity.provider",
       sp_entity_id: "https://service.provider",
+      sp_acs_url: "https://service.provider/spid/sso",
       idp_certificate: idp_certificate
     )
   end
@@ -49,7 +50,7 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
   let(:assertion_issuer) { "https://identity.provider" }
 
-  let(:destination) { "https://service.provider" }
+  let(:destination) { "https://service.provider/spid/sso" }
 
   let(:audience) { "https://service.provider" }
 
@@ -104,8 +105,8 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       end
     end
 
-    context "when destination doesn't match the service provider entity id" do
-      let(:destination) { "https://another-service.provider" }
+    context "when destination doesn't match the service provider acs url" do
+      let(:destination) { "https://service.provider/spid/acs" }
 
       it "returns false" do
         expect(validator.destination).to be_falsey
