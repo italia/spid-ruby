@@ -2,7 +2,7 @@
 
 module Spid
   module Saml2
-    class LogoutResponseValidator
+    class LogoutResponseValidator # :nodoc:
       attr_reader :response
       attr_reader :settings
 
@@ -13,12 +13,17 @@ module Spid
 
       def call
         [
-          destination
+          destination,
+          issuer
         ].all?
       end
 
       def destination
         response.destination == settings.sp_slo_service_url
+      end
+
+      def issuer
+        response.issuer == settings.idp_entity_id
       end
     end
   end
