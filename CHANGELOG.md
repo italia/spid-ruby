@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.13.0] - 2018-08-29
+### Added
+- Validation of Response and LogoutResponse
+
 ## [0.12.0] - 2018-08-27
 ### Added
 - AttributeConsumingService management
@@ -97,7 +101,8 @@
 - Coveralls Integration
 - Rubygems version badge in README
 
-[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/italia/spid-ruby/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/italia/spid-ruby/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/italia/spid-ruby/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/italia/spid-ruby/compare/v0.9.0...v0.10.0
