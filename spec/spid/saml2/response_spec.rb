@@ -33,7 +33,7 @@ RSpec.describe Spid::Saml2::Response do
 
   describe "#certificate" do
     it "returns the certificate of the response" do
-      expect(response.certificate).to eq certificate
+      expect(response.certificate.to_der).to eq certificate.to_der
     end
   end
 

@@ -23,12 +23,6 @@ RSpec.describe Spid::IdentityProviderManager do
     )
   end
 
-  let(:certificate_pem) do
-    File.read(generate_fixture_path("idp-certificate.pem"))
-  end
-
-  let(:certificate) { OpenSSL::X509::Certificate.new(certificate_pem) }
-
   after do
     Spid.reset_configuration!
   end
@@ -87,25 +81,32 @@ RSpec.describe Spid::IdentityProviderManager do
       "0A:95:70:77:47:9C:2D:AE:6C:67:4E:4C:53:81:9A:F8"
     end
 
+    let(:certificate) do
+      instance_double("OpenSSL::X509::Certificate")
+    end
+
     let(:expected_param) do
       {
         name: name,
         entity_id: entity_id,
         sso_target_url: sso_target_url,
         slo_target_url: slo_target_url,
-        certificate: certificate,
-        cert_fingerprint: cert_fingerprint
+        cert_fingerprint: cert_fingerprint,
+        certificate: certificate
       }
     end
 
     before do
       allow(Spid::Saml2::IdentityProvider).to receive(:new)
+      allow(described_class).
+        to receive(:certificate_from_encoded_der).
+        and_return(certificate)
     end
 
     it "creates a new idp configuration with metadata attributes" do
       result
       expect(Spid::Saml2::IdentityProvider).
-        to have_received(:new).with(expected_param)
+        to have_received(:new).with a_hash_including(expected_param)
     end
   end
 end

@@ -29,7 +29,7 @@ module Spid
       end
 
       def certificate
-        response.certificate == settings.idp_certificate
+        response.certificate.to_der == settings.idp_certificate.to_der
       end
 
       def destination
