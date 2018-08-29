@@ -17,6 +17,10 @@ module Spid
         response.assertion_issuer == settings.idp_entity_id
       end
 
+      def certificate
+        response.certificate == settings.idp_certificate
+      end
+
       def destination
         response.destination == settings.sp_entity_id
       end

@@ -72,6 +72,10 @@ module Spid
         service_provider.certificate
       end
 
+      def idp_certificate
+        identity_provider.certificate
+      end
+
       def signature_method
         service_provider.signature_method
       end

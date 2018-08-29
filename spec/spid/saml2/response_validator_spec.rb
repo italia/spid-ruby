@@ -16,7 +16,7 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       conditions_not_before: "2018-01-01T00:00:00Z",
       conditions_not_on_or_after: "2018-02-01T00:00:00Z",
       saml_message: signed_response,
-      certificate: certificate,
+      certificate: response_certificate,
       audience: audience
     )
   end
@@ -25,18 +25,26 @@ RSpec.describe Spid::Saml2::ResponseValidator do
     File.read(generate_fixture_path("sso-response-signed.xml"))
   end
 
-  let(:certificate_pem) do
+  let(:response_certificate_pem) do
     File.read(generate_fixture_path("idp-certificate.pem"))
   end
 
-  let(:certificate) { OpenSSL::X509::Certificate.new(certificate_pem) }
+  let(:response_certificate) do
+    OpenSSL::X509::Certificate.new(response_certificate_pem)
+  end
 
   let(:settings) do
     instance_double(
       "Spid::Saml2::Settings",
       idp_entity_id: "https://identity.provider",
-      sp_entity_id: "https://service.provider"
+      sp_entity_id: "https://service.provider",
+      idp_certificate: idp_certificate
     )
+  end
+
+  let(:idp_certificate_pem) { response_certificate_pem }
+  let(:idp_certificate) do
+    OpenSSL::X509::Certificate.new(idp_certificate_pem)
   end
 
   let(:assertion_issuer) { "https://identity.provider" }
@@ -137,12 +145,30 @@ RSpec.describe Spid::Saml2::ResponseValidator do
     end
 
     context "with a different certificate" do
-      let(:certificate_pem) do
+      let(:response_certificate_pem) do
         File.read(generate_fixture_path("certificate.pem"))
       end
 
       it "returns false" do
         expect(validator.signature).to be_falsey
+      end
+    end
+  end
+
+  describe "#certificate" do
+    context "when the response contains the correct certificate" do
+      it "returns true" do
+        expect(validator.certificate).to be_truthy
+      end
+    end
+
+    context "when the response contains a different certificate" do
+      let(:idp_certificate_pem) do
+        File.read(generate_fixture_path("certificate.pem"))
+      end
+
+      it "returns false" do
+        expect(validator.certificate).to be_falsey
       end
     end
   end
