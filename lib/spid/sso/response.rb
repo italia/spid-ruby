@@ -17,7 +17,10 @@ module Spid
       end
 
       def valid?
-        saml_response.destination == service_provider.acs_url
+        Spid::Saml2::ResponseValidator.new(
+          response: saml_response,
+          settings: settings
+        ).call
       end
 
       def issuer
@@ -50,6 +53,13 @@ module Spid
 
       def saml_response
         @saml_response ||= Spid::Saml2::Response.new(saml_message: saml_message)
+      end
+
+      def settings
+        @settings ||= Spid::Saml2::Settings.new(
+          identity_provider: identity_provider,
+          service_provider: service_provider
+        )
       end
 
       private
