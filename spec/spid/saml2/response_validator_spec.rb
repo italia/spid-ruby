@@ -15,9 +15,21 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       destination: destination,
       conditions_not_before: "2018-01-01T00:00:00Z",
       conditions_not_on_or_after: "2018-02-01T00:00:00Z",
+      saml_message: signed_response,
+      certificate: certificate,
       audience: audience
     )
   end
+
+  let(:signed_response) do
+    File.read(generate_fixture_path("sso-response-signed.xml"))
+  end
+
+  let(:certificate_pem) do
+    File.read(generate_fixture_path("idp-certificate.pem"))
+  end
+
+  let(:certificate) { OpenSSL::X509::Certificate.new(certificate_pem) }
 
   let(:settings) do
     instance_double(
@@ -113,6 +125,24 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
       it "returns false" do
         expect(validator.audience).to be_falsey
+      end
+    end
+  end
+
+  describe "#signature" do
+    context "with the correct certificate" do
+      it "returns true" do
+        expect(validator.signature).to be_truthy
+      end
+    end
+
+    context "with a different certificate" do
+      let(:certificate_pem) do
+        File.read(generate_fixture_path("certificate.pem"))
+      end
+
+      it "returns false" do
+        expect(validator.signature).to be_falsey
       end
     end
   end

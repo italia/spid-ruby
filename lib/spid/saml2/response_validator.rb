@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "xmldsig"
+
 module Spid
   module Saml2
     class ResponseValidator # :nodoc:
@@ -28,6 +30,11 @@ module Spid
 
       def audience
         response.audience == settings.sp_entity_id
+      end
+
+      def signature
+        signed_document = Xmldsig::SignedDocument.new(response.saml_message)
+        signed_document.validate(response.certificate)
       end
     end
   end
