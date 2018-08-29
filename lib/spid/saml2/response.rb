@@ -26,7 +26,7 @@ module Spid
       end
 
       def raw_certificate
-        xpath = "/samlp:Response/ds:Signature/ds:KeyInfo"
+        xpath = "/samlp:Response/saml:Assertion/ds:Signature/ds:KeyInfo"
         xpath = "#{xpath}/ds:X509Data/ds:X509Certificate/text()"
         document.elements[xpath]&.value
       end
