@@ -99,7 +99,7 @@ RSpec.describe Spid::Saml2::ResponseValidator do
   end
 
   describe "#destination" do
-    context "when destination match the service provider entity id" do
+    context "when destination matches the service provider entity id" do
       it "returns true" do
         expect(validator.destination).to be_truthy
       end
