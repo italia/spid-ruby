@@ -13,6 +13,17 @@ module Spid
         @settings = settings
       end
 
+      def call
+        [
+          issuer,
+          certificate,
+          destination,
+          conditions,
+          audience,
+          signature
+        ].all?
+      end
+
       def issuer
         response.assertion_issuer == settings.idp_entity_id
       end

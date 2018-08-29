@@ -53,7 +53,33 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
   let(:audience) { "https://service.provider" }
 
+  let(:local_time) { Time.gm(2018, 1, 10) }
+
   it { is_expected.to be_a described_class }
+
+  before do
+    Timecop.freeze(local_time)
+  end
+
+  after do
+    Timecop.return
+  end
+
+  describe "#call" do
+    context "when all validation pass" do
+      it "returns true" do
+        expect(validator.call).to be_truthy
+      end
+    end
+
+    context "when at least one validation fails" do
+      let(:assertion_issuer) { "https://another-identity.provider" }
+
+      it "returns false" do
+        expect(validator.call).to be_falsey
+      end
+    end
+  end
 
   describe "#issuer" do
     context "when response issuer match setted issuer" do
@@ -88,17 +114,7 @@ RSpec.describe Spid::Saml2::ResponseValidator do
   end
 
   describe "#conditions" do
-    before do
-      Timecop.freeze(local_time)
-    end
-
-    after do
-      Timecop.return
-    end
-
     context "when response is received in the right time window" do
-      let(:local_time) { Time.gm(2018, 1, 10) }
-
       it "returns true" do
         expect(validator.conditions).to be_truthy
       end
