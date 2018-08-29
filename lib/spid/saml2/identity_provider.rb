@@ -8,7 +8,7 @@ module Spid
       attr_reader :sso_target_url
       attr_reader :slo_target_url
       attr_reader :cert_fingerprint
-      attr_reader :cert
+      attr_reader :certificate
 
       # rubocop:disable Metrics/ParameterLists
       def initialize(
@@ -17,14 +17,14 @@ module Spid
             sso_target_url:,
             slo_target_url:,
             cert_fingerprint:,
-            cert:
+            certificate:
           )
         @name = name
         @entity_id = entity_id
         @sso_target_url = sso_target_url
         @slo_target_url = slo_target_url
         @cert_fingerprint = cert_fingerprint
-        @cert = cert
+        @certificate = certificate
       end
       # rubocop:enable Metrics/ParameterLists
     end

@@ -93,7 +93,7 @@ RSpec.describe Spid::IdentityProviderManager do
         entity_id: entity_id,
         sso_target_url: sso_target_url,
         slo_target_url: slo_target_url,
-        cert: certificate,
+        certificate: certificate,
         cert_fingerprint: cert_fingerprint
       }
     end

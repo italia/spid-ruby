@@ -14,7 +14,7 @@ RSpec.describe Spid::Saml2::IdentityProvider do
       sso_target_url: sso_target_url,
       slo_target_url: slo_target_url,
       cert_fingerprint: cert_fingerprint,
-      cert: certificate
+      certificate: certificate
     }
   end
 
@@ -48,6 +48,6 @@ RSpec.describe Spid::Saml2::IdentityProvider do
   end
 
   it "requires a certificate" do
-    expect(idp_configuration.cert).to eq certificate
+    expect(idp_configuration.certificate).to eq certificate
   end
 end

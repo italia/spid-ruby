@@ -41,7 +41,7 @@ module Spid
         sso_target_url: idp_settings[:idp_sso_target_url],
         slo_target_url: idp_settings[:idp_slo_target_url],
         cert_fingerprint: idp_settings[:idp_cert_fingerprint],
-        cert: certificate_from_encoded_der(idp_settings[:idp_cert])
+        certificate: certificate_from_encoded_der(idp_settings[:idp_cert])
       )
     end
 
