@@ -68,8 +68,8 @@ gem "spid"
 |parsing of LogoutResponse XML|✓|
 |verification of `Response/Signature` value (if any)||
 |verification of `Response/Signature` certificate (if any) against IdP metadata||
-|verification of `Issuer`||
-|verification of `Destination`||
+|verification of `Issuer`|✓|
+|verification of `Destination`|✓|
 |PartialLogout detection||
 |**LogoutRequest parsing (for third-party-initiated logout):**||
 |parsing of LogoutRequest XML||
