@@ -37,6 +37,12 @@ RSpec.describe Spid::Saml2::Response do
     end
   end
 
+  describe "#destination" do
+    it "returns the destination of the response" do
+      expect(response.destination).to eq "https://service.provider/spid/sso"
+    end
+  end
+
   describe "#assertion_issuer" do
     it "returns the assertion issuer of the message" do
       expect(response.assertion_issuer).to eq "https://identity.provider"
