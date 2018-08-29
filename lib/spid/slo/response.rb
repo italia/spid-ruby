@@ -14,7 +14,10 @@ module Spid
       end
 
       def valid?
-        saml_response.in_response_to == matches_request_id
+        Spid::Saml2::LogoutResponseValidator.new(
+          response: saml_response,
+          settings: settings
+        ).call
       end
 
       def errors
@@ -33,6 +36,13 @@ module Spid
 
       def issuer
         saml_response.issuer
+      end
+
+      def settings
+        @settings ||= Spid::Saml2::Settings.new(
+          service_provider: service_provider,
+          identity_provider: identity_provider
+        )
       end
 
       def saml_response
