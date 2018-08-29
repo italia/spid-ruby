@@ -22,16 +22,23 @@ RSpec.describe "Validation of Spid::Sso::Response" do
   let(:host) { "https://service.provider" }
   let(:idp_issuer) { "https://identity.provider" }
 
+  let(:acs_path) { "/spid/sso" }
+
   before do
     Spid.configure do |config|
       config.hostname = "https://service.provider"
       config.idp_metadata_dir_path = idp_metadata_dir_path
       config.private_key = File.read(private_key_path)
       config.certificate = File.read(certificate_path)
+      config.acs_path = acs_path
       config.attribute_services = [
         { name: "Service 1", fields: [:email] }
       ]
     end
+  end
+
+  after do
+    Spid.reset_configuration!
   end
 
   it "requires a body" do
@@ -43,9 +50,7 @@ RSpec.describe "Validation of Spid::Sso::Response" do
   end
 
   context "when response isn't conform to the request" do
-    let(:spid_response) do
-      File.read(generate_fixture_path("not-valid-sso-response.base64"))
-    end
+    let(:acs_path) { "/spid/another/sso" }
 
     it { is_expected.not_to be_valid }
   end

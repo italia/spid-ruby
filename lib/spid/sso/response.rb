@@ -1,22 +1,30 @@
 # frozen_string_literal: true
 
+require "spid/saml2/utils"
 require "active_support/inflector/methods"
 
 module Spid
   module Sso
     class Response # :nodoc:
+      include Spid::Saml2::Utils
+
       attr_reader :body
+      attr_reader :saml_message
 
       def initialize(body:)
         @body = body
+        @saml_message = decode_and_inflate(body)
       end
 
       def valid?
-        saml_response.destination == service_provider.acs_url
+        Spid::Saml2::ResponseValidator.new(
+          response: saml_response,
+          settings: settings
+        ).call
       end
 
       def issuer
-        saml_response.issuer
+        saml_response.assertion_issuer
       end
 
       def attributes
@@ -44,7 +52,14 @@ module Spid
       end
 
       def saml_response
-        @saml_response ||= Spid::Saml2::Response.new(body: body)
+        @saml_response ||= Spid::Saml2::Response.new(saml_message: saml_message)
+      end
+
+      def settings
+        @settings ||= Spid::Saml2::Settings.new(
+          identity_provider: identity_provider,
+          service_provider: service_provider
+        )
       end
 
       private

@@ -11,12 +11,12 @@ module Spid
     attr_accessor :slo_path
     attr_accessor :digest_method
     attr_accessor :signature_method
-    attr_accessor :private_key
-    attr_accessor :certificate
     attr_accessor :default_relay_state_path
     attr_accessor :acs_binding
     attr_accessor :slo_binding
     attr_accessor :attribute_services
+    attr_writer :private_key
+    attr_writer :certificate
 
     def initialize
       @idp_metadata_dir_path    = "idp_metadata"
@@ -50,6 +50,14 @@ module Spid
     def init_openssl_keys
       @private_key              = nil
       @certificate              = nil
+    end
+
+    def certificate
+      OpenSSL::X509::Certificate.new(@certificate) unless @certificate.nil?
+    end
+
+    def private_key
+      OpenSSL::PKey::RSA.new(@private_key) unless @private_key.nil?
     end
 
     def service_provider

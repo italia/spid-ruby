@@ -26,3 +26,4 @@ build-iPhoneSimulator/
 build/
 /Gemfile.lock
 /idp_metadata/*.xml
+/.ruby-version

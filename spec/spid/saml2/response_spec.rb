@@ -4,17 +4,25 @@ require "spec_helper"
 
 RSpec.describe Spid::Saml2::Response do
   subject(:response) do
-    described_class.new(body: response_body)
+    described_class.new(saml_message: saml_message)
   end
 
-  let(:response_body) do
-    File.read(generate_fixture_path("sso-response.base64"))
+  let(:saml_message) do
+    File.read(generate_fixture_path("sso-response-signed.xml"))
+  end
+
+  let(:certificate_pem) do
+    File.read(generate_fixture_path("idp-certificate.pem"))
+  end
+
+  let(:certificate) do
+    OpenSSL::X509::Certificate.new(certificate_pem)
   end
 
   it { is_expected.to be_a described_class }
 
-  it "requires a body" do
-    expect(response.body).to eq response_body
+  it "requires a saml_message" do
+    expect(response.saml_message).to eq saml_message
   end
 
   describe "#issuer" do
@@ -23,9 +31,41 @@ RSpec.describe Spid::Saml2::Response do
     end
   end
 
+  describe "#certificate" do
+    it "returns the certificate of the response" do
+      expect(response.certificate.to_der).to eq certificate.to_der
+    end
+  end
+
+  describe "#destination" do
+    it "returns the destination of the response" do
+      expect(response.destination).to eq "https://service.provider/spid/sso"
+    end
+  end
+
   describe "#assertion_issuer" do
     it "returns the assertion issuer of the message" do
       expect(response.assertion_issuer).to eq "https://identity.provider"
+    end
+  end
+
+  describe "#conditions_not_before" do
+    it "returns the not before attribute of conditions node" do
+      expect(response.conditions_not_before).
+        to eq "2014-07-17T01:01:18Z"
+    end
+  end
+
+  describe "#conditions_not_on_or_after" do
+    it "returns the not on or after attribute of conditions node" do
+      expect(response.conditions_not_on_or_after).
+        to eq "2024-01-18T06:21:48Z"
+    end
+  end
+
+  describe "#audience" do
+    it "returns the response audience" do
+      expect(response.audience).to eq "https://service.provider"
     end
   end
 

@@ -7,18 +7,32 @@ module Spid
     class Response # :nodoc:
       include Spid::Saml2::Utils
 
-      attr_reader :body
       attr_reader :saml_message
       attr_reader :document
 
-      def initialize(body:)
-        @body = body
-        @saml_message = decode_and_inflate(body)
+      def initialize(saml_message:)
+        @saml_message = saml_message
         @document = REXML::Document.new(@saml_message)
       end
 
       def issuer
         document.elements["/samlp:Response/saml:Issuer/text()"]&.value
+      end
+
+      def name_id
+        document.elements[
+          "/samlp:Response/saml:Assertion/saml:Subject/saml:NameID/text()"
+        ]&.value
+      end
+
+      def raw_certificate
+        xpath = "/samlp:Response/saml:Assertion/ds:Signature/ds:KeyInfo"
+        xpath = "#{xpath}/ds:X509Data/ds:X509Certificate/text()"
+        document.elements[xpath]&.value
+      end
+
+      def certificate
+        certificate_from_encoded_der(raw_certificate)
       end
 
       def assertion_issuer
@@ -37,6 +51,24 @@ module Spid
         document.elements[
           "/samlp:Response/@Destination"
         ]&.value
+      end
+
+      def conditions_not_before
+        document.elements[
+          "/samlp:Response/saml:Assertion/saml:Conditions/@NotBefore"
+        ]&.value
+      end
+
+      def conditions_not_on_or_after
+        document.elements[
+          "/samlp:Response/saml:Assertion/saml:Conditions/@NotOnOrAfter"
+        ]&.value
+      end
+
+      def audience
+        xpath = "/samlp:Response/saml:Assertion/saml:Conditions"
+        xpath = "#{xpath}/saml:AudienceRestriction/saml:Audience/text()"
+        document.elements[xpath]&.value
       end
 
       def attributes

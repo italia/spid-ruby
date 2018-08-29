@@ -20,7 +20,7 @@ module Spid
               relay_state: nil
             )
           @saml_message = saml_message.delete("\n")
-          @private_key = OpenSSL::PKey::RSA.new(private_key)
+          @private_key = private_key
           @signature_method = signature_method
           @relay_state = relay_state
         end

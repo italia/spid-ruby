@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+require "base64"
+
 module Spid
   class IdentityProviderManager # :nodoc:
+    extend Spid::Saml2::Utils
     include Singleton
 
     def identity_providers
@@ -37,7 +40,8 @@ module Spid
         entity_id: idp_settings[:idp_entity_id],
         sso_target_url: idp_settings[:idp_sso_target_url],
         slo_target_url: idp_settings[:idp_slo_target_url],
-        cert_fingerprint: idp_settings[:idp_cert_fingerprint]
+        cert_fingerprint: idp_settings[:idp_cert_fingerprint],
+        certificate: certificate_from_encoded_der(idp_settings[:idp_cert])
       )
     end
 

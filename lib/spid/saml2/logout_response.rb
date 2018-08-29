@@ -28,6 +28,12 @@ module Spid
           "/samlp:LogoutResponse/@InResponseTo"
         ]&.value&.strip
       end
+
+      def destination
+        document.elements[
+          "/samlp:LogoutResponse/@Destination"
+        ]&.value
+      end
     end
   end
 end
