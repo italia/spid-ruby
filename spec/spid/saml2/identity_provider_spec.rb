@@ -46,4 +46,8 @@ RSpec.describe Spid::Saml2::IdentityProvider do
   it "requires an cert_fingerprint" do
     expect(idp_configuration.cert_fingerprint).to eq cert_fingerprint
   end
+
+  it "requires a certificate" do
+    expect(idp_configuration.cert).to eq certificate
+  end
 end
