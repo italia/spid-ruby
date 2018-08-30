@@ -44,9 +44,11 @@ RSpec.describe "Receiving a SLO assertion" do
 
     let(:spid_session) do
       {
-        "slo_request_uuid" => "_21df91a89767879fc0f7df6a1490c6000c81644d"
+        "slo_request_uuid" => request_uuid
       }
     end
+
+    let(:request_uuid) { "_21df91a89767879fc0f7df6a1490c6000c81644d" }
 
     let(:response) do
       request.get(
@@ -83,6 +85,26 @@ RSpec.describe "Receiving a SLO assertion" do
 
       it "redirects to default relay state path" do
         expect(response.location).to eq "/default/relay/state/path"
+      end
+    end
+
+    context "when there are errors on response" do
+      let(:request_uuid) { "invalid-request-uuid" }
+
+      let(:expected_session) do
+        a_hash_including(
+          "slo_request_uuid" => request_uuid,
+          "errors" => {
+            "request_uuid_mismatch" =>
+              "Request uuid not belongs to current session"
+          }
+        )
+      end
+
+      it "sets error message in spid session" do
+        response
+
+        expect(rack_session["spid"]).to match expected_session
       end
     end
 
