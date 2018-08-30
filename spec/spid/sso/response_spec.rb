@@ -4,10 +4,14 @@ require "spec_helper"
 
 RSpec.describe Spid::Sso::Response do
   subject(:sso_response) do
-    described_class.new(body: response_body)
+    described_class.new(
+      body: response_body,
+      request_uuid: request_uuid
+    )
   end
 
   let(:response_body) { "SAMLResponse" }
+  let(:request_uuid) { "a-request-uuid" }
 
   describe "#service_provider" do
     let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }

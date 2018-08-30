@@ -38,6 +38,13 @@ RSpec.describe Spid::Saml2::Response do
     end
   end
 
+  describe "#in_response_to" do
+    it "returns the uuid of the previous authn request" do
+      expect(response.in_response_to).
+        to eq "_acae2f5c-a008-4cf6-b5b1-df15db7c3dc8"
+    end
+  end
+
   describe "#certificate" do
     it "returns the certificate of the response" do
       expect(response.certificate.to_der).to eq certificate.to_der

@@ -10,10 +10,12 @@ module Spid
 
       attr_reader :body
       attr_reader :saml_message
+      attr_reader :request_uuid
 
-      def initialize(body:)
+      def initialize(body:, request_uuid:)
         @body = body
         @saml_message = decode_and_inflate(body)
+        @request_uuid = request_uuid
       end
 
       def valid?
@@ -24,7 +26,8 @@ module Spid
         @validator ||=
           Spid::Saml2::ResponseValidator.new(
             response: saml_response,
-            settings: settings
+            settings: settings,
+            request_uuid: request_uuid
           )
       end
 

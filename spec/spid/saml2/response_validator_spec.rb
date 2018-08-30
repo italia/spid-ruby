@@ -4,7 +4,8 @@ RSpec.describe Spid::Saml2::ResponseValidator do
   subject(:validator) do
     described_class.new(
       response: response,
-      settings: settings
+      settings: settings,
+      request_uuid: request_uuid
     )
   end
 
@@ -20,9 +21,12 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       status_code: status_code,
       status_message: status_message,
       status_detail: status_detail,
-      audience: audience
+      audience: audience,
+      in_response_to: "a-request-uuid"
     )
   end
+
+  let(:request_uuid) { "a-request-uuid" }
 
   let(:signed_response) do
     File.read(generate_fixture_path("sso-response-signed.xml"))
@@ -95,6 +99,27 @@ RSpec.describe Spid::Saml2::ResponseValidator do
     end
   end
 
+  describe "#matches_request_uuid" do
+    context "when request uuid matches" do
+      it "returns true" do
+        expect(validator.matches_request_uuid).to be_truthy
+      end
+    end
+
+    context "when request uuid doesn't match" do
+      let(:request_uuid) { "failing-code" }
+
+      it "returns false" do
+        expect(validator.matches_request_uuid).to be_falsey
+      end
+
+      it "has errors" do
+        validator.call
+        expect(validator.errors.keys).to include "request_uuid_mismatch"
+      end
+    end
+  end
+
   describe "#success?" do
     context "when status code is success" do
       it "returns true" do
@@ -129,6 +154,11 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       it "returns false" do
         expect(validator.issuer).to be_falsey
       end
+
+      it "has errors" do
+        validator.issuer
+        expect(validator.errors.keys).to include "issuer"
+      end
     end
   end
 
@@ -144,6 +174,11 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
       it "returns false" do
         expect(validator.destination).to be_falsey
+      end
+
+      it "has errors" do
+        validator.destination
+        expect(validator.errors.keys).to include "destination"
       end
     end
   end
@@ -161,6 +196,11 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       it "returns false" do
         expect(validator.conditions).to be_falsey
       end
+
+      it "has errors" do
+        validator.conditions
+        expect(validator.errors.keys).to include "conditions"
+      end
     end
 
     context "when response is received before the time window" do
@@ -168,6 +208,11 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
       it "returns false" do
         expect(validator.conditions).to be_falsey
+      end
+
+      it "has errors" do
+        validator.conditions
+        expect(validator.errors.keys).to include "conditions"
       end
     end
   end
@@ -184,6 +229,11 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
       it "returns false" do
         expect(validator.audience).to be_falsey
+      end
+
+      it "has errors" do
+        validator.audience
+        expect(validator.errors.keys).to include "audience"
       end
     end
   end
@@ -202,6 +252,11 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
       it "returns false" do
         expect(validator.signature).to be_falsey
+      end
+
+      it "has errors" do
+        validator.signature
+        expect(validator.errors.keys).to include "signature"
       end
     end
   end

@@ -43,18 +43,24 @@ RSpec.describe "Receiving a SSO assertion" do
       )
     end
 
-    let(:rack_session) do
-      {
-        "spid" => {}
-      }
-    end
-
     let(:response) do
       request.post(
         path,
         params: params,
         "rack.session" => rack_session
       )
+    end
+
+    let(:rack_session) do
+      {
+        "spid" => spid_session
+      }
+    end
+
+    let(:spid_session) do
+      {
+        "sso_request_uuid" => "_acae2f5c-a008-4cf6-b5b1-df15db7c3dc8"
+      }
     end
 
     let(:params) do
@@ -83,7 +89,7 @@ RSpec.describe "Receiving a SSO assertion" do
       end
     end
 
-    context "when RelaySrtate is not provided by IdP" do
+    context "when RelayState is not provided by IdP" do
       let(:params) do
         { SAMLResponse: saml_response }
       end
