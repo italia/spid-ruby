@@ -35,6 +35,15 @@ RSpec.describe Spid::Saml2::ServiceProvider do
 
   it { is_expected.to be_a described_class }
 
+  context "when attribute services is empty" do
+    let(:attribute_services) { [] }
+
+    it "raises a Spid::MissingAttributeServicesError error" do
+      expect { service_provider }.
+        to raise_error Spid::MissingAttributeServicesError
+    end
+  end
+
   it "requires an host" do
     expect(service_provider.host).to eq host
   end

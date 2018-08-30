@@ -31,6 +31,13 @@ RSpec.describe Spid::Saml2::Response do
     end
   end
 
+  describe "#name_id" do
+    it "returns the name_id of the response" do
+      expect(response.name_id).
+        to eq "_ce3d2948b4cf20146dee0a0b3dd6f69b6cf86f62d7"
+    end
+  end
+
   describe "#certificate" do
     it "returns the certificate of the response" do
       expect(response.certificate.to_der).to eq certificate.to_der

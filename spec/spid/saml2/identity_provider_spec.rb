@@ -13,7 +13,6 @@ RSpec.describe Spid::Saml2::IdentityProvider do
       entity_id: entity_id,
       sso_target_url: sso_target_url,
       slo_target_url: slo_target_url,
-      cert_fingerprint: cert_fingerprint,
       certificate: certificate
     }
   end
@@ -22,7 +21,6 @@ RSpec.describe Spid::Saml2::IdentityProvider do
   let(:entity_id) { "https://example.com" }
   let(:sso_target_url) { "#{entity_id}/sso-path" }
   let(:slo_target_url) { "#{entity_id}/slo-path" }
-  let(:cert_fingerprint) { "a-certificate-fingerprint" }
   let(:certificate) { File.read(generate_fixture_path("certificate.pem")) }
 
   it { is_expected.to be_a described_class }
@@ -41,10 +39,6 @@ RSpec.describe Spid::Saml2::IdentityProvider do
 
   it "requires an slo_target_url" do
     expect(idp_configuration.slo_target_url).to eq slo_target_url
-  end
-
-  it "requires an cert_fingerprint" do
-    expect(idp_configuration.cert_fingerprint).to eq cert_fingerprint
   end
 
   it "requires a certificate" do

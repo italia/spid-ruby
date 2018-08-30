@@ -22,37 +22,24 @@ module Spid
 
       attr_reader :document
       attr_reader :response
-      attr_reader :options
 
       # Parse the Identity Provider metadata and return the results as Hash
       #
       # @param idp_metadata [String]
       #
-      # @param options [Hash] options used for parsing the metadata and the returned Settings instance
-      # @option options [Array<String>, nil] :sso_binding an ordered list of bindings to detect the single signon URL. The first binding in the list that is included in the metadata will be used.
-      # @option options [Array<String>, nil] :slo_binding an ordered list of bindings to detect the single logout URL. The first binding in the list that is included in the metadata will be used.
-      # @option options [String, nil] :entity_id when this is given, the entity descriptor for this ID is used. When ommitted, the first entity descriptor is used.
-      #
       # @return [Hash]
-      def parse_to_hash(idp_metadata, options = {})
+      def parse_to_hash(idp_metadata)
         @document = REXML::Document.new(idp_metadata)
-        @options = options
         @entity_descriptor = nil
         @certificates = nil
-        @fingerprint = nil
-
-        if idpsso_descriptor.nil?
-          raise ArgumentError.new("idp_metadata must contain an IDPSSODescriptor element")
-        end
 
         {
           :idp_entity_id => idp_entity_id,
           :name_identifier_format => idp_name_id_format,
-          :idp_sso_target_url => single_signon_service_url(options),
-          :idp_slo_target_url => single_logout_service_url(options),
+          :idp_sso_target_url => single_signon_service_url,
+          :idp_slo_target_url => single_logout_service_url,
           :idp_attribute_names => attribute_names,
           :idp_cert => nil,
-          :idp_cert_fingerprint => nil,
           :idp_cert_multi => nil
         }.tap do |response_hash|
           merge_certificates_into(response_hash) unless certificates.nil?
@@ -64,26 +51,9 @@ module Spid
       def entity_descriptor
         @entity_descriptor ||= REXML::XPath.first(
           document,
-          entity_descriptor_path,
+          "//md:EntityDescriptor",
           namespace
         )
-      end
-
-      def entity_descriptor_path
-        path = "//md:EntityDescriptor"
-        entity_id = options[:entity_id]
-        return path unless entity_id
-        path << "[@entityID=\"#{entity_id}\"]"
-      end
-
-      def idpsso_descriptor
-        unless entity_descriptor.nil?
-          return REXML::XPath.first(
-            entity_descriptor,
-            "md:IDPSSODescriptor",
-            namespace
-          )
-        end
       end
 
       # @return [String|nil] IdP Entity ID value if exists
@@ -103,28 +73,21 @@ module Spid
         element_text(node)
       end
 
-      # @param binding_priority [Array]
       # @return [String|nil] SingleSignOnService binding if exists
       #
-      def single_signon_service_binding(binding_priority = nil)
+      def single_signon_service_binding
         nodes = REXML::XPath.match(
           entity_descriptor,
           "md:IDPSSODescriptor/md:SingleSignOnService/@Binding",
           namespace
         )
-        if binding_priority
-          values = nodes.map(&:value)
-          binding_priority.detect{ |binding| values.include? binding }
-        else
-          nodes.first.value if nodes.any?
-        end
+        nodes.first.value if nodes.any?
       end
 
-      # @param options [Hash]
       # @return [String|nil] SingleSignOnService endpoint if exists
       #
-      def single_signon_service_url(options = {})
-        binding = single_signon_service_binding(options[:sso_binding])
+      def single_signon_service_url
+        binding = single_signon_service_binding
         unless binding.nil?
           node = REXML::XPath.first(
             entity_descriptor,
@@ -135,28 +98,21 @@ module Spid
         end
       end
 
-      # @param binding_priority [Array]
       # @return [String|nil] SingleLogoutService binding if exists
       #
-      def single_logout_service_binding(binding_priority = nil)
+      def single_logout_service_binding
         nodes = REXML::XPath.match(
           entity_descriptor,
           "md:IDPSSODescriptor/md:SingleLogoutService/@Binding",
           namespace
         )
-        if binding_priority
-          values = nodes.map(&:value)
-          binding_priority.detect{ |binding| values.include? binding }
-        else
-          nodes.first.value if nodes.any?
-        end
+        nodes.first.value if nodes.any?
       end
 
-      # @param options [Hash]
       # @return [String|nil] SingleLogoutService endpoint if exists
       #
-      def single_logout_service_url(options = {})
-        binding = single_logout_service_binding(options[:slo_binding])
+      def single_logout_service_url
+        binding = single_logout_service_binding
         unless binding.nil?
           node = REXML::XPath.first(
             entity_descriptor,
@@ -204,20 +160,6 @@ module Spid
         end
       end
 
-      # @return [String|nil] the fingerpint of the X509Certificate if it exists
-      #
-      def fingerprint(certificate, fingerprint_algorithm = ::Spid::SHA256)
-        @fingerprint ||= begin
-          if certificate
-            cert = OpenSSL::X509::Certificate.new(Base64.decode64(certificate))
-
-            algorithm = fingerprint_algorithm || ::Spid::SHA256
-            fingerprint_alg = ::Spid::SIGNATURE_ALGORITHMS[algorithm]
-            fingerprint_alg.hexdigest(cert.to_der).upcase.scan(/../).join(":")
-          end
-        end
-      end
-
       # @return [Array] the names of all SAML attributes if any exist
       #
       def attribute_names
@@ -239,40 +181,14 @@ module Spid
       end
 
       def merge_certificates_into(parsed_metadata)
-        if (certificates.size == 1 &&
-              (certificates_has_one('signing') || certificates_has_one('encryption'))) ||
-              (certificates_has_one('signing') && certificates_has_one('encryption') &&
-              certificates["signing"][0] == certificates["encryption"][0])
-
           if certificates.key?("signing")
-            parsed_metadata[:idp_cert] = certificates["signing"][0]
-            parsed_metadata[:idp_cert_fingerprint] = fingerprint(
-              parsed_metadata[:idp_cert],
-              parsed_metadata[:idp_cert_fingerprint_algorithm]
-            )
+            certificate = certificates["signing"][0]
           else
-            parsed_metadata[:idp_cert] = certificates["encryption"][0]
-            parsed_metadata[:idp_cert_fingerprint] = fingerprint(
-              parsed_metadata[:idp_cert],
-              parsed_metadata[:idp_cert_fingerprint_algorithm]
-            )
+            certificate = certificates["encryption"][0]
           end
-        else
-          # symbolize keys of certificates and pass it on
-          parsed_metadata[:idp_cert_multi] = Hash[certificates.map { |k, v| [k.to_sym, v] }]
-        end
-      end
-
-      def certificates_has_one(key)
-        certificates.key?(key) && certificates[key].size == 1
-      end
-
-      def merge_parsed_metadata_into(settings, parsed_metadata)
-        parsed_metadata.each do |key, value|
-          settings.send("#{key}=".to_sym, value)
-        end
-
-        settings
+          parsed_metadata[:idp_cert] = OpenSSL::X509::Certificate.new(
+            Base64.decode64(certificate)
+          )
       end
 
       def element_text(element)

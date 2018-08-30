@@ -21,16 +21,8 @@ RSpec.describe "Validation of Spid::Slo::Response" do
   let(:private_key_path) { generate_fixture_path("private-key.pem") }
   let(:certificate_path) { generate_fixture_path("certificate.pem") }
 
-  let(:cert_fingerprint) do
-    "C6:82:11:E5:44:22:53:58:05:B2:3F:2D:24:52:8B:17:95:C3:62:89"
-  end
-
   let(:host) { "https://service.provider" }
   let(:session_index) { "a-session-index" }
-
-  let(:idp_metadata) do
-    File.read(generate_fixture_path("identity-provider-metadata.xml"))
-  end
 
   let(:slo_path) { "/slo" }
 

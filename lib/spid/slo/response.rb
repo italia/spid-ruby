@@ -20,10 +20,6 @@ module Spid
         ).call
       end
 
-      def errors
-        []
-      end
-
       def identity_provider
         @identity_provider ||=
           IdentityProviderManager.find_by_entity(issuer)
