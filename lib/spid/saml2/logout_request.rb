@@ -7,12 +7,14 @@ module Spid
       attr_reader :uuid
       attr_reader :document
       attr_reader :session_index
+      attr_reader :issue_instant
 
       def initialize(uuid: nil, settings:, session_index:)
         @settings = settings
         @document = REXML::Document.new
         @session_index = session_index
         @uuid = uuid || SecureRandom.uuid
+        @issue_instant = Time.now.utc.iso8601
       end
 
       def to_saml
@@ -76,12 +78,6 @@ module Spid
             element.text = session_index
             element
           end
-      end
-
-      private
-
-      def issue_instant
-        @issue_instant ||= Time.now.utc.iso8601
       end
     end
   end
