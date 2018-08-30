@@ -121,8 +121,9 @@ RSpec.describe "Receiving a SSO assertion" do
       end
 
       it "sets error message in spid session" do
-        spid_data = rack_session["spid"]
-        expect(spid_data).to match expected_session
+        response
+
+        expect(rack_session["spid"]).to match expected_session
       end
     end
   end
