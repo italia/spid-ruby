@@ -23,6 +23,7 @@ RSpec.describe "Validation of Spid::Slo::Response" do
 
   let(:host) { "https://service.provider" }
   let(:session_index) { "a-session-index" }
+  let(:idp_issuer) { "https://identity.provider" }
 
   let(:slo_path) { "/spid/slo" }
 
@@ -53,6 +54,12 @@ RSpec.describe "Validation of Spid::Slo::Response" do
 
   context "when response conforms to the request" do
     it { is_expected.to be_valid }
+  end
+
+  describe "#issuer" do
+    it "returns the identity provider issuer" do
+      expect(slo_response.issuer).to eq idp_issuer
+    end
   end
 
   context "when response isn't conform to the request" do
