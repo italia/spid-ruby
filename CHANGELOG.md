@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - IDP-Initiated SLO management
+- Error Handling
 
 ## [0.13.0] - 2018-08-29
 ### Added
