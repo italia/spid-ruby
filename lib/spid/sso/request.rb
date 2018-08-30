@@ -32,6 +32,10 @@ module Spid
         ].join("?")
       end
 
+      def uuid
+        authn_request.uuid
+      end
+
       def query_params_signer
         @query_params_signer ||=
           begin

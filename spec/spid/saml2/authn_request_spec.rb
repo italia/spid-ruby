@@ -5,7 +5,7 @@ require "spec_helper"
 RSpec.describe Spid::Saml2::AuthnRequest do
   subject(:authn_request) do
     described_class.new(
-      uuid: "unique-uuid",
+      uuid: "_unique-uuid",
       settings: settings
     )
   end

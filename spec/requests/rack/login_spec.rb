@@ -54,13 +54,34 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
   describe "GET start_sso_path" do
     let(:path) { sso_path.to_s }
 
+    let(:spid_session) { {} }
+
     context "with an idp-name" do
       let(:response) do
-        request.get(path, params: { idp_name: "identity-provider" })
+        request.get(
+          path,
+          params: { idp_name: "identity-provider" },
+          "rack.session" => {
+            "spid" => spid_session
+          }
+        )
+      end
+
+      let(:request_uuid) do
+        "e2880819-0b3f-48af-903e-fb3558d50042"
       end
 
       it "responds with a redirect" do
         expect(response.status).to eq 302
+      end
+
+      it "stores in session the uuid of the request" do
+        allow(SecureRandom).to receive(:uuid).and_return(request_uuid)
+
+        response
+
+        expect(spid_session["sso_request_uuid"]).
+          to eq "_#{request_uuid}"
       end
 
       describe "Location header url" do

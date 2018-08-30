@@ -11,11 +11,10 @@ module Spid
 
       def call(env)
         @sso = LoginEnv.new(env)
-        if @sso.valid_request?
-          @sso.response
-        else
-          app.call(env)
-        end
+
+        return @sso.response if @sso.valid_request?
+
+        app.call(env)
       end
 
       class LoginEnv # :nodoc:
@@ -26,7 +25,12 @@ module Spid
           @request = ::Rack::Request.new(env)
         end
 
+        def session
+          request.session["spid"]
+        end
+
         def response
+          session["sso_request_uuid"] = sso_request.uuid
           [
             302,
             { "Location" => sso_url },
@@ -35,11 +39,18 @@ module Spid
         end
 
         def sso_url
-          Spid::Sso::Request.new(
-            idp_name: idp_name,
-            relay_state: relay_state,
-            attribute_index: attribute_consuming_service_index
-          ).url
+          sso_request.url
+        end
+
+        def sso_request
+          @sso_request ||=
+            begin
+              Spid::Sso::Request.new(
+                idp_name: idp_name,
+                relay_state: relay_state,
+                attribute_index: attribute_consuming_service_index
+              )
+            end
         end
 
         def valid_request?
