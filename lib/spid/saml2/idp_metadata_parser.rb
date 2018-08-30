@@ -39,8 +39,6 @@ module Spid
         @options = options
         @entity_descriptor = nil
         @certificates = nil
-        @fingerprint = nil
-
         if idpsso_descriptor.nil?
           raise ArgumentError.new("idp_metadata must contain an IDPSSODescriptor element")
         end
@@ -52,7 +50,6 @@ module Spid
           :idp_slo_target_url => single_logout_service_url(options),
           :idp_attribute_names => attribute_names,
           :idp_cert => nil,
-          :idp_cert_fingerprint => nil,
           :idp_cert_multi => nil
         }.tap do |response_hash|
           merge_certificates_into(response_hash) unless certificates.nil?
@@ -204,20 +201,6 @@ module Spid
         end
       end
 
-      # @return [String|nil] the fingerpint of the X509Certificate if it exists
-      #
-      def fingerprint(certificate, fingerprint_algorithm = ::Spid::SHA256)
-        @fingerprint ||= begin
-          if certificate
-            cert = OpenSSL::X509::Certificate.new(Base64.decode64(certificate))
-
-            algorithm = fingerprint_algorithm || ::Spid::SHA256
-            fingerprint_alg = ::Spid::SIGNATURE_ALGORITHMS[algorithm]
-            fingerprint_alg.hexdigest(cert.to_der).upcase.scan(/../).join(":")
-          end
-        end
-      end
-
       # @return [Array] the names of all SAML attributes if any exist
       #
       def attribute_names
@@ -246,16 +229,8 @@ module Spid
 
           if certificates.key?("signing")
             parsed_metadata[:idp_cert] = certificates["signing"][0]
-            parsed_metadata[:idp_cert_fingerprint] = fingerprint(
-              parsed_metadata[:idp_cert],
-              parsed_metadata[:idp_cert_fingerprint_algorithm]
-            )
           else
             parsed_metadata[:idp_cert] = certificates["encryption"][0]
-            parsed_metadata[:idp_cert_fingerprint] = fingerprint(
-              parsed_metadata[:idp_cert],
-              parsed_metadata[:idp_cert_fingerprint_algorithm]
-            )
           end
         else
           # symbolize keys of certificates and pass it on

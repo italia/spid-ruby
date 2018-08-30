@@ -76,10 +76,6 @@ RSpec.describe Spid::IdentityProviderManager do
     let(:entity_id) { "https://identity.provider" }
     let(:sso_target_url) { "https://identity.provider/sso" }
     let(:slo_target_url) { "https://identity.provider/slo" }
-    let(:cert_fingerprint) do
-      "4A:03:91:AB:BB:2E:BB:1B:27:5C:BC:B9:1F:BB:7D:AC:" \
-      "0A:95:70:77:47:9C:2D:AE:6C:67:4E:4C:53:81:9A:F8"
-    end
 
     let(:certificate) do
       instance_double("OpenSSL::X509::Certificate")
@@ -91,7 +87,6 @@ RSpec.describe Spid::IdentityProviderManager do
         entity_id: entity_id,
         sso_target_url: sso_target_url,
         slo_target_url: slo_target_url,
-        cert_fingerprint: cert_fingerprint,
         certificate: certificate
       }
     end
