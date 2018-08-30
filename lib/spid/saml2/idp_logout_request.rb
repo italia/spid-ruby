@@ -29,6 +29,10 @@ module Spid
         ]&.value
       end
 
+      def name_id
+        document.elements["/samlp:LogoutRequest/saml:NameID/text()"]&.value
+      end
+
       def name_id_name_qualifier
         document.elements[
           "/samlp:LogoutRequest/saml:NameID/@NameQualifier"

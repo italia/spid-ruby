@@ -58,6 +58,13 @@ RSpec.describe Spid::Saml2::IdpLogoutRequest do
     end
   end
 
+  describe "#name_id" do
+    it "returns the issuer_name_qualifier of the logout request" do
+      expect(request.name_id).
+        to eq "_f92cc1834efc0f73e9c09f482fce80037a6251e7"
+    end
+  end
+
   describe "#name_id_name_qualifier" do
     it "returns the name_id_name_qualifier of the logout request" do
       expect(request.name_id_name_qualifier).to eq "https://identity.provider"

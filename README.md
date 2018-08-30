@@ -72,14 +72,14 @@ gem "spid"
 |verification of `Destination`|✓|
 |PartialLogout detection||
 |**LogoutRequest parsing (for third-party-initiated logout):**||
-|parsing of LogoutRequest XML||
+|parsing of LogoutRequest XML|✓|
 |verification of `Response/Signature` value (if any)||
 |verification of `Response/Signature` certificate (if any) against IdP metadata||
-|verification of `Issuer`||
-|verification of `Destination`||
-|parsing of `NameID`||
+|verification of `Issuer`|✓|
+|verification of `Destination`|✓|
+|parsing of `NameID`|✓|
 |**LogoutResponse generation (for third-party-initiated logout):**||
-|generation of LogoutResponse XML||
+|generation of LogoutResponse XML|✓|
 |HTTP-Redirect binding||
 |HTTP-POST binding||
 |PartialLogout customization||
