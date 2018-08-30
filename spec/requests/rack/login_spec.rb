@@ -56,17 +56,19 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
 
     let(:spid_session) { {} }
 
-    context "with an idp-name" do
-      let(:response) do
-        request.get(
-          path,
-          params: { idp_name: "identity-provider" },
-          "rack.session" => {
-            "spid" => spid_session
-          }
-        )
-      end
+    let(:response) do
+      request.get(
+        path,
+        params: { idp_name: idp_name },
+        "rack.session" => {
+          "spid" => spid_session
+        }
+      )
+    end
 
+    let(:idp_name) { "identity-provider" }
+
+    context "with an idp-name" do
       let(:request_uuid) do
         "e2880819-0b3f-48af-903e-fb3558d50042"
       end
@@ -111,7 +113,7 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
     end
 
     context "without an idp-name" do
-      let(:response) { request.get(path, {}) }
+      let(:idp_name) { nil }
 
       it "returns the app response" do
         expect(response).to be_ok
