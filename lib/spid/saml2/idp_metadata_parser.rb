@@ -22,29 +22,22 @@ module Spid
 
       attr_reader :document
       attr_reader :response
-      attr_reader :options
 
       # Parse the Identity Provider metadata and return the results as Hash
       #
       # @param idp_metadata [String]
       #
-      # @param options [Hash] options used for parsing the metadata and the returned Settings instance
-      # @option options [Array<String>, nil] :sso_binding an ordered list of bindings to detect the single signon URL. The first binding in the list that is included in the metadata will be used.
-      # @option options [Array<String>, nil] :slo_binding an ordered list of bindings to detect the single logout URL. The first binding in the list that is included in the metadata will be used.
-      # @option options [String, nil] :entity_id when this is given, the entity descriptor for this ID is used. When ommitted, the first entity descriptor is used.
-      #
       # @return [Hash]
-      def parse_to_hash(idp_metadata, options = {})
+      def parse_to_hash(idp_metadata)
         @document = REXML::Document.new(idp_metadata)
-        @options = options
         @entity_descriptor = nil
         @certificates = nil
 
         {
           :idp_entity_id => idp_entity_id,
           :name_identifier_format => idp_name_id_format,
-          :idp_sso_target_url => single_signon_service_url(options),
-          :idp_slo_target_url => single_logout_service_url(options),
+          :idp_sso_target_url => single_signon_service_url,
+          :idp_slo_target_url => single_logout_service_url,
           :idp_attribute_names => attribute_names,
           :idp_cert => nil,
           :idp_cert_multi => nil
@@ -58,16 +51,9 @@ module Spid
       def entity_descriptor
         @entity_descriptor ||= REXML::XPath.first(
           document,
-          entity_descriptor_path,
+          "//md:EntityDescriptor",
           namespace
         )
-      end
-
-      def entity_descriptor_path
-        path = "//md:EntityDescriptor"
-        entity_id = options[:entity_id]
-        return path unless entity_id
-        path << "[@entityID=\"#{entity_id}\"]"
       end
 
       # @return [String|nil] IdP Entity ID value if exists
@@ -87,28 +73,21 @@ module Spid
         element_text(node)
       end
 
-      # @param binding_priority [Array]
       # @return [String|nil] SingleSignOnService binding if exists
       #
-      def single_signon_service_binding(binding_priority = nil)
+      def single_signon_service_binding
         nodes = REXML::XPath.match(
           entity_descriptor,
           "md:IDPSSODescriptor/md:SingleSignOnService/@Binding",
           namespace
         )
-        if binding_priority
-          values = nodes.map(&:value)
-          binding_priority.detect{ |binding| values.include? binding }
-        else
-          nodes.first.value if nodes.any?
-        end
+        nodes.first.value if nodes.any?
       end
 
-      # @param options [Hash]
       # @return [String|nil] SingleSignOnService endpoint if exists
       #
-      def single_signon_service_url(options = {})
-        binding = single_signon_service_binding(options[:sso_binding])
+      def single_signon_service_url
+        binding = single_signon_service_binding
         unless binding.nil?
           node = REXML::XPath.first(
             entity_descriptor,
@@ -119,28 +98,21 @@ module Spid
         end
       end
 
-      # @param binding_priority [Array]
       # @return [String|nil] SingleLogoutService binding if exists
       #
-      def single_logout_service_binding(binding_priority = nil)
+      def single_logout_service_binding
         nodes = REXML::XPath.match(
           entity_descriptor,
           "md:IDPSSODescriptor/md:SingleLogoutService/@Binding",
           namespace
         )
-        if binding_priority
-          values = nodes.map(&:value)
-          binding_priority.detect{ |binding| values.include? binding }
-        else
-          nodes.first.value if nodes.any?
-        end
+        nodes.first.value if nodes.any?
       end
 
-      # @param options [Hash]
       # @return [String|nil] SingleLogoutService endpoint if exists
       #
-      def single_logout_service_url(options = {})
-        binding = single_logout_service_binding(options[:slo_binding])
+      def single_logout_service_url
+        binding = single_logout_service_binding
         unless binding.nil?
           node = REXML::XPath.first(
             entity_descriptor,
