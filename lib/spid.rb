@@ -71,6 +71,8 @@ module Spid # :nodoc:
     L3
   ].freeze
 
+  SUCCESS_CODE = "urn:oasis:names:tc:SAML:2.0:status:Success"
+
   ATTRIBUTES_MAP = {
     spid_code: "spidCode",
     name: "name",

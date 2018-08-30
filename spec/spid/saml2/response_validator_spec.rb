@@ -17,6 +17,9 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       conditions_not_on_or_after: "2018-02-01T00:00:00Z",
       saml_message: signed_response,
       certificate: response_certificate,
+      status_code: status_code,
+      status_message: status_message,
+      status_detail: status_detail,
       audience: audience
     )
   end
@@ -32,6 +35,11 @@ RSpec.describe Spid::Saml2::ResponseValidator do
   let(:response_certificate) do
     OpenSSL::X509::Certificate.new(response_certificate_pem)
   end
+
+  let(:status_code) { Spid::SUCCESS_CODE }
+
+  let(:status_message) { "Status message" }
+  let(:status_detail) { "Status_Details" }
 
   let(:settings) do
     instance_double(
@@ -75,6 +83,27 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
     context "when at least one validation fails" do
       let(:assertion_issuer) { "https://another-identity.provider" }
+
+      it "returns false" do
+        expect(validator.call).to be_falsey
+      end
+
+      it "has errors" do
+        validator.call
+        expect(validator.errors.keys).to be_any
+      end
+    end
+  end
+
+  describe "#success?" do
+    context "when status code is success" do
+      it "returns true" do
+        expect(validator).to be_success
+      end
+    end
+
+    context "when status code is not success" do
+      let(:status_code) { "failing-code" }
 
       it "returns false" do
         expect(validator.call).to be_falsey

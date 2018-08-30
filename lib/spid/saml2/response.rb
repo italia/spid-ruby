@@ -71,6 +71,26 @@ module Spid
         document.elements[xpath]&.value
       end
 
+      def status_code
+        document.elements[
+          "/samlp:Response/samlp:Status/samlp:StatusCode/@Value"
+        ]&.value
+      end
+
+      def status_message
+        document.elements[
+          "/samlp:Response/samlp:Status/samlp:StatusCode/" \
+          "samlp:StatusMessage/@Value"
+        ]&.value
+      end
+
+      def status_detail
+        document.elements[
+          "/samlp:Response/samlp:Status/samlp:StatusCode/" \
+          "samlp:StatusDetail/@Value"
+        ]&.value
+      end
+
       def attributes
         main_xpath = "/samlp:Response/saml:Assertion/saml:AttributeStatement"
         main_xpath = "#{main_xpath}/saml:Attribute"

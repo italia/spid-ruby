@@ -83,6 +83,24 @@ RSpec.describe Spid::Saml2::Response do
     end
   end
 
+  describe "#status_code" do
+    it "returns the status code" do
+      expect(response.status_code).to eq Spid::SUCCESS_CODE
+    end
+  end
+
+  describe "#status_message" do
+    it "returns the status message" do
+      expect(response.status_message).to be_nil
+    end
+  end
+
+  describe "#status_detail" do
+    it "returns the status detail" do
+      expect(response.status_detail).to be_nil
+    end
+  end
+
   describe "#attributes" do
     let(:expected_attributes) do
       a_hash_including(

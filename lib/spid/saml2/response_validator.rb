@@ -22,8 +22,19 @@ module Spid
           destination,
           conditions,
           audience,
-          signature
+          signature,
+          success?
         ].all?
+      end
+
+      def success?
+        return true if response.status_code == Spid::SUCCESS_CODE
+
+        @errors["authentication"] = {
+          "status_message" => response.status_message,
+          "status_detail" => response.status_detail
+        }
+        false
       end
 
       def issuer
