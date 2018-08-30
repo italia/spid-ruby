@@ -39,9 +39,6 @@ module Spid
         @options = options
         @entity_descriptor = nil
         @certificates = nil
-        if idpsso_descriptor.nil?
-          raise ArgumentError.new("idp_metadata must contain an IDPSSODescriptor element")
-        end
 
         {
           :idp_entity_id => idp_entity_id,
@@ -71,16 +68,6 @@ module Spid
         entity_id = options[:entity_id]
         return path unless entity_id
         path << "[@entityID=\"#{entity_id}\"]"
-      end
-
-      def idpsso_descriptor
-        unless entity_descriptor.nil?
-          return REXML::XPath.first(
-            entity_descriptor,
-            "md:IDPSSODescriptor",
-            namespace
-          )
-        end
       end
 
       # @return [String|nil] IdP Entity ID value if exists

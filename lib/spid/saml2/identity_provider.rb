@@ -21,7 +21,6 @@ module Spid
         @slo_target_url = slo_target_url
         @certificate = certificate
       end
-      # rubocop:enable Metrics/ParameterLists
     end
   end
 end
