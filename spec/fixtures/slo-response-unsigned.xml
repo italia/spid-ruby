@@ -4,9 +4,8 @@
     ID="_6c3737282f007720e736f0f4028feed8cb9b40291c"
     Version="2.0"
     IssueInstant="2018-07-18T12:01:00Z"
-    Destination="https://service.provider/slo"
+    Destination="https://service.provider/spid/slo"
     InResponseTo="_21df91a89767879fc0f7df6a1490c6000c81644d">
-
   <saml:Issuer
       Format="urn:oasis:names:tc:SAML:2.0:nameid-format:entity"
       NameQualifier="https://identity.provider">

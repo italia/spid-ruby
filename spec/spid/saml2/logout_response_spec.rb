@@ -29,7 +29,7 @@ RSpec.describe Spid::Saml2::LogoutResponse do
   describe "#destination" do
     it "returns the destination of the response" do
       expect(logout_response.destination).
-        to eq "https://service.provider/slo"
+        to eq "https://service.provider/spid/slo"
     end
   end
 end

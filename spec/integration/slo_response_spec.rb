@@ -7,7 +7,7 @@ RSpec.describe "Validation of Spid::Slo::Response" do
     Spid::Slo::Response.new(
       body: spid_response,
       session_index: session_index,
-      matches_request_id: request_id
+      request_uuid: request_id
     )
   end
 
@@ -24,7 +24,7 @@ RSpec.describe "Validation of Spid::Slo::Response" do
   let(:host) { "https://service.provider" }
   let(:session_index) { "a-session-index" }
 
-  let(:slo_path) { "/slo" }
+  let(:slo_path) { "/spid/slo" }
 
   before do
     Spid.configure do |config|
@@ -56,7 +56,7 @@ RSpec.describe "Validation of Spid::Slo::Response" do
   end
 
   context "when response isn't conform to the request" do
-    let(:slo_path) { "/spid/slo" }
+    let(:slo_path) { "/spid/another/slo" }
 
     it { is_expected.not_to be_valid }
 

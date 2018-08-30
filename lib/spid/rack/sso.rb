@@ -26,17 +26,17 @@ module Spid
           @request = ::Rack::Request.new(env)
         end
 
+        def session
+          request.session["spid"]
+        end
+
         def store_session_success
-          request.session["spid"] = {
-            "attributes" => sso_response.attributes,
-            "session_index" => sso_response.session_index
-          }
+          session["attributes"] = sso_response.attributes
+          session["session_index"] = sso_response.session_index
         end
 
         def store_session_failure
-          request.session["spid"] = {
-            "errors" => sso_response.errors
-          }
+          session["errors"] = sso_response.errors
         end
 
         def response
@@ -45,7 +45,6 @@ module Spid
           else
             store_session_failure
           end
-
           [
             302,
             { "Location" => relay_state },

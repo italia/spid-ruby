@@ -43,7 +43,11 @@ RSpec.describe "Receiving a SSO assertion" do
       )
     end
 
-    let(:rack_session) { {} }
+    let(:rack_session) do
+      {
+        "spid" => {}
+      }
+    end
 
     let(:response) do
       request.post(

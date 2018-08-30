@@ -11,11 +11,10 @@ module Spid
 
       def call(env)
         @slo = SloEnv.new(env)
-        if @slo.valid_request?
-          @slo.response
-        else
-          app.call(env)
-        end
+
+        return @slo.response if @slo.valid_request?
+
+        app.call(env)
       end
 
       class SloEnv # :nodoc:
@@ -27,12 +26,16 @@ module Spid
           @request = ::Rack::Request.new(env)
         end
 
+        def session
+          request.session["spid"]
+        end
+
         def clear_session
           request.session["spid"] = {}
         end
 
         def response
-          clear_session
+          clear_session if valid_response?
           [
             302,
             { "Location" => relay_state },
@@ -67,8 +70,24 @@ module Spid
           request.path == Spid.configuration.slo_path
         end
 
+        def valid_response?
+          slo_response.valid?
+        end
+
         def valid_request?
           valid_path? && valid_http_verb?
+        end
+
+        def saml_response
+          request.params["SAMLResponse"]
+        end
+
+        def slo_response
+          @slo_response ||= ::Spid::Slo::Response.new(
+            body: saml_response,
+            session_index: session["session_index"],
+            request_uuid: session["slo_request_uuid"]
+          )
         end
       end
     end

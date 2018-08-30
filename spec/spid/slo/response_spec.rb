@@ -7,7 +7,7 @@ RSpec.describe Spid::Slo::Response do
     described_class.new(
       body: response_body,
       session_index: session_index,
-      matches_request_id: request_id
+      request_uuid: request_id
     )
   end
 

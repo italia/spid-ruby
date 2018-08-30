@@ -25,6 +25,9 @@ RSpec.describe "Receiving a SLO assertion" do
       config.hostname = hostname
       config.slo_path = slo_path
       config.default_relay_state_path = "/default/relay/state/path"
+      config.attribute_services = [
+        { name: "Service 1", fields: [:email] }
+      ]
     end
   end
 
@@ -39,9 +42,9 @@ RSpec.describe "Receiving a SLO assertion" do
       File.read(generate_fixture_path("slo-response.base64"))
     end
 
-    let(:rack_session) do
+    let(:spid_session) do
       {
-        "spid" => {}
+        "slo_request_uuid" => "_21df91a89767879fc0f7df6a1490c6000c81644d"
       }
     end
 
@@ -53,11 +56,15 @@ RSpec.describe "Receiving a SLO assertion" do
       )
     end
 
+    let(:rack_session) do
+      {
+        "spid" => spid_session
+      }
+    end
+
     let(:params) do
       { SAMLResponse: saml_response, RelayState: "/path/to/return" }
     end
-
-    before { response }
 
     it "responds with 302" do
       expect(response.status).to eq 302
@@ -80,8 +87,9 @@ RSpec.describe "Receiving a SLO assertion" do
     end
 
     it "remove all spid data from the session" do
-      spid_data = rack_session["spid"]
-      expect(spid_data).to eq({})
+      response
+
+      expect(rack_session["spid"]).to eq({})
     end
   end
 end

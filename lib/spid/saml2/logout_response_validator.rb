@@ -5,17 +5,24 @@ module Spid
     class LogoutResponseValidator # :nodoc:
       attr_reader :response
       attr_reader :settings
+      attr_reader :request_uuid
 
-      def initialize(response:, settings:)
+      def initialize(response:, settings:, request_uuid:)
         @response = response
         @settings = settings
+        @request_uuid = request_uuid
       end
 
       def call
         [
+          matches_request_uuid,
           destination,
           issuer
         ].all?
+      end
+
+      def matches_request_uuid
+        response.in_response_to == request_uuid
       end
 
       def destination

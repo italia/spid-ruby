@@ -5,18 +5,19 @@ module Spid
     class Response # :nodoc:
       attr_reader :body
       attr_reader :session_index
-      attr_reader :matches_request_id
+      attr_reader :request_uuid
 
-      def initialize(body:, session_index:, matches_request_id:)
+      def initialize(body:, session_index:, request_uuid:)
         @body = body
         @session_index = session_index
-        @matches_request_id = matches_request_id
+        @request_uuid = request_uuid
       end
 
       def valid?
         Spid::Saml2::LogoutResponseValidator.new(
           response: saml_response,
-          settings: settings
+          settings: settings,
+          request_uuid: request_uuid
         ).call
       end
 
