@@ -7,10 +7,12 @@ module Spid
     class ResponseValidator # :nodoc:
       attr_reader :response
       attr_reader :settings
+      attr_reader :errors
 
       def initialize(response:, settings:)
         @response = response
         @settings = settings
+        @errors = {}
       end
 
       def call
@@ -25,31 +27,64 @@ module Spid
       end
 
       def issuer
-        response.assertion_issuer == settings.idp_entity_id
+        return true if response.assertion_issuer == settings.idp_entity_id
+
+        @errors["issuer"] =
+          begin
+            "Response Issuer is '#{response.assertion_issuer}'" \
+            " but was expected '#{settings.idp_entity_id}'"
+          end
+        false
       end
 
       def certificate
-        response.certificate.to_der == settings.idp_certificate.to_der
+        if response.certificate.to_der == settings.idp_certificate.to_der
+          return true
+        end
+
+        @errors["certificate"] = "Certificates mismatch"
+        false
       end
 
       def destination
-        response.destination == settings.sp_acs_url
+        return true if response.destination == settings.sp_acs_url
+
+        @errors["destination"] =
+          begin
+            "Response Destination is '#{response.destination}'" \
+            " but was expected '#{settings.sp_acs_url}'"
+          end
+        false
       end
 
       def conditions
         time = Time.now.iso8601
 
-        response.conditions_not_before <= time &&
-          response.conditions_not_on_or_after > time
+        if response.conditions_not_before <= time &&
+           response.conditions_not_on_or_after > time
+          return true
+        end
+
+        @errors["conditions"] = "Response was out of time"
+        false
       end
 
       def audience
-        response.audience == settings.sp_entity_id
+        return true if response.audience == settings.sp_entity_id
+        @errors["audience"] =
+          begin
+            "Response Audience is '#{response.audience}'" \
+            " but was expected '#{settings.sp_entity_id}'"
+          end
+        false
       end
 
       def signature
         signed_document = Xmldsig::SignedDocument.new(response.saml_message)
-        signed_document.validate(response.certificate)
+        return true if signed_document.validate(response.certificate)
+
+        @errors["signature"] = "Signature mismatch"
+        false
       end
     end
   end

@@ -17,14 +17,23 @@ module Spid
       end
 
       def valid?
-        Spid::Saml2::ResponseValidator.new(
-          response: saml_response,
-          settings: settings
-        ).call
+        validator.call
+      end
+
+      def validator
+        @validator ||=
+          Spid::Saml2::ResponseValidator.new(
+            response: saml_response,
+            settings: settings
+          )
       end
 
       def issuer
         saml_response.assertion_issuer
+      end
+
+      def errors
+        validator.errors
       end
 
       def attributes

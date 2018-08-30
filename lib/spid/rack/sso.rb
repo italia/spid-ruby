@@ -12,11 +12,9 @@ module Spid
       def call(env)
         @sso = SsoEnv.new(env)
 
-        if @sso.valid_request?
-          @sso.response
-        else
-          app.call(env)
-        end
+        return @sso.response if @sso.valid_request?
+
+        app.call(env)
       end
 
       class SsoEnv # :nodoc:
@@ -28,15 +26,26 @@ module Spid
           @request = ::Rack::Request.new(env)
         end
 
-        def store_session
+        def store_session_success
           request.session["spid"] = {
             "attributes" => sso_response.attributes,
             "session_index" => sso_response.session_index
           }
         end
 
+        def store_session_failure
+          request.session["spid"] = {
+            "errors" => sso_response.errors
+          }
+        end
+
         def response
-          store_session
+          if valid_response?
+            store_session_success
+          else
+            store_session_failure
+          end
+
           [
             302,
             { "Location" => relay_state },
@@ -75,12 +84,16 @@ module Spid
           request.path == Spid.configuration.acs_path
         end
 
+        def valid_response?
+          sso_response.valid?
+        end
+
         def valid_request?
           valid_path? && valid_http_verb?
         end
 
         def sso_response
-          ::Spid::Sso::Response.new(body: saml_response)
+          @sso_response ||= ::Spid::Sso::Response.new(body: saml_response)
         end
       end
     end

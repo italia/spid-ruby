@@ -79,6 +79,11 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       it "returns false" do
         expect(validator.call).to be_falsey
       end
+
+      it "has errors" do
+        validator.call
+        expect(validator.errors.keys).to be_any
+      end
     end
   end
 
