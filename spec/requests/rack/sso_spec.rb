@@ -25,6 +25,9 @@ RSpec.describe "Receiving a SSO assertion" do
       config.hostname = hostname
       config.acs_path = acs_path
       config.default_relay_state_path = "/default/relay/state/path"
+      config.attribute_services = [
+        { name: "Service 1", fields: [:email] }
+      ]
     end
   end
 
@@ -89,6 +92,28 @@ RSpec.describe "Receiving a SSO assertion" do
     it "sets the session with spid data" do
       spid_data = rack_session["spid"]
       expect(spid_data).to match expected_session
+    end
+
+    context "when there are errors on response" do
+      let(:hostname) { "https://another-service.provider" }
+
+      let(:expected_session) do
+        a_hash_including(
+          "errors" => {
+            "destination" =>
+              "Response Destination is 'https://service.provider/spid/sso'" \
+              " but was expected 'https://another-service.provider/spid/sso'",
+            "audience" =>
+              "Response Audience is 'https://service.provider'" \
+              " but was expected 'https://another-service.provider'"
+          }
+        )
+      end
+
+      it "sets error message in spid session" do
+        spid_data = rack_session["spid"]
+        expect(spid_data).to match expected_session
+      end
     end
   end
 end
