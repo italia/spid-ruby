@@ -182,10 +182,13 @@ module Spid
 
       def merge_certificates_into(parsed_metadata)
           if certificates.key?("signing")
-            parsed_metadata[:idp_cert] = certificates["signing"][0]
+            certificate = certificates["signing"][0]
           else
-            parsed_metadata[:idp_cert] = certificates["encryption"][0]
+            certificate = certificates["encryption"][0]
           end
+          parsed_metadata[:idp_cert] = OpenSSL::X509::Certificate.new(
+            Base64.decode64(certificate)
+          )
       end
 
       def element_text(element)

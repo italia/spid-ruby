@@ -87,15 +87,12 @@ RSpec.describe Spid::IdentityProviderManager do
         entity_id: entity_id,
         sso_target_url: sso_target_url,
         slo_target_url: slo_target_url,
-        certificate: certificate
+        certificate: OpenSSL::X509::Certificate
       }
     end
 
     before do
       allow(Spid::Saml2::IdentityProvider).to receive(:new)
-      allow(described_class).
-        to receive(:certificate_from_encoded_der).
-        and_return(certificate)
     end
 
     it "creates a new idp configuration with metadata attributes" do
