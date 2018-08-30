@@ -267,14 +267,6 @@ module Spid
         certificates.key?(key) && certificates[key].size == 1
       end
 
-      def merge_parsed_metadata_into(settings, parsed_metadata)
-        parsed_metadata.each do |key, value|
-          settings.send("#{key}=".to_sym, value)
-        end
-
-        settings
-      end
-
       def element_text(element)
         element.texts.map(&:value).join if element
       end
