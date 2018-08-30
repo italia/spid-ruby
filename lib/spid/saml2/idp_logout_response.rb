@@ -22,6 +22,7 @@ module Spid
             element = REXML::Element.new("samlp:LogoutResponse")
             element.add_attributes(logout_response_attributes)
             element.add_element(issuer)
+            element.add_element(status)
             element
           end
       end
@@ -42,6 +43,24 @@ module Spid
               "NameQualifier" => settings.sp_entity_id
             )
             element.text = settings.sp_entity_id
+            element
+          end
+      end
+
+      def status
+        @status ||=
+          begin
+            element = REXML::Element.new("saml:Status")
+            element.add_element(status_code)
+            element
+          end
+      end
+
+      def status_code
+        @status_code ||=
+          begin
+            element = REXML::Element.new("saml:StatusCode")
+            element.text = "urn:oasis:names:tc:SAML:2.0:status:Success"
             element
           end
       end
