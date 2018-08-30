@@ -5,6 +5,8 @@ require "spec_helper"
 RSpec.describe Spid::Saml2::IdpLogoutResponse do
   subject(:response) do
     described_class.new(
+      uuid: "unique-uuid",
+      request_uuid: "request-uuid",
       settings: settings
     )
   end
@@ -14,11 +16,21 @@ RSpec.describe Spid::Saml2::IdpLogoutResponse do
   let(:settings) do
     instance_double(
       "Spid::Saml2::Settings",
-      sp_entity_id: "https://service.provider"
+      sp_entity_id: "https://service.provider",
+      idp_slo_target_url: "https://identity.provider/slo"
     )
   end
 
   it { is_expected.to be_a described_class }
+
+  before do
+    Timecop.freeze
+    Timecop.travel("2018-08-04 01:00 +01:00")
+  end
+
+  after do
+    Timecop.return
+  end
 
   describe "#to_saml" do
     let(:saml_message) { response.to_saml }
@@ -32,6 +44,15 @@ RSpec.describe Spid::Saml2::IdpLogoutResponse do
 
       it "exists" do
         expect(node).not_to be_nil
+      end
+
+      {
+        "ID" => "_unique-uuid",
+        "IssueInstant" => "2018-08-04T00:00:00Z",
+        "InResponseTo" => "request-uuid",
+        "Destination" => "https://identity.provider/slo"
+      }.each do |name, value|
+        include_examples "has attribute", name, value
       end
 
       describe "saml:Issuer" do
@@ -60,6 +81,9 @@ RSpec.describe Spid::Saml2::IdpLogoutResponse do
             expect(node.text).
               to eq "urn:oasis:names:tc:SAML:2.0:status:Success"
           end
+
+          pending "saml:StatusMessage"
+          pending "saml:StatusDetail"
         end
 
         pending "saml:Signature"

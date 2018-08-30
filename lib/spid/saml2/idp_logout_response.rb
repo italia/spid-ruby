@@ -5,10 +5,16 @@ module Spid
     class IdpLogoutResponse # :nodoc:
       attr_reader :document
       attr_reader :settings
+      attr_reader :uuid
+      attr_reader :issue_instant
+      attr_reader :request_uuid
 
-      def initialize(settings:)
+      def initialize(settings:, request_uuid:, uuid: nil)
         @document = REXML::Document.new
         @settings = settings
+        @uuid = uuid || SecureRandom.uuid
+        @issue_instant = Time.now.utc.iso8601
+        @request_uuid = request_uuid
       end
 
       def to_saml
@@ -30,7 +36,11 @@ module Spid
       def logout_response_attributes
         @logout_response_attributes ||= {
           "xmlns:samlp" => "urn:oasis:names:tc:SAML:2.0:protocol",
-          "xmlns:saml" => "urn:oasis:names:tc:SAML:2.0:assertion"
+          "xmlns:saml" => "urn:oasis:names:tc:SAML:2.0:assertion",
+          "IssueInstant" => issue_instant,
+          "InResponseTo" => request_uuid,
+          "Destination" => settings.idp_slo_target_url,
+          "ID" => "_#{uuid}"
         }
       end
 
