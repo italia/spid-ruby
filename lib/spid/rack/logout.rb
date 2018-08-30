@@ -11,11 +11,10 @@ module Spid
 
       def call(env)
         @slo = LogoutEnv.new(env)
-        if @slo.valid_request?
-          @slo.response
-        else
-          app.call(env)
-        end
+
+        return @slo.response if @slo.valid_request?
+
+        app.call(env)
       end
 
       class LogoutEnv # :nodoc:
@@ -27,6 +26,7 @@ module Spid
         end
 
         def response
+          session["slo_request_uuid"] = slo_request.uuid
           [
             302,
             { "Location" => slo_url },
@@ -34,12 +34,23 @@ module Spid
           ]
         end
 
+        def session
+          request.session["spid"]
+        end
+
         def slo_url
-          Spid::Slo::Request.new(
-            idp_name: idp_name,
-            relay_state: relay_state,
-            session_index: spid_session["session-index"]
-          ).url
+          slo_request.url
+        end
+
+        def slo_request
+          @slo_request ||=
+            begin
+              Spid::Slo::Request.new(
+                idp_name: idp_name,
+                relay_state: relay_state,
+                session_index: spid_session["session_index"]
+              )
+            end
         end
 
         def valid_request?

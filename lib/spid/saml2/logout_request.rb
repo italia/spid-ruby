@@ -4,7 +4,6 @@ module Spid
   module Saml2
     class LogoutRequest # :nodoc:
       attr_reader :settings
-      attr_reader :uuid
       attr_reader :document
       attr_reader :session_index
       attr_reader :issue_instant
@@ -13,7 +12,7 @@ module Spid
         @settings = settings
         @document = REXML::Document.new
         @session_index = session_index
-        @uuid = uuid || SecureRandom.uuid
+        @uuid = uuid
         @issue_instant = Time.now.utc.iso8601
       end
 
@@ -78,6 +77,10 @@ module Spid
             element.text = session_index
             element
           end
+      end
+
+      def uuid
+        @uuid ||= "_#{SecureRandom.uuid}"
       end
     end
   end

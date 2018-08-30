@@ -14,11 +14,22 @@ module Spid
       end
 
       def valid?
-        Spid::Saml2::LogoutResponseValidator.new(
-          response: saml_response,
-          settings: settings,
-          request_uuid: request_uuid
-        ).call
+        validator.call
+      end
+
+      def errors
+        validator.errors
+      end
+
+      def validator
+        @validator ||=
+          begin
+            Spid::Saml2::LogoutResponseValidator.new(
+              response: saml_response,
+              settings: settings,
+              request_uuid: request_uuid
+            )
+          end
       end
 
       def identity_provider

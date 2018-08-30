@@ -8,15 +8,18 @@ module Spid
       attr_reader :response
       attr_reader :settings
       attr_reader :errors
+      attr_reader :request_uuid
 
-      def initialize(response:, settings:)
+      def initialize(response:, settings:, request_uuid:)
         @response = response
         @settings = settings
+        @request_uuid = request_uuid
         @errors = {}
       end
 
       def call
         [
+          matches_request_uuid,
           issuer,
           certificate,
           destination,
@@ -25,6 +28,14 @@ module Spid
           signature,
           success?
         ].all?
+      end
+
+      def matches_request_uuid
+        return true if response.in_response_to == request_uuid
+
+        @errors["request_uuid_mismatch"] =
+          "Request uuid not belongs to current session"
+        false
       end
 
       def success?

@@ -33,6 +33,7 @@ module Spid
         def store_session_success
           session["attributes"] = sso_response.attributes
           session["session_index"] = sso_response.session_index
+          session.delete("sso_request_uuid")
         end
 
         def store_session_failure
@@ -92,7 +93,10 @@ module Spid
         end
 
         def sso_response
-          @sso_response ||= ::Spid::Sso::Response.new(body: saml_response)
+          @sso_response ||= ::Spid::Sso::Response.new(
+            body: saml_response,
+            request_uuid: session["sso_request_uuid"]
+          )
         end
       end
     end

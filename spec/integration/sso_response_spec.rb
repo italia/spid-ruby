@@ -4,12 +4,17 @@ require "spec_helper"
 
 RSpec.describe "Validation of Spid::Sso::Response" do
   subject(:sso_response) do
-    Spid::Sso::Response.new(body: spid_response)
+    Spid::Sso::Response.new(
+      body: spid_response,
+      request_uuid: request_uuid
+    )
   end
 
   let(:spid_response) do
     File.read(generate_fixture_path("sso-response.base64"))
   end
+
+  let(:request_uuid) { "_acae2f5c-a008-4cf6-b5b1-df15db7c3dc8" }
 
   let(:idp_metadata_dir_path) { generate_fixture_path("config/idp_metadata") }
   let(:private_key_path) { generate_fixture_path("private-key.pem") }

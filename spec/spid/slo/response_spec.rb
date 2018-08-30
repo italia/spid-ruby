@@ -7,13 +7,13 @@ RSpec.describe Spid::Slo::Response do
     described_class.new(
       body: response_body,
       session_index: session_index,
-      request_uuid: request_id
+      request_uuid: request_uuid
     )
   end
 
   let(:response_body) { "SAMLResponse" }
   let(:session_index) { "a-session-index" }
-  let(:request_id) { "a-request-id" }
+  let(:request_uuid) { "a-request-uuid" }
 
   describe "#service_provider" do
     let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }

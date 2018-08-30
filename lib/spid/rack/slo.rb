@@ -34,8 +34,16 @@ module Spid
           request.session["spid"] = {}
         end
 
+        def store_session_failure
+          session["errors"] = slo_response.errors
+        end
+
         def response
-          clear_session if valid_response?
+          if valid_response?
+            clear_session
+          else
+            store_session_failure
+          end
           [
             302,
             { "Location" => relay_state },
@@ -85,8 +93,8 @@ module Spid
         def slo_response
           @slo_response ||= ::Spid::Slo::Response.new(
             body: saml_response,
-            session_index: session["session_index"],
-            request_uuid: session["slo_request_uuid"]
+            request_uuid: session["slo_request_uuid"],
+            session_index: session["session_index"]
           )
         end
       end

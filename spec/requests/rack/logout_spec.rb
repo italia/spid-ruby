@@ -10,21 +10,6 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
     end
   end
 
-  let(:session) do
-    {
-      "spid" => {
-        "session_index" => "a-session-index"
-      }
-    }
-  end
-
-  let(:env) do
-    {
-      "rack.session" => session,
-      params: params
-    }
-  end
-
   let(:request) { Rack::MockRequest.new(app) }
 
   let(:hostname) { "https://service.provider" }
@@ -72,18 +57,39 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
     let(:params) { {} }
 
     let(:response) do
-      request.get(path, env)
+      request.get(
+        path,
+        params: { idp_name: idp_name },
+        "rack.session" => {
+          "spid" => spid_session
+        }
+      )
+    end
+
+    let(:spid_session) do
+      {
+        "session_index" => "a-session-index"
+      }
     end
 
     context "with an idp-name" do
-      let(:params) do
-        {
-          idp_name: "identity-provider"
-        }
+      let(:idp_name) { "identity-provider" }
+
+      let(:request_uuid) do
+        "e2880819-0b3f-48af-903e-fb3558d50042"
       end
 
       it "responds with a redirect" do
         expect(response.status).to eq 302
+      end
+
+      it "stores in session the uuid of the logout request" do
+        allow(SecureRandom).to receive(:uuid).and_return(request_uuid)
+
+        response
+
+        expect(spid_session["slo_request_uuid"]).
+          to eq "_#{request_uuid}"
       end
 
       describe "Location header url" do
@@ -113,16 +119,7 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
     end
 
     context "without an idp-name" do
-      let(:response) do
-        request.get(
-          path,
-          "rack.session" => {
-            "spid" => {
-              "session_index" => "a-session-index"
-            }
-          }
-        )
-      end
+      let(:idp_name) { nil }
 
       it "returns the app response" do
         expect(response.status).to eq 200
