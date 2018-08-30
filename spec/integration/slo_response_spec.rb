@@ -28,10 +28,6 @@ RSpec.describe "Validation of Spid::Slo::Response" do
   let(:host) { "https://service.provider" }
   let(:session_index) { "a-session-index" }
 
-  let(:idp_metadata) do
-    File.read(generate_fixture_path("identity-provider-metadata.xml"))
-  end
-
   let(:slo_path) { "/slo" }
 
   before do
