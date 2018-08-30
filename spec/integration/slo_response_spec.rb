@@ -7,7 +7,7 @@ RSpec.describe "Validation of Spid::Slo::Response" do
     Spid::Slo::Response.new(
       body: spid_response,
       session_index: session_index,
-      request_uuid: request_id
+      request_uuid: request_uuid
     )
   end
 
@@ -15,7 +15,7 @@ RSpec.describe "Validation of Spid::Slo::Response" do
     File.read(generate_fixture_path("slo-response.base64"))
   end
 
-  let(:request_id) { "_21df91a89767879fc0f7df6a1490c6000c81644d" }
+  let(:request_uuid) { "_21df91a89767879fc0f7df6a1490c6000c81644d" }
 
   let(:idp_metadata_dir_path) { generate_fixture_path("config/idp_metadata") }
   let(:private_key_path) { generate_fixture_path("private-key.pem") }
