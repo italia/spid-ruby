@@ -81,7 +81,7 @@ gem "spid"
 |**LogoutResponse generation (for third-party-initiated logout):**||
 |generation of LogoutResponse XML|✓|
 |HTTP-Redirect binding||
-|HTTP-POST binding||
+|HTTP-POST binding|✓|
 |PartialLogout customization||
 |**AttributeQuery generation (2.2.2.1):**||
 |generation of AttributeQuery XML||
