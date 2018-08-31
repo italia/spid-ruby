@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.15.0] - 2018-08-31
+### Fixed
+- [IDP-Initiated SLO was not full implemented](https://github.com/italia/spid-ruby/issues/54)
+
 ## [0.14.0] - 2018-08-30
 ### Added
 - IDP-Initiated SLO management
