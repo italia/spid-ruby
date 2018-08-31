@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Now response doesn't fail if status code is not success
 
 ## [0.15.1] - 2018-08-31
 ### Fixed
