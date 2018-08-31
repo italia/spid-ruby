@@ -80,7 +80,7 @@ module Spid
       end
 
       def conditions
-        time = Time.now.iso8601
+        time = Time.now.utc.iso8601
 
         if response.conditions_not_before <= time &&
            response.conditions_not_on_or_after > time
