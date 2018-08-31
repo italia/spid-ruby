@@ -37,7 +37,7 @@ module Spid
         @logout_request_attributes ||= {
           "xmlns:samlp" => "urn:oasis:names:tc:SAML:2.0:protocol",
           "xmlns:saml" => "urn:oasis:names:tc:SAML:2.0:assertion",
-          "ID" => "_#{uuid}",
+          "ID" => uuid,
           "Version" => "2.0",
           "IssueInstant" => issue_instant,
           "Destination" => settings.idp_slo_target_url

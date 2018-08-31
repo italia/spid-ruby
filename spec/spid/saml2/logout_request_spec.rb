@@ -46,7 +46,7 @@ RSpec.describe Spid::Saml2::LogoutRequest do
       end
 
       {
-        "ID" => "_unique-uuid",
+        "ID" => "unique-uuid",
         "Version" => "2.0",
         "IssueInstant" => "2018-08-04T00:00:00Z",
         "Destination" => "https://identity.provider/slo"
