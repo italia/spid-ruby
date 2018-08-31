@@ -35,7 +35,7 @@ module Spid
         end
 
         def store_session_failure
-          session["errors"] = slo_response.errors
+          session["errors"] = responser.errors
         end
 
         def response
@@ -79,7 +79,7 @@ module Spid
         end
 
         def valid_response?
-          slo_response.valid?
+          responser.valid?
         end
 
         def valid_request?
@@ -90,8 +90,17 @@ module Spid
           request.params["SAMLResponse"]
         end
 
-        def slo_response
-          @slo_response ||= ::Spid::Slo::Response.new(
+        def responser
+          @responser ||=
+            begin
+              sp_initiated_slo_response unless saml_response.nil?
+            end
+        end
+
+        private
+
+        def sp_initiated_slo_response
+          ::Spid::Slo::Response.new(
             body: saml_response,
             request_uuid: session["slo_request_uuid"],
             session_index: session["session_index"]

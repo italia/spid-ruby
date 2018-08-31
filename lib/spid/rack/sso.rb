@@ -31,13 +31,13 @@ module Spid
         end
 
         def store_session_success
-          session["attributes"] = sso_response.attributes
-          session["session_index"] = sso_response.session_index
+          session["attributes"] = responser.attributes
+          session["session_index"] = responser.session_index
           session.delete("sso_request_uuid")
         end
 
         def store_session_failure
-          session["errors"] = sso_response.errors
+          session["errors"] = responser.errors
         end
 
         def response
@@ -85,15 +85,15 @@ module Spid
         end
 
         def valid_response?
-          sso_response.valid?
+          responser.valid?
         end
 
         def valid_request?
           valid_path? && valid_http_verb?
         end
 
-        def sso_response
-          @sso_response ||= ::Spid::Sso::Response.new(
+        def responser
+          @responser ||= ::Spid::Sso::Response.new(
             body: saml_response,
             request_uuid: session["sso_request_uuid"]
           )
