@@ -64,54 +64,56 @@ RSpec.describe "Receiving a SLO assertion" do
       }
     end
 
-    let(:params) do
-      { SAMLResponse: saml_response, RelayState: "/path/to/return" }
-    end
-
-    it "responds with 302" do
-      expect(response.status).to eq 302
-    end
-
-    context "when RelayState is provided by IdP" do
-      it "redirects to path provided by RelayState" do
-        expect(response.location).to eq "/path/to/return"
-      end
-    end
-
-    context "when RelaySrtate is not provided by IdP" do
+    context "when request is a sp-initiated response from identity provider" do
       let(:params) do
-        { SAMLResponse: saml_response }
+        { SAMLResponse: saml_response, RelayState: "/path/to/return" }
       end
 
-      it "redirects to default relay state path" do
-        expect(response.location).to eq "/default/relay/state/path"
-      end
-    end
-
-    context "when there are errors on response" do
-      let(:request_uuid) { "invalid-request-uuid" }
-
-      let(:expected_session) do
-        a_hash_including(
-          "slo_request_uuid" => request_uuid,
-          "errors" => {
-            "request_uuid_mismatch" =>
-              "Request uuid not belongs to current session"
-          }
-        )
+      it "responds with 302" do
+        expect(response.status).to eq 302
       end
 
-      it "sets error message in spid session" do
+      it "remove all spid data from the session" do
         response
 
-        expect(rack_session["spid"]).to match expected_session
+        expect(rack_session["spid"]).to eq({})
       end
-    end
 
-    it "remove all spid data from the session" do
-      response
+      context "when RelayState is provided by IdP" do
+        it "redirects to path provided by RelayState" do
+          expect(response.location).to eq "/path/to/return"
+        end
+      end
 
-      expect(rack_session["spid"]).to eq({})
+      context "when RelayState is not provided by IdP" do
+        let(:params) do
+          { SAMLResponse: saml_response }
+        end
+
+        it "redirects to default relay state path" do
+          expect(response.location).to eq "/default/relay/state/path"
+        end
+      end
+
+      context "when there are errors on response" do
+        let(:request_uuid) { "invalid-request-uuid" }
+
+        let(:expected_session) do
+          a_hash_including(
+            "slo_request_uuid" => request_uuid,
+            "errors" => {
+              "request_uuid_mismatch" =>
+              "Request uuid not belongs to current session"
+            }
+          )
+        end
+
+        it "sets error message in spid session" do
+          response
+
+          expect(rack_session["spid"]).to match expected_session
+        end
+      end
     end
   end
 end
