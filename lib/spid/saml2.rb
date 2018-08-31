@@ -14,6 +14,7 @@ require "spid/saml2/utils"
 require "spid/saml2/idp_metadata_parser"
 require "spid/saml2/response_validator"
 require "spid/saml2/logout_response_validator"
+require "spid/saml2/idp_logout_request_validator"
 
 module Spid
   module Saml2 # :nodoc:
