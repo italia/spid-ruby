@@ -17,6 +17,10 @@ module Spid
         validator.call
       end
 
+      def response
+        []
+      end
+
       def errors
         validator.errors
       end

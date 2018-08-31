@@ -26,7 +26,7 @@ module Spid
         end
 
         def response
-          session["slo_request_uuid"] = slo_request.uuid
+          session["slo_request_uuid"] = responser.uuid
           [
             302,
             { "Location" => slo_url },
@@ -39,11 +39,11 @@ module Spid
         end
 
         def slo_url
-          slo_request.url
+          responser.url
         end
 
-        def slo_request
-          @slo_request ||=
+        def responser
+          @responser ||=
             begin
               Spid::Slo::Request.new(
                 idp_name: idp_name,

@@ -30,7 +30,7 @@ module Spid
         end
 
         def response
-          session["sso_request_uuid"] = sso_request.uuid
+          session["sso_request_uuid"] = responser.uuid
           [
             302,
             { "Location" => sso_url },
@@ -39,11 +39,11 @@ module Spid
         end
 
         def sso_url
-          sso_request.url
+          responser.url
         end
 
-        def sso_request
-          @sso_request ||=
+        def responser
+          @responser ||=
             begin
               Spid::Sso::Request.new(
                 idp_name: idp_name,
