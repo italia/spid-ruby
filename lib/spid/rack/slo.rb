@@ -38,17 +38,30 @@ module Spid
           session["errors"] = responser.errors
         end
 
-        def response
-          if valid_response?
-            clear_session
-          else
-            store_session_failure
-          end
+        def response_sp_initiated
           [
             302,
             { "Location" => relay_state },
             responser.response
           ]
+        end
+
+        def response_idp_initiated
+          [
+            200,
+            {},
+            responser.response
+          ]
+        end
+
+        def validate_session
+          valid_response? ? clear_session : store_session_failure
+        end
+
+        def response
+          validate_session
+          return response_idp_initiated if idp_initiated?
+          response_sp_initiated
         end
 
         def relay_state
@@ -90,14 +103,33 @@ module Spid
           request.params["SAMLResponse"]
         end
 
+        def saml_request
+          request.params["SAMLRequest"]
+        end
+
+        def idp_initiated?
+          !saml_request.nil?
+        end
+
         def responser
           @responser ||=
             begin
-              sp_initiated_slo_response unless saml_response.nil?
+              if idp_initiated?
+                idp_initiated_slo_request
+              else
+                sp_initiated_slo_response
+              end
             end
         end
 
         private
+
+        def idp_initiated_slo_request
+          ::Spid::Slo::IdpRequest.new(
+            body: saml_request,
+            session_index: session["session_index"]
+          )
+        end
 
         def sp_initiated_slo_response
           ::Spid::Slo::Response.new(

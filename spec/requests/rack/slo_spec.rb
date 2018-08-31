@@ -42,14 +42,6 @@ RSpec.describe "Receiving a SLO assertion" do
       File.read(generate_fixture_path("slo-response.base64"))
     end
 
-    let(:spid_session) do
-      {
-        "slo_request_uuid" => request_uuid
-      }
-    end
-
-    let(:request_uuid) { "_21df91a89767879fc0f7df6a1490c6000c81644d" }
-
     let(:response) do
       request.get(
         path,
@@ -68,6 +60,14 @@ RSpec.describe "Receiving a SLO assertion" do
       let(:params) do
         { SAMLResponse: saml_response, RelayState: "/path/to/return" }
       end
+
+      let(:spid_session) do
+        {
+          "slo_request_uuid" => request_uuid
+        }
+      end
+
+      let(:request_uuid) { "_21df91a89767879fc0f7df6a1490c6000c81644d" }
 
       it "responds with 302" do
         expect(response.status).to eq 302
@@ -113,6 +113,30 @@ RSpec.describe "Receiving a SLO assertion" do
 
           expect(rack_session["spid"]).to match expected_session
         end
+      end
+    end
+
+    context "when request is a idp-initiated response from identity provider" do
+      let(:params) do
+        { SAMLRequest: saml_request }
+      end
+
+      let(:spid_session) { {} }
+
+      let(:expected_body) do
+        %r{<samlp:LogoutResponse.*?</samlp:LogoutResponse>}
+      end
+
+      let(:saml_request) do
+        File.read(generate_fixture_path("slo-request.base64"))
+      end
+
+      it "responds with 200" do
+        expect(response.status).to eq 200
+      end
+
+      it "returns the saml logout response" do
+        expect(response.body).to match expected_body
       end
     end
   end
