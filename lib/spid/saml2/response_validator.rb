@@ -18,6 +18,7 @@ module Spid
       end
 
       def call
+        return false unless success?
         [
           matches_request_uuid,
           issuer,
@@ -25,8 +26,7 @@ module Spid
           destination,
           conditions,
           audience,
-          signature,
-          success?
+          signature
         ].all?
       end
 
@@ -42,6 +42,7 @@ module Spid
         return true if response.status_code == Spid::SUCCESS_CODE
 
         @errors["authentication"] = {
+          "status_code" => response.status_code,
           "status_message" => response.status_message,
           "status_detail" => response.status_detail
         }
