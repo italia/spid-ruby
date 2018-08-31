@@ -47,7 +47,7 @@ module Spid
           [
             302,
             { "Location" => relay_state },
-            []
+            responser.response
           ]
         end
 
