@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "activesupport", ">= 3.0.0", "< 5.3"
   spec.add_runtime_dependency "rack", ">= 1", "< 3"
+  spec.add_runtime_dependency "rake", ">= 10.0", "< 13"
   spec.add_runtime_dependency "xmldsig", ">= 0.6.6"
 
   spec.add_development_dependency "bundler", "~> 1.16"
@@ -36,7 +37,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "nokogiri", "~> 1.8", ">= 1.8.3"
   spec.add_development_dependency "pry", "~> 0"
   spec.add_development_dependency "pry-doc", "~> 0"
-  spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rubocop", "0.57.2"
   spec.add_development_dependency "rubocop-rspec", "1.27.0"
