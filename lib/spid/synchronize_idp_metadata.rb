@@ -14,7 +14,7 @@ module Spid
         metadata_name = "#{name.delete(' ').downcase}-metadata.xml"
         metadata = get_metadata_from_url(url)
 
-        File.open(metadata_path(metadata_name), "w") { |f| f.write metadata }
+        File.open(metadata_path(metadata_name), "wb") { |f| f.write metadata }
       end
     end
 
