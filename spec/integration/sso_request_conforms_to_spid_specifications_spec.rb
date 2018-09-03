@@ -24,14 +24,14 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
   let(:sp_sso_target_url) { "#{sp_entity_id}/spid/sso" }
   let(:sp_entity_id) { "https://service.provider" }
   let(:relay_state) { "/path/to/return" }
-  let(:private_key) { File.read(generate_fixture_path("private-key.pem")) }
+  let(:private_key_path) { generate_fixture_path("private-key.pem") }
   let(:attribute_index) { "0" }
 
   before do
     Spid.configure do |config|
       config.hostname = "https://service.provider"
       config.idp_metadata_dir_path = idp_metadata_dir_path
-      config.private_key = private_key
+      config.private_key_path = private_key_path
       config.attribute_services = [
         { name: "Service 1", fields: [:email] }
       ]
