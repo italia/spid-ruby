@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
-require "spid/synchronize_idp_metadata"
+require "rake"
 
-namespace :spid do
-  desc "Synchronize IDP metadata"
-  task :sync do
-    Spid::SynchronizeIdpMetadata.new.call
-  end
+["sync"].each do |task|
+  load "spid/tasks/#{task}.rake"
 end

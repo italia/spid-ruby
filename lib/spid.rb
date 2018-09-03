@@ -9,6 +9,7 @@ require "spid/version"
 require "spid/configuration"
 require "spid/identity_provider_manager"
 require "spid/synchronize_idp_metadata"
+require "spid/railtie" if defined?(Rails)
 
 module Spid # :nodoc:
   class UnknownAuthnComparisonMethodError < StandardError; end
