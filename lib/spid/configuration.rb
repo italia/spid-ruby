@@ -53,12 +53,12 @@ module Spid
     end
 
     def certificate_pem
-      return nil if certificate_path.nil? || !File.exists?(certificate_path)
+      return nil if certificate_path.nil? || !File.exist?(certificate_path)
       @certificate_pem ||= File.read(certificate_path)
     end
 
     def private_key_pem
-      return nil if private_key_path.nil? || !File.exists?(private_key_path)
+      return nil if private_key_path.nil? || !File.exist?(private_key_path)
       @private_key_pem ||= File.read(private_key_path)
     end
 

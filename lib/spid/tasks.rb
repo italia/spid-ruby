@@ -2,6 +2,6 @@
 
 require "rake"
 
-["sync"].each do |task|
+["sync", "certificate"].each do |task|
   load "spid/tasks/#{task}.rake"
 end

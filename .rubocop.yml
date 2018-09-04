@@ -12,6 +12,7 @@ Metrics/BlockLength:
   Exclude:
     - spec/**/*.rb
     - spid.gemspec
+    - lib/**/*.rake
 Metrics/LineLength:
   Exclude:
     - spid.gemspec
