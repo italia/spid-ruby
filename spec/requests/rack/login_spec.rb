@@ -19,12 +19,12 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
     generate_fixture_path("config/idp_metadata")
   end
 
-  let(:certificate) do
-    File.read(generate_fixture_path("certificate.pem"))
+  let(:certificate_path) do
+    generate_fixture_path("certificate.pem")
   end
 
-  let(:private_key) do
-    File.read(generate_fixture_path("private-key.pem"))
+  let(:private_key_path) do
+    generate_fixture_path("private-key.pem")
   end
 
   let(:default_relay_state_path) { "/path/to/return" }
@@ -40,8 +40,8 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
       config.idp_metadata_dir_path = metadata_dir_path
       config.hostname = hostname
       config.start_sso_path = sso_path
-      config.private_key = private_key
-      config.certificate = certificate
+      config.private_key_path = private_key_path
+      config.certificate_path = certificate_path
       config.default_relay_state_path = default_relay_state_path
       config.attribute_services = attribute_services
     end

@@ -18,8 +18,8 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
       config.acs_path = "/spid/sso"
       config.slo_path = "/spid/slo"
       config.attribute_services = attribute_services
-      config.private_key = File.read(private_key_path)
-      config.certificate = File.read(certificate_path)
+      config.private_key_path = private_key_path
+      config.certificate_path = certificate_path
       config.attribute_services = [
         { name: "Service 1", fields: [:email] }
       ]

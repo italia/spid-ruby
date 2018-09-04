@@ -34,10 +34,14 @@ module Spid
           session["attributes"] = responser.attributes
           session["session_index"] = responser.session_index
           session.delete("sso_request_uuid")
+          session.delete("errors")
         end
 
         def store_session_failure
           session["errors"] = responser.errors
+          session.delete("attributes")
+          session.delete("sso_request_uuid")
+          session.delete("session_index")
         end
 
         def response
