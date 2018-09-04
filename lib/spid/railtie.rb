@@ -5,7 +5,7 @@ require "spid/generators"
 module Spid
   class Railtie < ::Rails::Railtie # :nodoc:
     rake_tasks do |_app|
-      load "spid/tasks/sync.rake"
+      require "spid/tasks"
     end
   end
 end
