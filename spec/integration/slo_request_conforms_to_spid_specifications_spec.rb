@@ -17,15 +17,20 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
   let(:signature_method) { Spid::RSA_SHA256 }
 
   let(:idp_metadata_dir_path) { generate_fixture_path("config/idp_metadata") }
-  let(:private_key_path) { generate_fixture_path("private-key.pem") }
-  let(:certificate_path) { generate_fixture_path("certificate.pem") }
+  let(:private_key_pem) do
+    File.read generate_fixture_path("private-key.pem")
+  end
+
+  let(:certificate_pem) do
+    File.read generate_fixture_path("certificate.pem")
+  end
 
   before do
     Spid.configure do |config|
       config.hostname = "https://service.provider"
       config.idp_metadata_dir_path = idp_metadata_dir_path
-      config.private_key_path = private_key_path
-      config.certificate_path = certificate_path
+      config.private_key_pem = private_key_pem
+      config.certificate_pem = certificate_pem
       config.attribute_services = [
         { name: "Service 1", fields: [:email] }
       ]

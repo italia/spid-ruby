@@ -17,8 +17,14 @@ RSpec.describe "Validation of Spid::Sso::Response" do
   let(:request_uuid) { "_acae2f5c-a008-4cf6-b5b1-df15db7c3dc8" }
 
   let(:idp_metadata_dir_path) { generate_fixture_path("config/idp_metadata") }
-  let(:private_key_path) { generate_fixture_path("private-key.pem") }
-  let(:certificate_path) { generate_fixture_path("certificate.pem") }
+
+  let(:private_key_pem) do
+    File.read generate_fixture_path("private-key.pem")
+  end
+
+  let(:certificate_pem) do
+    File.read generate_fixture_path("certificate.pem")
+  end
 
   let(:host) { "https://service.provider" }
   let(:idp_issuer) { "https://identity.provider" }
@@ -29,8 +35,8 @@ RSpec.describe "Validation of Spid::Sso::Response" do
     Spid.configure do |config|
       config.hostname = "https://service.provider"
       config.idp_metadata_dir_path = idp_metadata_dir_path
-      config.private_key_path = private_key_path
-      config.certificate_path = certificate_path
+      config.private_key_pem = private_key_pem
+      config.certificate_pem = certificate_pem
       config.acs_path = acs_path
       config.attribute_services = [
         { name: "Service 1", fields: [:email] }

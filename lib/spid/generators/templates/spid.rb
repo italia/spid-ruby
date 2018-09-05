@@ -4,8 +4,8 @@ Spid.configure do |config|
   config.hostname = ENV.fetch("HOST")
 
   config.idp_metadata_dir_path = Rails.root.join("config/idp_metadata")
-  config.private_key_path = Rails.root.join("config/spid-private-key.pem")
-  config.certificate_path = Rails.root.join("config/spid-certificate.pem")
+  config.private_key_pem = ENV.fetch("PRIVATE_KEY")
+  config.certificate_pem = ENV.fetch("CERTIFICATE")
 
   config.metadata_path  = "/spid/metadata"
   config.start_sso_path = "/spid/login"

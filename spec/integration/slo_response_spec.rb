@@ -18,8 +18,13 @@ RSpec.describe "Validation of Spid::Slo::Response" do
   let(:request_uuid) { "_21df91a89767879fc0f7df6a1490c6000c81644d" }
 
   let(:idp_metadata_dir_path) { generate_fixture_path("config/idp_metadata") }
-  let(:private_key_path) { generate_fixture_path("private-key.pem") }
-  let(:certificate_path) { generate_fixture_path("certificate.pem") }
+  let(:private_key_pem) do
+    File.read generate_fixture_path("private-key.pem")
+  end
+
+  let(:certificate_pem) do
+    File.read generate_fixture_path("certificate.pem")
+  end
 
   let(:host) { "https://service.provider" }
   let(:session_index) { "a-session-index" }
@@ -31,8 +36,8 @@ RSpec.describe "Validation of Spid::Slo::Response" do
     Spid.configure do |config|
       config.hostname = host
       config.idp_metadata_dir_path = idp_metadata_dir_path
-      config.private_key_path = private_key_path
-      config.certificate_path = certificate_path
+      config.private_key_pem = private_key_pem
+      config.certificate_pem = certificate_pem
       config.slo_path = slo_path
       config.attribute_services = [
         { name: "Service 1", fields: [:email] }

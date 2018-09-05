@@ -15,8 +15,8 @@ module Spid
     attr_accessor :acs_binding
     attr_accessor :slo_binding
     attr_accessor :attribute_services
-    attr_accessor :private_key_path
-    attr_accessor :certificate_path
+    attr_accessor :private_key_pem
+    attr_accessor :certificate_pem
 
     def initialize
       @idp_metadata_dir_path    = "idp_metadata"
@@ -50,16 +50,6 @@ module Spid
     def init_openssl_keys
       @private_key              = nil
       @certificate              = nil
-    end
-
-    def certificate_pem
-      return nil if certificate_path.nil? || !File.exist?(certificate_path)
-      @certificate_pem ||= File.read(certificate_path)
-    end
-
-    def private_key_pem
-      return nil if private_key_path.nil? || !File.exist?(private_key_path)
-      @private_key_pem ||= File.read(private_key_path)
     end
 
     def certificate

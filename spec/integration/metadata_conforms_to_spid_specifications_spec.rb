@@ -9,8 +9,13 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
   let(:single_logout_service_url) { "#{sp_entity_id}/spid/slo" }
 
   let(:attribute_services) { [] }
-  let(:private_key_path) { generate_fixture_path("private-key.pem") }
-  let(:certificate_path) { generate_fixture_path("certificate.pem") }
+  let(:private_key_pem) do
+    File.read generate_fixture_path("private-key.pem")
+  end
+
+  let(:certificate_pem) do
+    File.read generate_fixture_path("certificate.pem")
+  end
 
   before do
     Spid.configure do |config|
@@ -18,8 +23,8 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
       config.acs_path = "/spid/sso"
       config.slo_path = "/spid/slo"
       config.attribute_services = attribute_services
-      config.private_key_path = private_key_path
-      config.certificate_path = certificate_path
+      config.private_key_pem = private_key_pem
+      config.certificate_pem = certificate_pem
       config.attribute_services = [
         { name: "Service 1", fields: [:email] }
       ]
