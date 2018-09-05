@@ -39,7 +39,7 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
     Spid.configure do |config|
       config.idp_metadata_dir_path = metadata_dir_path
       config.hostname = hostname
-      config.start_sso_path = sso_path
+      config.login_path = sso_path
       config.private_key_pem = private_key_pem
       config.certificate_pem = certificate_pem
       config.default_relay_state_path = default_relay_state_path
@@ -51,7 +51,7 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
     Spid.reset_configuration!
   end
 
-  describe "GET start_sso_path" do
+  describe "GET login_path" do
     let(:path) { sso_path.to_s }
 
     let(:spid_session) { {} }

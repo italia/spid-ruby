@@ -59,7 +59,7 @@ module Spid
         end
 
         def valid_path?
-          request.path == Spid.configuration.start_sso_path
+          request.path == Spid.configuration.login_path
         end
 
         def relay_state

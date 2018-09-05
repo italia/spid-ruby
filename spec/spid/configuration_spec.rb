@@ -29,9 +29,9 @@ RSpec.describe Spid::Configuration do
     end
   end
 
-  describe "#start_sso_path" do
+  describe "#login_path" do
     it "has a default value" do
-      expect(config.start_sso_path).to eq "/spid/login"
+      expect(config.login_path).to eq "/spid/login"
     end
   end
 

@@ -5,7 +5,7 @@ module Spid
     attr_accessor :idp_metadata_dir_path
     attr_accessor :hostname
     attr_accessor :metadata_path
-    attr_accessor :start_sso_path
+    attr_accessor :login_path
     attr_accessor :start_slo_path
     attr_accessor :acs_path
     attr_accessor :slo_path
@@ -30,7 +30,7 @@ module Spid
     def init_endpoint
       @hostname                 = nil
       @metadata_path            = "/spid/metadata"
-      @start_sso_path           = "/spid/login"
+      @login_path               = "/spid/login"
       @start_slo_path           = "/spid/logout"
       @acs_path                 = "/spid/sso"
       @slo_path                 = "/spid/slo"

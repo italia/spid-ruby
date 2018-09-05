@@ -7,8 +7,8 @@ Spid.configure do |config|
   config.private_key_pem = ENV.fetch("PRIVATE_KEY")
   config.certificate_pem = ENV.fetch("CERTIFICATE")
 
-  config.metadata_path  = "/spid/metadata"
-  config.start_sso_path = "/spid/login"
+  config.metadata_path = "/spid/metadata"
+  config.login_path = "/spid/login"
   config.start_slo_path = "/spid/logout"
   config.acs_path = "/spid/sso"
   config.slo_path = "/spid/slo"
