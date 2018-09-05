@@ -1,8 +1,5 @@
 # spid-ruby
 
-Ruby library for SPID authentication
-
-
 | Project                | Spid Ruby |
 | ---------------------- | ------------ |
 | Gem name               | spid |
@@ -12,13 +9,58 @@ Ruby library for SPID authentication
 | Test coverate          | [![Coverage Status](https://coveralls.io/repos/github/italia/spid-ruby/badge.svg?branch=master)](https://coveralls.io/github/italia/spid-ruby?branch=master) |
 | Credits                | [Contributors](https://github.com/italia/spid-ruby/graphs/contributors) |
 
-## Installation
+## Installazione & Configurazione
 
-Add into your Gemfile
-
+### Installazione
+Aggiungi al tuo Gemfile
 ```ruby
 gem "spid"
 ```
+ed esegui nel terminale
+```bash
+$ bundle install
+```
+
+### Configurazione
+A questo punto è necessario aggiungere il middleware `Spid::Rack` nello stack dell'applicazione, avendo cura di inserirlo **dopo** un middleware per la gestione della sessione, ad esempio `Rack::Session::Cookie`
+
+```ruby
+use Rack::Session::Cookie
+use Spid::Rack
+```
+
+E configurare il parametri spid tramite il seguente codice
+```ruby
+Spid.configure do |config|
+  #config ...
+end
+```
+tramite il quale potete accedere alle seguenti configurazioni:
+
+|Nome|valore default||Obbligatorio?|
+|:---|:---|:---|:---|
+|config.hostname||Hostname dell'applicazione, che verrà utilizzato come entity_id del service provider|✓|
+|config.idp_metadata_dir_path||Directory dove si troveranno copia dei metadata degli Identity Provider del sistema SPID|✓|
+|config.private_key_path||Percorso della chiave privata del Service Provider|✓|
+|config.attribute_services||Array degli attribute service indexes richiesti dal Service Provider all'Identity Provider|✓|
+|config.certificate_path||Percorso del certificato x509 del Service Provider|✓|
+|config.metadata_path|`/spid/metadata`|Path per la fornitura del metadata del Service Provider||
+|config.login_path|`/spid/login`|Path per la generazione ed invio dell'AuthnRequest all'Identity Provider||
+|config.acs_path|`/spid/sso`|Path per la ricezione dell'Assertion di autenticazione||
+|config.logout_path|`/spid/logout`|Path per la generazione ed invio della LogoutRequest all'Identity Provider||
+|config.slo_path|`/spid/slo`|Path per la ricezione dell'Assertion di chiusura della sessione||
+|config.default_relay_state_path|`/`|Indirizzo di ritorno dopo aver ricevuto un Assertion||
+|config.digest_method|Spid::SHA256|Algoritmo utilizzato per la generazione del digest per le firme||
+|config.signature_method|Spid::RSA_SHA256|Algoritmo utilizzato per la generazione della signature XML||
+|config.acs_binding|Spid::BINDINGS_HTTP_POST|Binding method utilizzato per la ricezione dell'Assertion di autenticazione||
+|config.slo_binding|Spid::BINDINGS_HTTP_REDIRECT|Binding method utilizzato ler la ricezione dell'Assertion di chiusura della sessione||
+
+### Scaricamento metadata degli Identity Providers
+Per motivi di sicurezza il sistema SPID prevede che un Service Provider abbia una copia 'sicura' dei metadata degli Identity Providers.
+
+## Funzionamento
+### Login
+
 
 
 ## Features
