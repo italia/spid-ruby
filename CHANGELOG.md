@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Task rake for IdPs metadata fetching
+- Rails installer
 
 ## [0.15.2] - 2018-08-31
 ### Fixed
