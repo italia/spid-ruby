@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
 namespace :spid do
-  desc "Generate a self signed certificate for SPID"
   task :certificate do
     Rake::Task["environment"].invoke if defined?(Rails)
+
+    if File.exist?(Spid.configuration.certificate_path) &&
+       File.exist?(Spid.configuration.private_key_path)
+      puts "A certificate and a private key already exists!"
+      exit
+    end
 
     private_key = OpenSSL::PKey::RSA.new(4096)
     public_key = private_key.public_key
