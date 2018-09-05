@@ -8,7 +8,7 @@ RSpec.describe "Spid configuration" do
       config.hostname = "https://identity.provider"
       config.default_relay_state_path = "/"
       config.metadata_path = "/custom/metadata/path"
-      config.start_slo_path = "/custom/logout/path"
+      config.logout_path = "/custom/logout/path"
       config.login_path = "/custom/login/path"
       config.acs_path = "/custom/sso/path"
       config.slo_path = "/custom/slo/path"
@@ -36,7 +36,7 @@ RSpec.describe "Spid configuration" do
     default_relay_state_path: "/",
     metadata_path: "/custom/metadata/path",
     login_path: "/custom/login/path",
-    start_slo_path: "/custom/logout/path",
+    logout_path: "/custom/logout/path",
     acs_path: "/custom/sso/path",
     slo_path: "/custom/slo/path",
     digest_method: Spid::SHA512,

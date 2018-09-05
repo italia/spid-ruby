@@ -39,7 +39,7 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
     Spid.configure do |config|
       config.idp_metadata_dir_path = metadata_dir_path
       config.hostname = hostname
-      config.start_slo_path = slo_path
+      config.logout_path = slo_path
       config.private_key_pem = private_key_pem
       config.certificate_pem = certificate_pem
       config.default_relay_state_path = default_relay_state_path
@@ -51,7 +51,7 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
     Spid.reset_configuration!
   end
 
-  describe "GET start_slo_path" do
+  describe "GET logout_path" do
     let(:path) { slo_path.to_s }
 
     let(:params) { {} }

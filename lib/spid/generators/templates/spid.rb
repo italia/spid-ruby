@@ -9,7 +9,7 @@ Spid.configure do |config|
 
   config.metadata_path = "/spid/metadata"
   config.login_path = "/spid/login"
-  config.start_slo_path = "/spid/logout"
+  config.logout_path = "/spid/logout"
   config.acs_path = "/spid/sso"
   config.slo_path = "/spid/slo"
   config.default_relay_state_path = "/"

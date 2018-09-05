@@ -6,7 +6,7 @@ module Spid
     attr_accessor :hostname
     attr_accessor :metadata_path
     attr_accessor :login_path
-    attr_accessor :start_slo_path
+    attr_accessor :logout_path
     attr_accessor :acs_path
     attr_accessor :slo_path
     attr_accessor :digest_method
@@ -31,7 +31,7 @@ module Spid
       @hostname                 = nil
       @metadata_path            = "/spid/metadata"
       @login_path               = "/spid/login"
-      @start_slo_path           = "/spid/logout"
+      @logout_path              = "/spid/logout"
       @acs_path                 = "/spid/sso"
       @slo_path                 = "/spid/slo"
       @default_relay_state_path = "/"

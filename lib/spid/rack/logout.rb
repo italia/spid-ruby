@@ -60,7 +60,7 @@ module Spid
         end
 
         def valid_path?
-          request.path == Spid.configuration.start_slo_path
+          request.path == Spid.configuration.logout_path
         end
 
         def spid_session
