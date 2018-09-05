@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Use login_path and logout_path instead of start_sso_path and start_slo_path
 
 ## [0.16.0] - 2018-09-05
 ### Added
