@@ -41,9 +41,9 @@ tramite il quale potete accedere alle seguenti configurazioni:
 |:---|:---|:---|:---|
 |config.hostname||Hostname dell'applicazione, che verrà utilizzato come entity_id del service provider|✓|
 |config.idp_metadata_dir_path||Directory dove si troveranno copia dei metadata degli Identity Provider del sistema SPID|✓|
-|config.private_key_path||Percorso della chiave privata del Service Provider|✓|
-|config.attribute_services||Array degli attribute service indexes richiesti dal Service Provider all'Identity Provider|✓|
-|config.certificate_path||Percorso del certificato x509 del Service Provider|✓|
+|config.private_key_pem||Chiave privata del Service Provider in rappresentazione pem|✓|
+|config.certificate_pem||Certificato X509 del Service Provider in rappresentazione pem|✓|
+|config.attribute_services||Array degli attribute service indexes richiesti dal Service Provider all'Identity Provider (vedi sotto)|✓|
 |config.metadata_path|`/spid/metadata`|Path per la fornitura del metadata del Service Provider||
 |config.login_path|`/spid/login`|Path per la generazione ed invio dell'AuthnRequest all'Identity Provider||
 |config.acs_path|`/spid/sso`|Path per la ricezione dell'Assertion di autenticazione||
@@ -55,13 +55,57 @@ tramite il quale potete accedere alle seguenti configurazioni:
 |config.acs_binding|Spid::BINDINGS_HTTP_POST|Binding method utilizzato per la ricezione dell'Assertion di autenticazione||
 |config.slo_binding|Spid::BINDINGS_HTTP_REDIRECT|Binding method utilizzato ler la ricezione dell'Assertion di chiusura della sessione||
 
+#### Attribute Services
+Il protocollo SPID prevede la possibilità di specificare almeno un servizio di attributi. Ogni servizio ha un nome e un elenco di attributi richiesti.
+
+Per configurare dei servizi bisogna utilizzare questa configurazione
+```ruby
+  Spid.configure do |config|
+    ...
+    config.attribute_services = [
+      { name: "Service 1 name", fields: [ elenco_attributi_servizio_1 ] },
+      { name: "Service 2 name", fields: [ elenco_attributi_servizio_2] }
+    ]
+```
+Gli attributi disponibili sono
+```
+ :spid_code, :name, :family_name, :place_of_birth, :date_of_birth, :gender, :company_name, :registered_office, :fiscal_number, :iva_code, :id_card, :mobile_phone, :email, :address, :digital_address
+```
 ### Scaricamento metadata degli Identity Providers
 Per motivi di sicurezza il sistema SPID prevede che un Service Provider abbia una copia 'sicura' dei metadata degli Identity Providers.
+
+Al fine di facilitarne lo scaricamento la gemma `spid-ruby` prevede un task rake che li installa nella directory `config.idp_metadata_dir_path`.
+
+A questo punto è possibile lanciare 
+
+```bash
+$ rake spid:fetch_idp_metadata
+```
+
+#### Sinatra
+Occorre modificare il `Rakefile` dell'applicazione aggiungendo
+```ruby
+# qui è necessario caricare preventivamente la configurazione SPID
+# require "sinatra-app.rb"
+require "spid/tasks"
+```
 
 ## Funzionamento
 ### Login
 
+Per iniziare un login con SPID è necessario utilizzare un url in questo formato `/spid/login?idp_name=posteid&relay_state=/path/to/return&attribute_index=0`, dove
 
+* **/spid/login**: è il path configurato nel parametro `config.login_path`
+* **idp_name**: rappresenta l'identificativo dell'Identity Provider con cui si vuole autenticarsi
+* **relay_state**: rappresenta l'url dove deve essere fatto il redirect a seguito della ricezione della response di autenticazione
+* **attribute_index**: rappresenta l'indice del servizio di attributi che vogliano vengano forniti dall'Identity Provider in caso di autenticazione riuscita
+
+### Logout
+Per iniziare un logout con SPID l'url da utilizzare è `/spid/logout?idp_name=posteid&relay_state=/path/to/return`, dove
+
+* **/spid/logout**: è il path configurato nel parametro `config.logout_path`
+* **idp_name**: rappresenta l'identificativo dell'Identity Provider dove vogliamo terminare la sessione di autenticazione
+* **relay_state**: rappresenta l'url dove deve essere fatto il redirect a seguito della ricezione della response di logout
 
 ## Features
 
