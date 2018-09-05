@@ -2,6 +2,6 @@
 
 require "rake"
 
-["sync", "certificate"].each do |task|
+["fetch_idp_metadata", "certificate"].each do |task|
   load "spid/tasks/#{task}.rake"
 end

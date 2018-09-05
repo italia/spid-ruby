@@ -4,7 +4,7 @@ require "spid/synchronize_idp_metadata"
 
 namespace :spid do
   desc "Synchronize IDP metadata"
-  task :sync do
+  task :fetch_idp_metadata do
     Rake::Task["environment"].invoke if defined?(Rails)
     Spid::SynchronizeIdpMetadata.new.call
   end
