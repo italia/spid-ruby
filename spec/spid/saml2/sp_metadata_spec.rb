@@ -3,12 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Spid::Saml2::SPMetadata do
-  subject(:sp_metadata) do
-    described_class.new(
-      settings: settings,
-      uuid: "unique-uuid"
-    )
-  end
+  subject(:sp_metadata) { described_class.new(settings: settings) }
 
   let(:settings) do
     instance_double(
@@ -46,7 +41,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
 
       {
         "entityID" => "https://service.provider",
-        "ID" => "_unique-uuid"
+        "ID" => "https://service.provider"
       }.each do |name, value|
         include_examples "has attribute", name, value
       end

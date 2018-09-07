@@ -6,12 +6,10 @@ module Spid
     class SPMetadata # :nodoc:
       attr_reader :document
       attr_reader :settings
-      attr_reader :uuid
 
-      def initialize(settings:, uuid: nil)
+      def initialize(settings:)
         @document = REXML::Document.new
         @settings = settings
-        @uuid = uuid || SecureRandom.uuid
       end
 
       def to_saml
@@ -34,7 +32,7 @@ module Spid
           "xmlns:ds" => "http://www.w3.org/2000/09/xmldsig#",
           "xmlns:md" => "urn:oasis:names:tc:SAML:2.0:metadata",
           "entityID" => settings.sp_entity_id,
-          "ID" => "_#{uuid}"
+          "ID" => settings.sp_entity_id
         }
       end
 
