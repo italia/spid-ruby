@@ -22,7 +22,10 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       status_message: status_message,
       status_detail: status_detail,
       audience: audience,
-      in_response_to: "a-request-uuid"
+      in_response_to: in_response_to,
+      subject_recipient: subject_recipient,
+      subject_in_response_to: subject_in_response_to,
+      subject_not_on_or_after: "2018-02-01T00:00:00Z"
     )
   end
 
@@ -67,6 +70,12 @@ RSpec.describe Spid::Saml2::ResponseValidator do
   let(:audience) { "https://service.provider" }
 
   let(:local_time) { Time.gm(2018, 1, 10) }
+
+  let(:in_response_to) { "a-request-uuid" }
+
+  let(:subject_recipient) { "https://service.provider/spid/sso" }
+
+  let(:subject_in_response_to) { "a-request-uuid" }
 
   it { is_expected.to be_a described_class }
 
@@ -190,7 +199,7 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       end
     end
 
-    context "when response is received after the time window" do
+    context "when response is received before the time window" do
       let(:local_time) { Time.gm(2017, 12, 31) }
 
       it "returns false" do
@@ -203,7 +212,7 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       end
     end
 
-    context "when response is received before the time window" do
+    context "when response is received after the time window" do
       let(:local_time) { Time.gm(2018, 2, 1) }
 
       it "returns false" do
@@ -275,6 +284,56 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
       it "returns false" do
         expect(validator.certificate).to be_falsey
+      end
+    end
+  end
+
+  describe "#subject_recipient" do
+    context "when the response contains the assertion consuming service url" do
+      it "returns true" do
+        expect(validator.subject_recipient).to be_truthy
+      end
+    end
+
+    context "when the response contains a different value" do
+      let(:subject_recipient) do
+        "another-value"
+      end
+
+      it "returns false" do
+        expect(validator.subject_recipient).to be_falsey
+      end
+    end
+  end
+
+  describe "#subject_in_response_to" do
+    context "when the response contains request uuid" do
+      it "returns true" do
+        expect(validator.subject_in_response_to).to be_truthy
+      end
+    end
+
+    context "when the response contains a different value" do
+      let(:subject_in_response_to) { "another-value" }
+
+      it "returns false" do
+        expect(validator.subject_in_response_to).to be_falsey
+      end
+    end
+  end
+
+  describe "#subject_not_on_or_after" do
+    context "when the response is received before that time value" do
+      it "returns true" do
+        expect(validator.subject_not_on_or_after).to be_truthy
+      end
+    end
+
+    context "when the response contains a different value" do
+      let(:local_time) { Time.gm(2018, 2, 1) }
+
+      it "returns false" do
+        expect(validator.subject_not_on_or_after).to be_falsey
       end
     end
   end

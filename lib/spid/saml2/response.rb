@@ -75,6 +75,30 @@ module Spid
         document.elements[xpath]&.value
       end
 
+      def subject_recipient
+        xpath = "/samlp:Response/saml:Assertion/saml:Subject/"
+        xpath = "#{xpath}/saml:SubjectConfirmation/saml:SubjectConfirmationData"
+        xpath = "#{xpath}/@Recipient"
+
+        document.elements[xpath]&.value
+      end
+
+      def subject_in_response_to
+        xpath = "/samlp:Response/saml:Assertion/saml:Subject/"
+        xpath = "#{xpath}/saml:SubjectConfirmation/saml:SubjectConfirmationData"
+        xpath = "#{xpath}/@InResponseTo"
+
+        document.elements[xpath]&.value
+      end
+
+      def subject_not_on_or_after
+        xpath = "/samlp:Response/saml:Assertion/saml:Subject/"
+        xpath = "#{xpath}/saml:SubjectConfirmation/saml:SubjectConfirmationData"
+        xpath = "#{xpath}/@NotOnOrAfter"
+
+        document.elements[xpath]&.value
+      end
+
       def status_code
         document.elements[
           "/samlp:Response/samlp:Status/samlp:StatusCode/@Value"

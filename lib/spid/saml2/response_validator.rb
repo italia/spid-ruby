@@ -109,6 +109,20 @@ module Spid
         @errors["signature"] = "Signature mismatch"
         false
       end
+
+      def subject_recipient
+        return true if response.subject_recipient == settings.sp_acs_url
+      end
+
+      def subject_in_response_to
+        return true if response.subject_in_response_to == request_uuid
+      end
+
+      def subject_not_on_or_after
+        time = Time.now.utc.iso8601
+
+        return true if response.subject_not_on_or_after > time
+      end
     end
   end
 end

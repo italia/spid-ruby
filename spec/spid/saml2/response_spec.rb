@@ -83,6 +83,26 @@ RSpec.describe Spid::Saml2::Response do
     end
   end
 
+  describe "#subject_recipient" do
+    it "returns the Recipient attribute of SubjectConfirmationData node" do
+      expect(response.subject_recipient).
+        to eq "https://service.provider/spid/sso"
+    end
+  end
+
+  describe "#subject_in_response_to" do
+    it "returns the InResponseTo attribute of SubjectConfirmationData node" do
+      expect(response.subject_in_response_to).
+        to eq "_acae2f5c-a008-4cf6-b5b1-df15db7c3dc8"
+    end
+  end
+
+  describe "#subject_not_on_or_after" do
+    it "returns the NotOnOrAfter attribute of SubjectConfirmationData node" do
+      expect(response.subject_not_on_or_after).to eq "2024-01-18T06:21:48Z"
+    end
+  end
+
   describe "#session_index" do
     it "returns the session index" do
       expect(response.session_index).
