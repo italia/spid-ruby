@@ -4,34 +4,17 @@ require "spid/saml2/utils"
 
 module Spid
   module Saml2
-    class LogoutResponse # :nodoc:
-      include Spid::Saml2::Utils
-
-      attr_reader :body
-      attr_reader :saml_message
-      attr_reader :document
-
-      def initialize(saml_message:)
-        @saml_message = saml_message
-        @document = REXML::Document.new(@saml_message)
-      end
-
+    class LogoutResponse < SamlParser # :nodoc:
       def issuer
-        document.elements[
-          "/samlp:LogoutResponse/saml:Issuer/text()"
-        ]&.value&.strip
+        element_from_xpath("/samlp:LogoutResponse/saml:Issuer/text()")
       end
 
       def in_response_to
-        document.elements[
-          "/samlp:LogoutResponse/@InResponseTo"
-        ]&.value&.strip
+        element_from_xpath("/samlp:LogoutResponse/@InResponseTo")
       end
 
       def destination
-        document.elements[
-          "/samlp:LogoutResponse/@Destination"
-        ]&.value
+        element_from_xpath("/samlp:LogoutResponse/@Destination")
       end
     end
   end

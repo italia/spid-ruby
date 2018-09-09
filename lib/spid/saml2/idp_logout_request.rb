@@ -2,51 +2,37 @@
 
 module Spid
   module Saml2
-    class IdpLogoutRequest # :nodoc:
-      attr_reader :saml_message
-      attr_reader :document
-
-      def initialize(saml_message:)
-        @saml_message = saml_message
-        @document = REXML::Document.new(@saml_message)
-      end
-
+    class IdpLogoutRequest < SamlParser # :nodoc:
       def id
-        document.elements["/samlp:LogoutRequest/@ID"]&.value
+        element_from_xpath("/samlp:LogoutRequest/@ID")
       end
 
       def destination
-        document.elements["/samlp:LogoutRequest/@Destination"]&.value
+        element_from_xpath("/samlp:LogoutRequest/@Destination")
       end
 
       def issue_instant
-        document.elements["/samlp:LogoutRequest/@IssueInstant"]&.value
+        element_from_xpath("/samlp:LogoutRequest/@IssueInstant")
       end
 
       def issuer_name_qualifier
-        document.elements[
-          "/samlp:LogoutRequest/saml:Issuer/@NameQualifier"
-        ]&.value
+        element_from_xpath("/samlp:LogoutRequest/saml:Issuer/@NameQualifier")
       end
 
       def name_id
-        document.elements["/samlp:LogoutRequest/saml:NameID/text()"]&.value
+        element_from_xpath("/samlp:LogoutRequest/saml:NameID/text()")
       end
 
       def name_id_name_qualifier
-        document.elements[
-          "/samlp:LogoutRequest/saml:NameID/@NameQualifier"
-        ]&.value
+        element_from_xpath("/samlp:LogoutRequest/saml:NameID/@NameQualifier")
       end
 
       def issuer
-        document.elements["/samlp:LogoutRequest/saml:Issuer/text()"]&.value
+        element_from_xpath("/samlp:LogoutRequest/saml:Issuer/text()")
       end
 
       def session_index
-        document.elements[
-          "/samlp:LogoutRequest/saml:SessionIndex/text()"
-        ]&.value
+        element_from_xpath("/samlp:LogoutRequest/saml:SessionIndex/text()")
       end
     end
   end

@@ -1,20 +1,8 @@
 # frozen_string_literal: true
 
-require "spid/saml2/utils"
-
 module Spid
   module Saml2
-    class Response # :nodoc:
-      include Spid::Saml2::Utils
-
-      attr_reader :saml_message
-      attr_reader :document
-
-      def initialize(saml_message:)
-        @saml_message = saml_message
-        @document = REXML::Document.new(@saml_message)
-      end
-
+    class Response < SamlParser # :nodoc:
       def issuer
         document.elements["/samlp:Response/saml:Issuer/text()"]&.value
       end
@@ -24,15 +12,16 @@ module Spid
       end
 
       def name_id
-        document.elements[
+        element_from_xpath(
           "/samlp:Response/saml:Assertion/saml:Subject/saml:NameID/text()"
-        ]&.value
+        )
       end
 
       def raw_certificate
-        xpath = "/samlp:Response/saml:Assertion/ds:Signature/ds:KeyInfo"
-        xpath = "#{xpath}/ds:X509Data/ds:X509Certificate/text()"
-        document.elements[xpath]&.value
+        element_from_xpath(
+          "/samlp:Response/saml:Assertion/ds:Signature/ds:KeyInfo" \
+          "/ds:X509Data/ds:X509Certificate/text()"
+        )
       end
 
       def certificate
@@ -40,83 +29,77 @@ module Spid
       end
 
       def assertion_issuer
-        document.elements[
-          "/samlp:Response/saml:Assertion/saml:Issuer/text()"
-        ]&.value
+        element_from_xpath("/samlp:Response/saml:Assertion/saml:Issuer/text()")
       end
 
       def session_index
-        document.elements[
+        element_from_xpath(
           "/samlp:Response/saml:Assertion/saml:AuthnStatement/@SessionIndex"
-        ]&.value
+        )
       end
 
       def destination
-        document.elements[
-          "/samlp:Response/@Destination"
-        ]&.value
+        element_from_xpath("/samlp:Response/@Destination")
       end
 
       def conditions_not_before
-        document.elements[
+        element_from_xpath(
           "/samlp:Response/saml:Assertion/saml:Conditions/@NotBefore"
-        ]&.value
+        )
       end
 
       def conditions_not_on_or_after
-        document.elements[
+        element_from_xpath(
           "/samlp:Response/saml:Assertion/saml:Conditions/@NotOnOrAfter"
-        ]&.value
+        )
       end
 
       def audience
-        xpath = "/samlp:Response/saml:Assertion/saml:Conditions"
-        xpath = "#{xpath}/saml:AudienceRestriction/saml:Audience/text()"
-        document.elements[xpath]&.value
+        element_from_xpath(
+          "/samlp:Response/saml:Assertion/saml:Conditions" \
+          "/saml:AudienceRestriction/saml:Audience/text()"
+        )
+      end
+
+      def subject_confirmation_data_node_xpath
+        xpath = "/samlp:Response/saml:Assertion/saml:Subject/"
+        "#{xpath}/saml:SubjectConfirmation/saml:SubjectConfirmationData"
       end
 
       def subject_recipient
-        xpath = "/samlp:Response/saml:Assertion/saml:Subject/"
-        xpath = "#{xpath}/saml:SubjectConfirmation/saml:SubjectConfirmationData"
-        xpath = "#{xpath}/@Recipient"
-
-        document.elements[xpath]&.value
+        element_from_xpath("#{subject_confirmation_data_node_xpath}/@Recipient")
       end
 
       def subject_in_response_to
-        xpath = "/samlp:Response/saml:Assertion/saml:Subject/"
-        xpath = "#{xpath}/saml:SubjectConfirmation/saml:SubjectConfirmationData"
-        xpath = "#{xpath}/@InResponseTo"
-
-        document.elements[xpath]&.value
+        element_from_xpath(
+          "#{subject_confirmation_data_node_xpath}/@InResponseTo"
+        )
       end
 
       def subject_not_on_or_after
-        xpath = "/samlp:Response/saml:Assertion/saml:Subject/"
-        xpath = "#{xpath}/saml:SubjectConfirmation/saml:SubjectConfirmationData"
-        xpath = "#{xpath}/@NotOnOrAfter"
-
-        document.elements[xpath]&.value
+        element_from_xpath(
+          "#{subject_confirmation_data_node_xpath}/@NotOnOrAfter"
+        )
       end
 
       def status_code
-        document.elements[
+        element_from_xpath(
           "/samlp:Response/samlp:Status/samlp:StatusCode/@Value"
-        ]&.value
+        )
       end
 
       def status_message
-        document.elements[
-          "/samlp:Response/samlp:Status/samlp:StatusCode/" \
-          "samlp:StatusMessage/@Value"
-        ]&.value
+        element_from_xpath(
+          "samlp:StatusMessage/@Value" \
+          "/samlp:Response/samlp:Status/samlp:StatusCode/"
+        )
       end
 
       def status_detail
-        document.elements[
+        element_from_xpath(
           "/samlp:Response/samlp:Status/samlp:StatusCode/" \
           "samlp:StatusDetail/@Value"
-        ]&.value
+        )
       end
 
       def attributes
