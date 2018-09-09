@@ -3,14 +3,18 @@
 module Spid
   module Slo
     class Response # :nodoc:
+      include Spid::Saml2::Utils
+
       attr_reader :body
       attr_reader :session_index
       attr_reader :request_uuid
+      attr_reader :saml_message
 
       def initialize(body:, session_index:, request_uuid:)
         @body = body
         @session_index = session_index
         @request_uuid = request_uuid
+        @saml_message = decode_and_inflate(body)
       end
 
       def valid?
@@ -59,7 +63,7 @@ module Spid
 
       def saml_response
         @saml_response ||= Spid::Saml2::LogoutResponse.new(
-          body: body
+          saml_message: saml_message
         )
       end
     end

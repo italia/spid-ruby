@@ -4,11 +4,11 @@ require "spec_helper"
 
 RSpec.describe Spid::Saml2::LogoutResponse do
   subject(:logout_response) do
-    described_class.new(body: response_body)
+    described_class.new(saml_message: saml_message)
   end
 
-  let(:response_body) do
-    File.read(generate_fixture_path("slo-response.base64"))
+  let(:saml_message) do
+    File.read(generate_fixture_path("slo-response-signed.xml"))
   end
 
   it { is_expected.to be_a described_class }
