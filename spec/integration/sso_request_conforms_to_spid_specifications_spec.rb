@@ -12,7 +12,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
     )
   end
 
-  let(:idp_name) { "identity-provider" }
+  let(:idp_name) { "https://identity.provider" }
 
   let(:authn_context) { Spid::L1 }
 

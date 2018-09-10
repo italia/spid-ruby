@@ -11,7 +11,7 @@ RSpec.describe Spid::Slo::Request do
     )
   end
 
-  let(:idp_name) { "idp-name" }
+  let(:idp_name) { "https://identity.provider" }
   let(:relay_state) { "/path/to/return" }
   let(:session_index) { "session-index" }
   let(:signature_method) { Spid::RSA_SHA256 }
@@ -156,7 +156,7 @@ RSpec.describe Spid::Slo::Request do
 
     before do
       allow(Spid::IdentityProviderManager).
-        to receive(:find_by_name).
+        to receive(:find_by_entity).
         with(idp_name).
         and_return(identity_provider)
     end

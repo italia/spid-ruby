@@ -7,7 +7,7 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
     Spid::Slo::Request.new(idp_name: idp_name, session_index: session_index)
   end
 
-  let(:idp_name) { "identity-provider" }
+  let(:idp_name) { "https://identity.provider" }
 
   let(:idp_slo_target_url) { "https://identity.provider/slo" }
   let(:sp_entity_id) { "https://service.provider" }

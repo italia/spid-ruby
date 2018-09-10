@@ -19,12 +19,6 @@ module Spid
         end
     end
 
-    def self.find_by_name(idp_name)
-      instance.identity_providers.find do |idp|
-        idp.name == idp_name
-      end
-    end
-
     def self.find_by_entity(entity_id)
       instance.identity_providers.find do |idp|
         idp.entity_id == entity_id

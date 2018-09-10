@@ -27,26 +27,6 @@ RSpec.describe Spid::IdentityProviderManager do
     Spid.reset_configuration!
   end
 
-  describe ".find_by_name" do
-    let(:idp) { described_class.find_by_name(idp_name) }
-
-    context "when a valid idp_name is provided" do
-      let(:idp_name) { "identity-provider" }
-
-      it "returns the identity provider configuration" do
-        expect(idp.name).to eq idp_name
-      end
-    end
-
-    context "when a not valid idp_name is provided" do
-      let(:idp_name) { "not-existing-identity-provider" }
-
-      it "returns nil" do
-        expect(idp).to eq nil
-      end
-    end
-  end
-
   describe ".find_by_entity_id" do
     let(:idp) { described_class.find_by_entity(entity_id) }
 

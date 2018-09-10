@@ -59,7 +59,7 @@ module Spid
 
       def identity_provider
         @identity_provider ||=
-          IdentityProviderManager.find_by_name(idp_name)
+          IdentityProviderManager.find_by_entity(idp_name)
       end
 
       def service_provider

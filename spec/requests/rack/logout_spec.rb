@@ -73,7 +73,7 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
     end
 
     context "with an idp-name" do
-      let(:idp_name) { "identity-provider" }
+      let(:idp_name) { "https://identity.provider" }
 
       let(:request_uuid) do
         "e2880819-0b3f-48af-903e-fb3558d50042"

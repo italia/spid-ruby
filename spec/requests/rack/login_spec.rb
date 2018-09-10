@@ -66,7 +66,7 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
       )
     end
 
-    let(:idp_name) { "identity-provider" }
+    let(:idp_name) { "https://identity.provider" }
 
     context "with an idp-name" do
       let(:request_uuid) do
