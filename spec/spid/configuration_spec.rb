@@ -91,7 +91,17 @@ RSpec.describe Spid::Configuration do
 
   describe "#service_provider" do
     context "with valid configuration" do
+      let(:certificate_pem) do
+        File.read(generate_fixture_path("certificate.pem"))
+      end
+
+      let(:private_key_pem) do
+        File.read(generate_fixture_path("private-key.pem"))
+      end
+
       before do
+        config.private_key_pem = private_key_pem
+        config.certificate_pem = certificate_pem
         config.attribute_services = [
           { name: "Service 1", fields: [:email] }
         ]

@@ -28,10 +28,17 @@ RSpec.describe Spid::Saml2::ServiceProvider do
   let(:slo_path) { "/slo" }
   let(:slo_binding) { "slo-binding-method" }
   let(:metadata_path) { "/metadata" }
-  let(:private_key) { "private_key" }
-  let(:certificate) { "certificate" }
+  let(:private_key_path) { generate_fixture_path("private-key.pem") }
+  let(:certificate_path) { generate_fixture_path("certificate.pem") }
   let(:digest_method) { Spid::SHA256 }
   let(:signature_method) { Spid::RSA_SHA256 }
+  let(:private_key) do
+    OpenSSL::PKey::RSA.new(File.read(private_key_path))
+  end
+
+  let(:certificate) do
+    OpenSSL::X509::Certificate.new(File.read(certificate_path))
+  end
 
   it { is_expected.to be_a described_class }
 
@@ -113,6 +120,17 @@ RSpec.describe Spid::Saml2::ServiceProvider do
     it "raises a Spid::UknownAttributeFieldError" do
       expect { service_provider }.
         to raise_error Spid::UnknownAttributeFieldError
+    end
+  end
+
+  context "with a private_key with less of 1024 bit of encoding" do
+    let(:private_key) do
+      OpenSSL::PKey::RSA.new(1023)
+    end
+
+    it "raises a Spid::PrivateKeyTooShortError" do
+      expect { service_provider }.
+        to raise_error Spid::PrivateKeyTooShortError
     end
   end
 

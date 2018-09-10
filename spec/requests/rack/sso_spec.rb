@@ -19,9 +19,19 @@ RSpec.describe "Receiving a SSO assertion" do
     generate_fixture_path("config/idp_metadata")
   end
 
+  let(:certificate_pem) do
+    File.read(generate_fixture_path("certificate.pem"))
+  end
+
+  let(:private_key_pem) do
+    File.read(generate_fixture_path("private-key.pem"))
+  end
+
   before do
     Spid.configure do |config|
       config.idp_metadata_dir_path = metadata_dir_path
+      config.private_key_pem = private_key_pem
+      config.certificate_pem = certificate_pem
       config.hostname = hostname
       config.acs_path = acs_path
       config.default_relay_state_path = "/default/relay/state/path"

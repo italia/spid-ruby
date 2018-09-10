@@ -15,8 +15,12 @@ RSpec.describe "Using the Spid::Rack::Metadata middleware" do
   let(:hostname) { "https://service.provider" }
   let(:metadata_path) { "/spid/metadata" }
 
+  let(:private_key_pem) do
+    File.read(generate_fixture_path("private-key.pem"))
+  end
+
   let(:certificate_pem) do
-    File.read generate_fixture_path("certificate.pem")
+    File.read(generate_fixture_path("certificate.pem"))
   end
 
   let(:metadata_dir_path) do
@@ -32,6 +36,7 @@ RSpec.describe "Using the Spid::Rack::Metadata middleware" do
   before do
     Spid.configure do |config|
       config.idp_metadata_dir_path = metadata_dir_path
+      config.private_key_pem = private_key_pem
       config.certificate_pem = certificate_pem
       config.hostname = hostname
       config.metadata_path = metadata_path

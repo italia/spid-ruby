@@ -45,6 +45,7 @@ module Spid
         @attribute_services     = attribute_services
         validate_digest_methods
         validate_attributes
+        validate_private_key
       end
       # rubocop:enable Metrics/MethodLength
       # rubocop:enable Metrics/ParameterLists
@@ -91,6 +92,13 @@ module Spid
                 "Provided digest method is not valid:" \
                 " use one of #{SIGNATURE_METHODS.join(', ')}"
         end
+      end
+
+      def validate_private_key
+        return true if private_key.n.num_bits >= 1024
+        raise PrivateKeyTooShortError,
+              "Private key is too short: provide at least a " \
+              " private key with 1024 bits"
       end
     end
   end

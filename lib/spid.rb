@@ -18,6 +18,7 @@ module Spid # :nodoc:
   class UnknownSignatureMethodError < StandardError; end
   class UnknownAttributeFieldError < StandardError; end
   class MissingAttributeServicesError < StandardError; end
+  class PrivateKeyTooShortError < StandardError; end
 
   EXACT_COMPARISON = :exact
   MINIMUM_COMPARISON = :minimum
