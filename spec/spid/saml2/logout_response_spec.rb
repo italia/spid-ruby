@@ -8,7 +8,7 @@ RSpec.describe Spid::Saml2::LogoutResponse do
   end
 
   let(:saml_message) do
-    File.read(generate_fixture_path("slo-response-signed.xml"))
+    File.read(generate_fixture_path("slo-response/signed.xml"))
   end
 
   it { is_expected.to be_a described_class }

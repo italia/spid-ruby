@@ -32,7 +32,7 @@ RSpec.describe Spid::Saml2::ResponseValidator do
   let(:request_uuid) { "a-request-uuid" }
 
   let(:signed_response) do
-    File.read(generate_fixture_path("sso-response-signed.xml"))
+    File.read(generate_fixture_path("sso-response/signed.xml"))
   end
 
   let(:response_certificate_pem) do
