@@ -25,8 +25,8 @@ RSpec.describe Spid::Saml2::Settings do
       "Spid::Saml2::ServiceProvider",
       host: "https://service.provider",
       signature_method: Spid::RSA_SHA256,
-      private_key: private_key,
-      certificate: certificate,
+      private_key: OpenSSL::PKey::RSA.new(private_key),
+      certificate: OpenSSL::X509::Certificate.new(certificate),
       acs_url: "acs-url",
       acs_binding: "acs-binding-method",
       slo_url: "slo-url",
@@ -80,7 +80,7 @@ RSpec.describe Spid::Saml2::Settings do
 
   describe "#private_key" do
     it "returns the service provider private_key" do
-      expect(settings.private_key).to eq private_key
+      expect(settings.private_key).to be_an OpenSSL::PKey::RSA
     end
   end
 

@@ -91,8 +91,7 @@ module Spid
       def x509_certificate_der
         @x509_certificate_der ||=
           begin
-            cert = OpenSSL::X509::Certificate.new(certificate)
-            Base64.encode64(cert.to_der).delete("\n")
+            Base64.encode64(certificate.to_der).delete("\n")
           end
       end
     end
