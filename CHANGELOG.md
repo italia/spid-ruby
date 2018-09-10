@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.17.1] - 2018-09-10
+### Changed
+- Identity Provider fetched by entity_id
+
 ## [0.17.0] - 2018-09-10
 ### Added
 - Ensure private key lenght and certificate validation
@@ -134,7 +138,8 @@
 - Coveralls Integration
 - Rubygems version badge in README
 
-[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.17.0...HEAD
+[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.17.1...HEAD
+[0.17.1]: https://github.com/italia/spid-ruby/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/italia/spid-ruby/compare/v0.16.1...v0.17.0
 [0.16.1]: https://github.com/italia/spid-ruby/compare/v0.16.0...v0.16.1
 [0.16.0]: https://github.com/italia/spid-ruby/compare/v0.15.2...v0.16.0
