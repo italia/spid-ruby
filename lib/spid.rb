@@ -19,6 +19,7 @@ module Spid # :nodoc:
   class UnknownAttributeFieldError < StandardError; end
   class MissingAttributeServicesError < StandardError; end
   class PrivateKeyTooShortError < StandardError; end
+  class CertificateNotBelongsToPKeyError < StandardError; end
 
   EXACT_COMPARISON = :exact
   MINIMUM_COMPARISON = :minimum

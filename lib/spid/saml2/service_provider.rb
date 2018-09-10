@@ -46,6 +46,7 @@ module Spid
         validate_digest_methods
         validate_attributes
         validate_private_key
+        validate_certificate
       end
       # rubocop:enable Metrics/MethodLength
       # rubocop:enable Metrics/ParameterLists
@@ -99,6 +100,12 @@ module Spid
         raise PrivateKeyTooShortError,
               "Private key is too short: provide at least a " \
               " private key with 1024 bits"
+      end
+
+      def validate_certificate
+        return true if certificate.verify(private_key)
+        raise CertificateNotBelongsToPKeyError,
+              "Provided a certificate signed with current private key"
       end
     end
   end
