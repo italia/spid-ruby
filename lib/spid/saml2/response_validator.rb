@@ -4,6 +4,7 @@ require "xmldsig"
 
 module Spid
   module Saml2
+    # rubocop:disable Metrics/ClassLength
     class ResponseValidator # :nodoc:
       attr_reader :response
       attr_reader :settings
@@ -77,6 +78,7 @@ module Spid
 
       def destination
         return true if response.destination == settings.sp_acs_url
+        return true if response.destination == settings.sp_entity_id
 
         @errors["destination"] =
           begin
@@ -91,6 +93,7 @@ module Spid
 
         if response.conditions_not_before <= time &&
            response.conditions_not_on_or_after > time
+
           return true
         end
 
@@ -130,5 +133,6 @@ module Spid
         return true if response.subject_not_on_or_after > time
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end
