@@ -12,7 +12,7 @@ RSpec.describe "Validation of Spid::Slo::Response" do
   end
 
   let(:spid_response) do
-    File.read(generate_fixture_path("slo-response.base64"))
+    File.read(generate_fixture_path("slo-response/encoded.base64"))
   end
 
   let(:request_uuid) { "_21df91a89767879fc0f7df6a1490c6000c81644d" }

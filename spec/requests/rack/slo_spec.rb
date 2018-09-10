@@ -39,7 +39,7 @@ RSpec.describe "Receiving a SLO assertion" do
     let(:path) { slo_path.to_s }
 
     let(:saml_response) do
-      File.read(generate_fixture_path("slo-response.base64"))
+      File.read(generate_fixture_path("slo-response/encoded.base64"))
     end
 
     let(:response) do
@@ -128,7 +128,7 @@ RSpec.describe "Receiving a SLO assertion" do
       end
 
       let(:saml_request) do
-        File.read(generate_fixture_path("slo-request.base64"))
+        File.read(generate_fixture_path("slo-request/encoded.base64"))
       end
 
       it "responds with 200" do

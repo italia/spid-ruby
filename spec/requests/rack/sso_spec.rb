@@ -39,7 +39,7 @@ RSpec.describe "Receiving a SSO assertion" do
     let(:path) { acs_path.to_s }
     let(:saml_response) do
       File.read(
-        generate_fixture_path("sso-response.base64")
+        generate_fixture_path("sso-response/encoded.base64")
       )
     end
 

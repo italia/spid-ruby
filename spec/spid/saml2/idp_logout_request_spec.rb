@@ -12,7 +12,7 @@ RSpec.describe Spid::Saml2::IdpLogoutRequest do
     File.read(generate_fixture_path("idp-certificate.pem"))
   end
   let(:saml_message) do
-    File.read(generate_fixture_path("slo-request-signed.xml"))
+    File.read(generate_fixture_path("slo-request/signed.xml"))
   end
 
   it { is_expected.to be_a described_class }

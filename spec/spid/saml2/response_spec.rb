@@ -8,7 +8,7 @@ RSpec.describe Spid::Saml2::Response do
   end
 
   let(:saml_message) do
-    File.read(generate_fixture_path("sso-response-signed.xml"))
+    File.read(generate_fixture_path("sso-response/signed.xml"))
   end
 
   let(:certificate_pem) do

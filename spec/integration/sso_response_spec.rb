@@ -11,7 +11,7 @@ RSpec.describe "Validation of Spid::Sso::Response" do
   end
 
   let(:spid_response) do
-    File.read(generate_fixture_path("sso-response.base64"))
+    File.read(generate_fixture_path("sso-response/encoded.base64"))
   end
 
   let(:request_uuid) { "_acae2f5c-a008-4cf6-b5b1-df15db7c3dc8" }
