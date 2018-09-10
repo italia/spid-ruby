@@ -20,13 +20,8 @@ module Spid
       def call
         return false unless success?
         [
-          matches_request_uuid,
-          issuer,
-          certificate,
-          destination,
-          conditions,
-          audience,
-          signature
+          matches_request_uuid, issuer, assertion_issuer, certificate,
+          destination, conditions, audience, signature
         ].all?
       end
 
@@ -50,11 +45,22 @@ module Spid
       end
 
       def issuer
-        return true if response.assertion_issuer == settings.idp_entity_id
+        return true if response.issuer == settings.idp_entity_id
 
         @errors["issuer"] =
           begin
-            "Response Issuer is '#{response.assertion_issuer}'" \
+            "Response Issuer is '#{response.issuer}'" \
+            " but was expected '#{settings.idp_entity_id}'"
+          end
+        false
+      end
+
+      def assertion_issuer
+        return true if response.assertion_issuer == settings.idp_entity_id
+
+        @errors["assertion_issuer"] =
+          begin
+            "Response Assertion Issuer is '#{response.assertion_issuer}'" \
             " but was expected '#{settings.idp_entity_id}'"
           end
         false

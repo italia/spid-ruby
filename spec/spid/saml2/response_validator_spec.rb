@@ -12,6 +12,7 @@ RSpec.describe Spid::Saml2::ResponseValidator do
   let(:response) do
     instance_double(
       "Spid::Saml2::Response",
+      issuer: issuer,
       assertion_issuer: assertion_issuer,
       destination: destination,
       conditions_not_before: "2018-01-01T00:00:00Z",
@@ -62,6 +63,8 @@ RSpec.describe Spid::Saml2::ResponseValidator do
   let(:idp_certificate) do
     OpenSSL::X509::Certificate.new(idp_certificate_pem)
   end
+
+  let(:issuer) { "https://identity.provider" }
 
   let(:assertion_issuer) { "https://identity.provider" }
 
@@ -158,7 +161,7 @@ RSpec.describe Spid::Saml2::ResponseValidator do
     end
 
     context "when response issuer doesn't match setted issuer" do
-      let(:assertion_issuer) { "https://another-identity.provider" }
+      let(:issuer) { "https://another-identity.provider" }
 
       it "returns false" do
         expect(validator.issuer).to be_falsey
@@ -167,6 +170,27 @@ RSpec.describe Spid::Saml2::ResponseValidator do
       it "has errors" do
         validator.issuer
         expect(validator.errors.keys).to include "issuer"
+      end
+    end
+  end
+
+  describe "#assertion_issuer" do
+    context "when response issuer match setted issuer" do
+      it "returns true" do
+        expect(validator.assertion_issuer).to be_truthy
+      end
+    end
+
+    context "when response issuer doesn't match setted issuer" do
+      let(:assertion_issuer) { "https://another-identity.provider" }
+
+      it "returns false" do
+        expect(validator.assertion_issuer).to be_falsey
+      end
+
+      it "has errors" do
+        validator.assertion_issuer
+        expect(validator.errors.keys).to include "assertion_issuer"
       end
     end
   end
