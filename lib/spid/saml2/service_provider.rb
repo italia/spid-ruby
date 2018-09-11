@@ -79,7 +79,7 @@ module Spid
       def validate_attribute_service(attribute_service)
         return false unless attribute_service.key?(:name)
         return false unless attribute_service.key?(:fields)
-        not_valid_fields = attribute_service[:fields] - ATTRIBUTES
+        not_valid_fields = attribute_service[:fields].map(&:to_sym) - ATTRIBUTES
         not_valid_fields.empty?
       end
 
