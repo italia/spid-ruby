@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.17.2] - 2018-09-11
 ### Fixed
 - `Spid::Rack::Login` now use authn_context value
 
@@ -140,7 +142,8 @@
 - Coveralls Integration
 - Rubygems version badge in README
 
-[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.17.1...HEAD
+[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.17.2...HEAD
+[0.17.2]: https://github.com/italia/spid-ruby/compare/v0.17.1...v0.17.2
 [0.17.1]: https://github.com/italia/spid-ruby/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/italia/spid-ruby/compare/v0.16.1...v0.17.0
 [0.16.1]: https://github.com/italia/spid-ruby/compare/v0.16.0...v0.16.1
