@@ -48,7 +48,8 @@ module Spid
               Spid::Sso::Request.new(
                 idp_name: idp_name,
                 relay_state: relay_state,
-                attribute_index: attribute_consuming_service_index
+                attribute_index: attribute_consuming_service_index,
+                authn_context: authn_context
               )
             end
         end
@@ -68,6 +69,10 @@ module Spid
 
         def idp_name
           request.params["idp_name"]
+        end
+
+        def authn_context
+          request.params["authn_context"] || Spid::L1
         end
 
         def attribute_consuming_service_index
