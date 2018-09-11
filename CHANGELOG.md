@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- `Spid::Rack::Login` now use authn_context value
 
 ## [0.17.1] - 2018-09-10
 ### Changed
