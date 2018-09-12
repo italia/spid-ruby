@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.17.3] - 2018-09-12
 ### Fixed
 - Metadata embed now signature
 - Now it's possible to use attributes in attribute services in string format
@@ -145,7 +147,8 @@
 - Coveralls Integration
 - Rubygems version badge in README
 
-[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.17.2...HEAD
+[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.17.3...HEAD
+[0.17.3]: https://github.com/italia/spid-ruby/compare/v0.17.2...v0.17.3
 [0.17.2]: https://github.com/italia/spid-ruby/compare/v0.17.1...v0.17.2
 [0.17.1]: https://github.com/italia/spid-ruby/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/italia/spid-ruby/compare/v0.16.1...v0.17.0
