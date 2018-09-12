@@ -32,7 +32,7 @@ module Spid
           "xmlns:ds" => "http://www.w3.org/2000/09/xmldsig#",
           "xmlns:md" => "urn:oasis:names:tc:SAML:2.0:metadata",
           "entityID" => settings.sp_entity_id,
-          "ID" => settings.sp_entity_id
+          "ID" => entity_descriptor_id
         }
       end
 
@@ -130,6 +130,15 @@ module Spid
             certificate = data.add_element "ds:X509Certificate"
             certificate.text = settings.x509_certificate_der
             kd
+          end
+      end
+
+      private
+
+      def entity_descriptor_id
+        @entity_descriptor_id ||=
+          begin
+            "_#{Digest::MD5.hexdigest(settings.sp_entity_id)}"
           end
       end
     end

@@ -41,7 +41,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
 
       {
         "entityID" => "https://service.provider",
-        "ID" => "https://service.provider"
+        "ID" => "_2b2ffddc5e96594af802f687a3bb8645"
       }.each do |name, value|
         include_examples "has attribute", name, value
       end
