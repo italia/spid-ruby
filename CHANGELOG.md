@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Now it's possible to use attributes in attribute services in string format
 
 ## [0.17.2] - 2018-09-11
 ### Fixed

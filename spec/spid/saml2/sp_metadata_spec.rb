@@ -13,11 +13,20 @@ RSpec.describe Spid::Saml2::SPMetadata do
       sp_acs_url: "https://service.provider/sso",
       sp_slo_service_url: "https://service.provider/slo",
       sp_slo_service_binding: "slo-binding-method",
+      signature_method: Spid::RSA_SHA512,
+      digest_method: Spid::SHA512,
+      private_key: private_key,
       x509_certificate_der: "certificate-der",
       sp_attribute_services: [
         { name: "Service 1", fields: [:email] },
         { name: "Service 2", fields: %i[iva_code digital_address] }
       ]
+    )
+  end
+
+  let(:private_key) do
+    OpenSSL::PKey::RSA.new(
+      File.read(generate_fixture_path("private-key.pem"))
     )
   end
 
@@ -41,7 +50,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
 
       {
         "entityID" => "https://service.provider",
-        "ID" => "https://service.provider"
+        "ID" => "_2b2ffddc5e96594af802f687a3bb8645"
       }.each do |name, value|
         include_examples "has attribute", name, value
       end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "xmldsig"
+
 module Spid
   module Saml2
     # rubocop:disable Metrics/ClassLength
@@ -12,9 +14,18 @@ module Spid
         @settings = settings
       end
 
-      def to_saml
+      def unsigned_document
         document.add_element(entity_descriptor)
         document.to_s
+      end
+
+      def signed_document
+        doc = Xmldsig::SignedDocument.new(unsigned_document)
+        doc.sign(settings.private_key)
+      end
+
+      def to_saml
+        signed_document
       end
 
       def entity_descriptor
@@ -23,6 +34,7 @@ module Spid
             element = REXML::Element.new("md:EntityDescriptor")
             element.add_attributes(entity_descriptor_attributes)
             element.add_element sp_sso_descriptor
+            element.add_element signature
             element
           end
       end
@@ -32,7 +44,7 @@ module Spid
           "xmlns:ds" => "http://www.w3.org/2000/09/xmldsig#",
           "xmlns:md" => "urn:oasis:names:tc:SAML:2.0:metadata",
           "entityID" => settings.sp_entity_id,
-          "ID" => settings.sp_entity_id
+          "ID" => entity_descriptor_id
         }
       end
 
@@ -58,6 +70,13 @@ module Spid
       end
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/MethodLength
+
+      def signature
+        @signature ||= ::Spid::Saml2::XmlSignature.new(
+          settings: settings,
+          sign_reference: entity_descriptor_id
+        ).signature
+      end
 
       def attribute_consuming_service(index, name, fields)
         element = REXML::Element.new("md:AttributeConsumingService")
@@ -130,6 +149,15 @@ module Spid
             certificate = data.add_element "ds:X509Certificate"
             certificate.text = settings.x509_certificate_der
             kd
+          end
+      end
+
+      private
+
+      def entity_descriptor_id
+        @entity_descriptor_id ||=
+          begin
+            "_#{Digest::MD5.hexdigest(settings.sp_entity_id)}"
           end
       end
     end
