@@ -68,6 +68,14 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
         it "exists" do
           expect(signature_node).not_to be_nil
         end
+
+        it "is valid" do
+          signed_document = Xmldsig::SignedDocument.new(xml_document)
+          certificate = OpenSSL::X509::Certificate.new(certificate_pem)
+          validation = signed_document.validate(certificate)
+
+          expect(validation).to be_truthy
+        end
       end
 
       describe "SPSSODescriptor node" do
