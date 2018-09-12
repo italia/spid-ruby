@@ -80,6 +80,10 @@ module Spid
         service_provider.signature_method
       end
 
+      def digest_method
+        service_provider.digest_method
+      end
+
       def acs_index
         "0"
       end

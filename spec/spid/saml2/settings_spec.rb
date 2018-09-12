@@ -24,6 +24,7 @@ RSpec.describe Spid::Saml2::Settings do
     instance_double(
       "Spid::Saml2::ServiceProvider",
       host: "https://service.provider",
+      digest_method: Spid::SHA256,
       signature_method: Spid::RSA_SHA256,
       private_key: OpenSSL::PKey::RSA.new(private_key),
       certificate: OpenSSL::X509::Certificate.new(certificate),
@@ -81,6 +82,12 @@ RSpec.describe Spid::Saml2::Settings do
   describe "#private_key" do
     it "returns the service provider private_key" do
       expect(settings.private_key).to be_an OpenSSL::PKey::RSA
+    end
+  end
+
+  describe "#digest_method" do
+    it "returns the configured digest method" do
+      expect(settings.digest_method).to eq Spid::SHA256
     end
   end
 
