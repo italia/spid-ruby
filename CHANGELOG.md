@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.18.0] - 2018-09-12
+### Removed
+- Rails specific code
+
 ## [0.17.3] - 2018-09-12
 ### Fixed
 - Metadata embed now signature
@@ -147,7 +151,8 @@
 - Coveralls Integration
 - Rubygems version badge in README
 
-[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.17.3...HEAD
+[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.18.0...HEAD
+[0.18.0]: https://github.com/italia/spid-ruby/compare/v0.17.3...v0.18.0
 [0.17.3]: https://github.com/italia/spid-ruby/compare/v0.17.2...v0.17.3
 [0.17.2]: https://github.com/italia/spid-ruby/compare/v0.17.1...v0.17.2
 [0.17.1]: https://github.com/italia/spid-ruby/compare/v0.17.0...v0.17.1
