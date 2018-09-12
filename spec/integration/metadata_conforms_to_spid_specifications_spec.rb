@@ -66,7 +66,7 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
         end
 
         it "exists" do
-          expect(signature_node).to be_nil
+          expect(signature_node).not_to be_nil
         end
       end
 
