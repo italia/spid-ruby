@@ -99,6 +99,12 @@ namespace :deploy do
 end
 ```
 
+Se invece state usando [heroku](https://heroku.com) potete usare un buildpack apposito
+```bash
+$ heroku buildpacks:add  https://github.com/cantierecreativo/spid-ruby-heroku-buildpack.git
+```
+che lancierà automaticamente il comando durante il deploy. In questo modo i metadata verranno **congelati** nel dyno e saranno sempre disponibili
+
 #### Sinatra
 Occorre modificare il `Rakefile` dell'applicazione aggiungendo
 ```ruby
