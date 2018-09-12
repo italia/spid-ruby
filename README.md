@@ -76,10 +76,27 @@ Per motivi di sicurezza il sistema SPID prevede che un Service Provider abbia un
 
 Al fine di facilitarne lo scaricamento la gemma `spid-ruby` prevede un task rake che li installa nella directory `config.idp_metadata_dir_path`.
 
-A questo punto è possibile lanciare 
-
 ```bash
 $ rake spid:fetch_idp_metadata
+```
+
+Essendo dei segreti, è sconsigliato salvare i metadata di produzione nel codebase, quindi è preferibile rimandare il task durante la fase di deploy.
+
+Utilizzando [capistrano](https://capistranorb.com/) un modo potrebbe essere:
+```ruby
+# config/deploy.rb
+
+set :linked_dirs %(
+  /path/to/idp_metadata_dir
+)
+
+namespace :deploy do
+  task :fetch_idp_metadata do
+    on roles(:web) do
+      execute :rake, "spid:fetch_idp_metadata"
+    end
+  end
+end
 ```
 
 #### Sinatra
@@ -89,6 +106,34 @@ Occorre modificare il `Rakefile` dell'applicazione aggiungendo
 # require "sinatra-app.rb"
 require "spid/tasks"
 ```
+
+## Nota sulle chiavi OpenSSL
+Per generare delle chiavi di test è possibile utilizzare il seguende comando:
+```bash
+openssl req -x509 -nodes -sha512 -subj '/C=IT' -newkey rsa:4096 -keyout spid-private-key.pem -out spid-certificate.pem
+```
+
+La configurazione di `spid-ruby` prevede che venga fornita direttamente la codifica `.pem` del certificato. Questo perché in sistemi quali [Heroku](https://heroku.com) sarebbe necessario avere le chiavi all'interno del repository git, cosa altamente sconsigliata in quanto segreto.
+
+Nel caso di deploy su una macchina personale una possibile soluzione è l'utilizzo di [capistrano](https://capistranorb.com/) in modo che i certificati siano gestiti esternamente dal repository.
+
+Esempio di configurazione:
+```ruby
+# config/deploy.rb
+
+set :linked_files, %w(
+  /path/to/private-key.pem,
+  /path/to/certificate.pem
+)
+```
+e nella configurazione
+```ruby
+Spid.configure do |config|
+  config.private_key_pem = File.read("/path/to/private-key.pem")
+  config.certificate_pem = File.read("/path/to/certificate.pem")
+end
+```
+
 
 ## Funzionamento
 ### Login
