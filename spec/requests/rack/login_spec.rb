@@ -73,6 +73,14 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
         "e2880819-0b3f-48af-903e-fb3558d50042"
       end
 
+      let(:relay_state) do
+        "/path/to/return"
+      end
+
+      let(:relay_state_id) do
+        Digest::MD5.hexdigest(relay_state)
+      end
+
       it "responds with a redirect" do
         expect(response.status).to eq 302
       end
@@ -84,6 +92,16 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
 
         expect(spid_session["sso_request_uuid"]).
           to eq "_#{request_uuid}"
+      end
+
+      it "stores in session the identifier of the relay state" do
+        response
+
+        expected_relay_state = a_hash_including(
+          "_#{relay_state_id}" => relay_state
+        )
+
+        expect(spid_session["relay_state"]).to match expected_relay_state
       end
 
       describe "Location header url" do
