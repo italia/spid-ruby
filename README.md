@@ -54,6 +54,8 @@ tramite il quale potete accedere alle seguenti configurazioni:
 |config.signature_method|Spid::RSA_SHA256|Algoritmo utilizzato per la generazione della signature XML||
 |config.acs_binding|Spid::BINDINGS_HTTP_POST|Binding method utilizzato per la ricezione dell'Assertion di autenticazione||
 |config.slo_binding|Spid::BINDINGS_HTTP_REDIRECT|Binding method utilizzato ler la ricezione dell'Assertion di chiusura della sessione||
+|config.logging_enabled|false|Se true, abilita il logging delle richieste||
+|config.logger|Logger.new($stdout)|Indica lo stream dove viene salvato il log delle AuthnRequest e delle Response||
 
 #### Attribute Services
 Il protocollo SPID prevede la possibilità di specificare almeno un servizio di attributi. Ogni servizio ha un nome e un elenco di attributi richiesti.
@@ -139,7 +141,6 @@ Spid.configure do |config|
   config.certificate_pem = File.read("/path/to/certificate.pem")
 end
 ```
-
 
 ## Funzionamento
 ### Login
