@@ -61,13 +61,22 @@ module Spid
           request.params["SAMLResponse"]
         end
 
-        def relay_state
-          if !request.params["RelayState"].nil? &&
-             request.params["RelayState"] != ""
-            request.params["RelayState"]
-          else
-            Spid.configuration.default_relay_state_path
+        def relay_state_param
+          request.params["RelayState"]
+        end
+
+        def request_relay_state
+          if !relay_state_param.nil? ||
+             relay_state_param != ""
+            session["relay_state"][relay_state_param]
           end
+        end
+
+        def relay_state
+          if request_relay_state.nil?
+            return Spid.configuration.default_relay_state_path
+          end
+          session["relay_state"][relay_state_param]
         end
 
         def valid_get?

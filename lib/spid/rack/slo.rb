@@ -17,6 +17,7 @@ module Spid
         app.call(env)
       end
 
+      # rubocop:disable Metrics/ClassLength
       class SloEnv # :nodoc:
         attr_reader :env
         attr_reader :request
@@ -41,7 +42,7 @@ module Spid
         def response_sp_initiated
           [
             302,
-            { "Location" => relay_state },
+            { "Location" => @relay_state },
             responser.response
           ]
         end
@@ -59,18 +60,28 @@ module Spid
         end
 
         def response
+          @relay_state = relay_state unless idp_initiated?
           validate_session
           return response_idp_initiated if idp_initiated?
           response_sp_initiated
         end
 
-        def relay_state
-          if !request.params["RelayState"].nil? &&
-             request.params["RelayState"] != ""
-            request.params["RelayState"]
-          else
-            Spid.configuration.default_relay_state_path
+        def relay_state_param
+          request.params["RelayState"]
+        end
+
+        def request_relay_state
+          if !relay_state_param.nil? ||
+             relay_state_param != ""
+            session["relay_state"][relay_state_param]
           end
+        end
+
+        def relay_state
+          if request_relay_state.nil?
+            return Spid.configuration.default_relay_state_path
+          end
+          session["relay_state"][relay_state_param]
         end
 
         def valid_get?
@@ -139,6 +150,7 @@ module Spid
           )
         end
       end
+      # rubocop:enable Metrics/ClassLength
     end
   end
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "digest"
+
 module Spid
   class Rack
     class Login # :nodoc:
@@ -31,6 +33,9 @@ module Spid
 
         def response
           session["sso_request_uuid"] = responser.uuid
+          session["relay_state"] = {
+            relay_state_id => relay_state
+          }
           [
             302,
             { "Location" => sso_url },
@@ -47,7 +52,7 @@ module Spid
             begin
               Spid::Sso::Request.new(
                 idp_name: idp_name,
-                relay_state: relay_state,
+                relay_state: relay_state_id,
                 attribute_index: attribute_consuming_service_index,
                 authn_context: authn_context
               )
@@ -64,7 +69,13 @@ module Spid
         end
 
         def relay_state
-          request.params["relay_state"]
+          request.params["relay_state"] ||
+            Spid.configuration.default_relay_state_path
+        end
+
+        def relay_state_id
+          digest = Digest::MD5.hexdigest(relay_state)
+          "_#{digest}"
         end
 
         def idp_name

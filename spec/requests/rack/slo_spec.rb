@@ -68,12 +68,15 @@ RSpec.describe "Receiving a SLO assertion" do
 
     context "when request is a sp-initiated response from identity provider" do
       let(:params) do
-        { SAMLResponse: saml_response, RelayState: "/path/to/return" }
+        { SAMLResponse: saml_response, RelayState: "_opaque-relay-state" }
       end
 
       let(:spid_session) do
         {
-          "slo_request_uuid" => request_uuid
+          "slo_request_uuid" => request_uuid,
+          "relay_state" => {
+            "_opaque-relay-state" => "/path/to/return"
+          }
         }
       end
 

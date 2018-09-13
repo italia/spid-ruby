@@ -69,12 +69,15 @@ RSpec.describe "Receiving a SSO assertion" do
 
     let(:spid_session) do
       {
-        "sso_request_uuid" => "_acae2f5c-a008-4cf6-b5b1-df15db7c3dc8"
+        "sso_request_uuid" => "_acae2f5c-a008-4cf6-b5b1-df15db7c3dc8",
+        "relay_state" => {
+          "_opaque-relay-state" => "/path/to/return"
+        }
       }
     end
 
     let(:params) do
-      { SAMLResponse: saml_response, RelayState: "/path/to/return" }
+      { SAMLResponse: saml_response, RelayState: "_opaque-relay-state" }
     end
 
     let(:expected_session) do
