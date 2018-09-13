@@ -17,10 +17,12 @@ module Spid
     attr_accessor :attribute_services
     attr_accessor :private_key_pem
     attr_accessor :certificate_pem
+    attr_accessor :logging_enabled
 
     def initialize
       @idp_metadata_dir_path    = "idp_metadata"
       @attribute_services       = []
+      @logging_enabled          = false
       init_endpoint
       init_bindings
       init_dig_sig_methods
