@@ -127,6 +127,29 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
             end
           end
         end
+
+        describe "logging" do
+          let(:log_stream) do
+            StringIO.new
+          end
+
+          before do
+            Spid.configure do |config|
+              config.logging_enabled = true
+              config.logger = Logger.new log_stream
+            end
+          end
+
+          after do
+            Spid.reset_configuration!
+          end
+
+          it "logs the saml request" do
+            response
+
+            expect(log_stream.string).to match(/samlp:AuthnRequest/)
+          end
+        end
       end
     end
 

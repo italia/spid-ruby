@@ -23,6 +23,12 @@ RSpec.describe Spid::Configuration do
     end
   end
 
+  describe "#logging_enabled" do
+    it "has a default value" do
+      expect(config.logging_enabled).to eq false
+    end
+  end
+
   describe "#metadata_path" do
     it "has a default value" do
       expect(config.metadata_path).to eq "/spid/metadata"

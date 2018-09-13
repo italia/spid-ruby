@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "logger"
+
 module Spid
   class Configuration # :nodoc:
     attr_accessor :idp_metadata_dir_path
@@ -17,10 +19,14 @@ module Spid
     attr_accessor :attribute_services
     attr_accessor :private_key_pem
     attr_accessor :certificate_pem
+    attr_accessor :logging_enabled
+    attr_accessor :logger
 
     def initialize
       @idp_metadata_dir_path    = "idp_metadata"
       @attribute_services       = []
+      @logging_enabled          = false
+      @logger                   = ::Logger.new $stdout
       init_endpoint
       init_bindings
       init_dig_sig_methods
