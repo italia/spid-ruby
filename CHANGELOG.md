@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Opaque relay state
 
 ## [0.18.0] - 2018-09-12
 ### Removed
