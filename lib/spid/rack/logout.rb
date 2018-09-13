@@ -30,10 +30,9 @@ module Spid
           session["relay_state"] = {
             relay_state_id => relay_state
           }
+          session["idp"] = idp_name
           [
-            302,
-            { "Location" => slo_url },
-            []
+            302, { "Location" => slo_url }, []
           ]
         end
 

@@ -34,6 +34,7 @@ module Spid
         def response
           session["sso_request_uuid"] = responser.uuid
           session["relay_state"] = { relay_state_id => relay_state }
+          session["idp"] = idp_name
 
           log_message
           [
