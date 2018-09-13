@@ -117,7 +117,7 @@ module Spid
         def log_message
           return nil unless Spid.configuration.logging_enabled
 
-          Spid.configuration.logger.info responser.saml_message
+          Spid.configuration.logger.info responser.saml_message.delete("\n")
         end
       end
     end
