@@ -90,8 +90,6 @@ RSpec.describe "Receiving a SSO assertion" do
       )
     end
 
-    before { response }
-
     it "responds with 302" do
       expect(response.status).to eq 302
     end
@@ -113,8 +111,33 @@ RSpec.describe "Receiving a SSO assertion" do
     end
 
     it "sets the session with spid data" do
+      response
+
       spid_data = rack_session["spid"]
       expect(spid_data).to match expected_session
+    end
+
+    describe "logging" do
+      let(:log_stream) do
+        StringIO.new
+      end
+
+      before do
+        Spid.configure do |config|
+          config.logging_enabled = true
+          config.logger = Logger.new log_stream
+        end
+      end
+
+      after do
+        Spid.reset_configuration!
+      end
+
+      it "logs the saml request" do
+        response
+
+        expect(log_stream.string).to match(/samlp:Response/)
+      end
     end
 
     context "when there are errors on response" do

@@ -33,13 +33,11 @@ module Spid
 
         def response
           session["sso_request_uuid"] = responser.uuid
-          session["relay_state"] = {
-            relay_state_id => relay_state
-          }
+          session["relay_state"] = { relay_state_id => relay_state }
+
+          log_message
           [
-            302,
-            { "Location" => sso_url },
-            []
+            302, { "Location" => sso_url }, []
           ]
         end
 
@@ -88,6 +86,12 @@ module Spid
 
         def attribute_consuming_service_index
           request.params["attribute_index"] || "0"
+        end
+
+        def log_message
+          return nil unless Spid.configuration.logging_enabled
+
+          Spid.configuration.logger.info responser.saml_message
         end
       end
     end

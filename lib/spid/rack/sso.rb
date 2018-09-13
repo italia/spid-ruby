@@ -45,15 +45,14 @@ module Spid
         end
 
         def response
+          log_message
           if valid_response?
             store_session_success
           else
             store_session_failure
           end
           [
-            302,
-            { "Location" => relay_state },
-            []
+            302, { "Location" => relay_state }, []
           ]
         end
 
@@ -110,6 +109,12 @@ module Spid
             body: saml_response,
             request_uuid: session["sso_request_uuid"]
           )
+        end
+
+        def log_message
+          return nil unless Spid.configuration.logging_enabled
+
+          Spid.configuration.logger.info responser.saml_message
         end
       end
     end
