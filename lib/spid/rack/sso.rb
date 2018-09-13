@@ -24,6 +24,7 @@ module Spid
         def initialize(env)
           @env = env
           @request = ::Rack::Request.new(env)
+          @relay_state = relay_state
         end
 
         def session
@@ -35,6 +36,7 @@ module Spid
           session["session_index"] = responser.session_index
           session.delete("sso_request_uuid")
           session.delete("errors")
+          session.delete("relay_state")
         end
 
         def store_session_failure
@@ -52,7 +54,7 @@ module Spid
             store_session_failure
           end
           [
-            302, { "Location" => relay_state }, []
+            302, { "Location" => @relay_state }, []
           ]
         end
 
@@ -65,8 +67,9 @@ module Spid
         end
 
         def request_relay_state
-          if !relay_state_param.nil? ||
-             relay_state_param != ""
+          if !relay_state_param.nil? &&
+             relay_state_param != "" &&
+             !session["relay_state"].nil?
             session["relay_state"][relay_state_param]
           end
         end
