@@ -25,11 +25,10 @@ module Spid
       end
     end
 
-    def self.parse_from_xml(name:, metadata:)
+    def self.parse_from_xml(metadata:)
       idp_metadata_parser = ::Spid::Saml2::IdpMetadataParser.new
       idp_settings = idp_metadata_parser.parse_to_hash(metadata)
       ::Spid::Saml2::IdentityProvider.new(
-        name: name,
         entity_id: idp_settings[:idp_entity_id],
         sso_target_url: idp_settings[:idp_sso_target_url],
         slo_target_url: idp_settings[:idp_slo_target_url],
@@ -38,12 +37,8 @@ module Spid
     end
 
     def self.generate_identity_provider_from_file(metadata_filepath)
-      idp_name = File.basename(metadata_filepath, "-metadata.xml")
       metadata = File.read(metadata_filepath)
-      parse_from_xml(
-        metadata: metadata,
-        name: idp_name
-      )
+      parse_from_xml(metadata: metadata)
     end
   end
 end

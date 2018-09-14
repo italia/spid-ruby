@@ -49,10 +49,9 @@ RSpec.describe Spid::IdentityProviderManager do
 
   describe ".parse_from_xml" do
     let(:result) do
-      described_class.parse_from_xml(metadata: idp_metadata, name: name)
+      described_class.parse_from_xml(metadata: idp_metadata)
     end
 
-    let(:name) { "idp-name" }
     let(:entity_id) { "https://identity.provider" }
     let(:sso_target_url) { "https://identity.provider/sso" }
     let(:slo_target_url) { "https://identity.provider/slo" }
@@ -63,7 +62,6 @@ RSpec.describe Spid::IdentityProviderManager do
 
     let(:expected_param) do
       {
-        name: name,
         entity_id: entity_id,
         sso_target_url: sso_target_url,
         slo_target_url: slo_target_url,

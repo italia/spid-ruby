@@ -9,7 +9,6 @@ RSpec.describe Spid::Saml2::IdentityProvider do
 
   let(:identity_provider_attributes) do
     {
-      name: name,
       entity_id: entity_id,
       sso_target_url: sso_target_url,
       slo_target_url: slo_target_url,
@@ -17,17 +16,12 @@ RSpec.describe Spid::Saml2::IdentityProvider do
     }
   end
 
-  let(:name) { "idp-name" }
   let(:entity_id) { "https://example.com" }
   let(:sso_target_url) { "#{entity_id}/sso-path" }
   let(:slo_target_url) { "#{entity_id}/slo-path" }
   let(:certificate) { File.read(generate_fixture_path("certificate.pem")) }
 
   it { is_expected.to be_a described_class }
-
-  it "requires a name" do
-    expect(idp_configuration.name).to eq name
-  end
 
   it "requires an entity_id" do
     expect(idp_configuration.entity_id).to eq entity_id
