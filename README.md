@@ -242,6 +242,41 @@ Per iniziare un logout con SPID l'url da utilizzare è `/spid/logout?idp_name=po
 |generation of `Response/Assertion` XML||
 |Signature||
 
+## Testing
+
+Clona il repository
+```bash
+$ git clone git@github.com:italia/spid-ruby
+$ cd spid-ruby
+$ bundle install
+$ bundle exec rake
+ ```
+
+## Contribuire
+
+Chiunque è benvenuto nella community e libero di contribuire al suo sviluppo. Ci aspettiamo che chi contribuisca aderisca al codice di condotta [Contributor Covenant](http://contributor-covenant.org).
+
+Per contribuire al repository
+
+* Forka il progetto
+* Crea il tuo feature branch `git checkout -b my-feature-branch`
+* Committa le tue modifiche `git commit -a -m "Add some feature"`
+* Pusha il tuo branch `git push origin my-feature-branch -u`
+* Crea una pull request
+
+Essendo SPID un sistema atto a garatire un sistema di autenticazione certificato con le PA la correttezza del codice deve essere sempre garantita, pertanto ogni pull request che andrà a modificare il codice della libreria dovrà essere corredato degli specifici tests che ne dimostrano la correttezza. Pertanto pull requests senza relativi tests non verranno mergiate.
+
+
+Nel caso di apertura di una issue relativa ad un bug, siete pregati di fornire o un commit con un test fallimentare o tutti gli step necessari alla riproduzione del bug.
+
+
+## License
+
+Questa gemma è disponibile in open source sotto i termini della [licenza BSD-3](https://opensource.org/licenses/BSD-3-Clause)
+
+## Code of Conduct
+
+Chiunque interagisca con il codice, l'issue tracker o qualunque altro canale di comunicazione è pregato di rispettare il seguente [codice di condotta](https://github.com/italia/spid-ruby/blob/master/CODE_OF_CONDUCT.md).
 
 ## Authors
 
