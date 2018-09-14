@@ -46,37 +46,4 @@ RSpec.describe Spid::IdentityProviderManager do
       end
     end
   end
-
-  describe ".parse_from_xml" do
-    let(:result) do
-      described_class.parse_from_xml(metadata: idp_metadata)
-    end
-
-    let(:entity_id) { "https://identity.provider" }
-    let(:sso_target_url) { "https://identity.provider/sso" }
-    let(:slo_target_url) { "https://identity.provider/slo" }
-
-    let(:certificate) do
-      instance_double("OpenSSL::X509::Certificate")
-    end
-
-    let(:expected_param) do
-      {
-        entity_id: entity_id,
-        sso_target_url: sso_target_url,
-        slo_target_url: slo_target_url,
-        certificate: OpenSSL::X509::Certificate
-      }
-    end
-
-    before do
-      allow(Spid::Saml2::IdentityProvider).to receive(:new)
-    end
-
-    it "creates a new idp configuration with metadata attributes" do
-      result
-      expect(Spid::Saml2::IdentityProvider).
-        to have_received(:new).with a_hash_including(expected_param)
-    end
-  end
 end
