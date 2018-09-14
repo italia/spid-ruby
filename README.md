@@ -241,3 +241,8 @@ Per iniziare un logout con SPID l'url da utilizzare è `/spid/logout?idp_name=po
 |**Response/Assertion generation (2.2.2.2):**||
 |generation of `Response/Assertion` XML||
 |Signature||
+
+
+## Authors
+
+* [David Librera](https://github.com/davidlibrera) - [Cantiere Creativo <img src="https://www.cantierecreativo.net/images/illustrations/logo-07f378ea.svg"/>](https://www.cantierecreativo.net)
