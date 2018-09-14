@@ -2,22 +2,41 @@
 
 module Spid
   module Saml2
-    class IdentityProvider # :nodoc:
-      attr_reader :entity_id
-      attr_reader :sso_target_url
-      attr_reader :slo_target_url
-      attr_reader :certificate
+    class IdentityProvider < SamlParser # :nodoc:
+      def initialize(metadata:)
+        super(saml_message: metadata)
+      end
 
-      def initialize(
-            entity_id:,
-            sso_target_url:,
-            slo_target_url:,
-            certificate:
-          )
-        @entity_id = entity_id
-        @sso_target_url = sso_target_url
-        @slo_target_url = slo_target_url
-        @certificate = certificate
+      def entity_id
+        element_from_xpath(
+          "/md:EntityDescriptor/@entityID"
+        )
+      end
+
+      def sso_target_url
+        element_from_xpath(
+          "/md:EntityDescriptor/md:IDPSSODescriptor" \
+          "/md:SingleSignOnService/@Location"
+        )
+      end
+
+      def slo_target_url
+        element_from_xpath(
+          "/md:EntityDescriptor/md:IDPSSODescriptor" \
+          "/md:SingleLogoutService/@Location"
+        )
+      end
+
+      def raw_certificate
+        element_from_xpath(
+          "/md:EntityDescriptor/md:IDPSSODescriptor" \
+          "/md:KeyDescriptor[@use='encryption']/ds:KeyInfo" \
+          "/ds:X509Data/ds:X509Certificate/text()"
+        )
+      end
+
+      def certificate
+        certificate_from_encoded_der(raw_certificate)
       end
     end
   end
