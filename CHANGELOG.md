@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.19.0] - 2018-09-14
 ### Added
 - Opaque relay state
 - Logging of AuthnRequest and Response
@@ -154,7 +156,8 @@
 - Coveralls Integration
 - Rubygems version badge in README
 
-[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.18.0...HEAD
+[Unreleased]: https://github.com/italia/spid-ruby/compare/v0.19.0...HEAD
+[0.19.0]: https://github.com/italia/spid-ruby/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/italia/spid-ruby/compare/v0.17.3...v0.18.0
 [0.17.3]: https://github.com/italia/spid-ruby/compare/v0.17.2...v0.17.3
 [0.17.2]: https://github.com/italia/spid-ruby/compare/v0.17.1...v0.17.2
