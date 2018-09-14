@@ -8,6 +8,8 @@
 | Continuous integration | [![Build Status](https://secure.travis-ci.org/italia/spid-ruby.svg?branch=master)](https://travis-ci.org/italia/spid-ruby) |
 | Test coverate          | [![Coverage Status](https://coveralls.io/repos/github/italia/spid-ruby/badge.svg?branch=master)](https://coveralls.io/github/italia/spid-ruby?branch=master) |
 | Credits                | [Contributors](https://github.com/italia/spid-ruby/graphs/contributors) |
+| Slack Channel          | [![Join the #spid-ruby channel](https://img.shields.io/badge/Slack%20channel-%23spid--ruby-blue.svg?logo=slack)](https://developersitalia.slack.com/messages/C7F1H35L5 ) [![Get invited](https://slack.developers.italia.it/badge.svg)](https://slack.developers.italia.it/) |
+| Forum                  | [![SPID on forum.italia.it](https://img.shields.io/badge/Forum-SPID-blue.svg)](https://forum.italia.it/c/spid) |
 
 ## Installazione & Configurazione
 
