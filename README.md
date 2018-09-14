@@ -258,6 +258,8 @@ $ bundle exec rake
 
 Chiunque è benvenuto nella community e libero di contribuire al suo sviluppo. Ci aspettiamo che chi contribuisca aderisca al codice di condotta [Contributor Covenant](http://contributor-covenant.org).
 
+Se sei nuovo e vuoi iniziare a contribuire anche te, tieni d'occhio [queste issues!!](https://github.com/italia/spid-ruby/labels/good%20first%20issue)
+
 Per contribuire al repository
 
 * Forka il progetto
@@ -268,8 +270,8 @@ Per contribuire al repository
 
 Essendo SPID un sistema atto a garatire un sistema di autenticazione certificato con le PA la correttezza del codice deve essere sempre garantita, pertanto ogni pull request che andrà a modificare il codice della libreria dovrà essere corredato degli specifici tests che ne dimostrano la correttezza. Pertanto pull requests senza relativi tests non verranno mergiate.
 
-
 Nel caso di apertura di una issue relativa ad un bug, siete pregati di fornire o un commit con un test fallimentare o tutti gli step necessari alla riproduzione del bug.
+
 
 
 ## License
